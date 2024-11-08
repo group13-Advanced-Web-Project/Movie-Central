@@ -1,24 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import './Css/App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './Home/Home.js';
 
 function App() {
+  const [movies, setMovies] = useState([]);
+
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        const response = await fetch('https://www.finnkino.fi/xml/Events/');
+        const text = await response.text();
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(text, 'text/xml');
+        const events = Array.from(xml.getElementsByTagName('Event')).map((event) => ({
+          id: event.getElementsByTagName('ID')[0]?.textContent || 'No ID',
+          title: event.getElementsByTagName('Title')[0]?.textContent || 'No Title',
+          description: event.getElementsByTagName('ShortSynopsis')[0]?.textContent || 'No Description',
+          imageUrl: event.getElementsByTagName('EventLargeImagePortrait')[0]?.textContent || '',
+          genres: event.getElementsByTagName('Genres')[0]?.textContent || 'No Genres',
+          duration: event.getElementsByTagName('LengthInMinutes')[0]?.textContent || 'Unknown',
+          rating: event.getElementsByTagName('Rating')[0]?.textContent || 'No Rating',
+          cast: event.getElementsByTagName('Cast')[0]?.textContent || 'No Cast Information',
+        }));
+
+        setMovies(events);
+      } catch (error) {
+        console.error('Error fetching movie data:', error);
+      }
+    };
+
+    fetchMovies();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home movies={movies} />} />
+      </Routes>
+    </Router>
   );
 }
 

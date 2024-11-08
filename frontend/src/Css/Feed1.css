@@ -1,0 +1,98 @@
+.feed1-container {
+  margin-top: calc(var(--header-height, 20px)); /* Dynamically adjust based on navbar height */
+  padding: 20px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%; /* Take full width of the parent container */
+  flex-direction: column; /* Stack content on smaller screens */
+  background-color: #8b8b8b33;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.movie-details {
+  display: flex; /* Horizontal layout for image and text */
+  align-items: flex-start;
+  gap: 20px; /* Space between image and text */
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 900px;
+  width: 100%; /* Ensure it takes full width on smaller screens */
+}
+
+.large-movie-image {
+  width: 300px; /* Fixed image width */
+  height: auto;
+  border-radius: 8px;
+}
+
+.movie-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.movie-info h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.movie-info p {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.5;
+}
+
+.feed-heading {
+  font-size: 1.5em;
+  color: #740404;
+  margin-bottom: 10px;
+  text-align: left;
+  padding-left: 10px;
+}
+.feed1-header {
+  text-align: center;
+  margin-bottom: 10px;
+}
+/* Media Queries for responsiveness */
+@media (max-width: 768px) {
+  .feed1-container {
+    padding: 10px; /* Less padding on smaller screens */
+  }
+
+  .movie-details {
+    flex-direction: column; /* Stack the movie details vertically on smaller screens */
+    gap: 15px; /* Adjust the gap between the image and text */
+  }
+
+  .large-movie-image {
+    width: 100%; /* Image takes full width of the container */
+    max-width: 300px; /* Limit the image width */
+    height: auto;
+  }
+
+  .movie-info {
+    flex: none; /* Allow the info section to take up the available space vertically */
+  }
+
+  .movie-info h2 {
+    font-size: 20px; /* Adjust font size for smaller screens */
+  }
+
+  .movie-info p {
+    font-size: 14px; /* Adjust paragraph font size */
+  }
+}
+
+@media (max-width: 480px) {
+  .movie-info h2 {
+    font-size: 18px; /* Adjust heading font size for very small screens */
+  }
+
+  .movie-info p {
+    font-size: 12px; /* Adjust paragraph font size for very small screens */
+  }
+}

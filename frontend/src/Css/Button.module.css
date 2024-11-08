@@ -1,0 +1,14 @@
+.button {
+
+    margin: 20px;
+    background-color: rgb(104, 197, 11);
+    border: 1px solid black;
+    padding: 10px;
+    float: right;
+    border-radius: 8px;   
+}
+
+.button:hover {
+    background-color:aqua;
+    cursor: pointer;
+}
