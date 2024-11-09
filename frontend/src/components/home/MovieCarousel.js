@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import '../Css/Feed2.css';
+import '../../styles/MovieCarousel.css';
 
-const Feed2 = ({ movies }) => {
+const MovieCarousel = ({ movies }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handlePrev = () => {
@@ -37,4 +37,4 @@ const Feed2 = ({ movies }) => {
   );
 };
 
-export default Feed2;
+export default MovieCarousel;

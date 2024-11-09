@@ -1,9 +1,5 @@
-
 import React from 'react';
-import '../Css/Footer.css';
-import facebookIcon from '../components/facebook.png'; // Import social media icons
-import twitterIcon from '../components/twitter.png';
-import instagramIcon from '../components/instagram.png';
+import '../styles/Footer.css';
 
 function Footer() {
   return (
@@ -16,13 +12,13 @@ function Footer() {
       </div>
       <div className="social-media">
         <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
-          <img src={facebookIcon} alt="Facebook" className="social-icon" />
+          <img src="/facebook.png" alt="Facebook" className="social-icon" />
         </a>
         <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">
-          <img src={twitterIcon} alt="Twitter" className="social-icon" />
+          <img src="/twitter.png" alt="Twitter" className="social-icon" />
         </a>
         <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
-          <img src={instagramIcon} alt="Instagram" className="social-icon" />
+          <img src="/instagram.png" alt="Instagram" className="social-icon" />
         </a>
       </div>
     </div>

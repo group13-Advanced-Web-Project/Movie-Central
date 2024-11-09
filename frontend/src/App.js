@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import './Css/App.css';
+import './styles/App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './Home/Home.js';
+import Home from './pages/home/Home.js';
 
 function App() {
   const [movies, setMovies] = useState([]);
