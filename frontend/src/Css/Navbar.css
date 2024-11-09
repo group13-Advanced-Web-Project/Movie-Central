@@ -1,0 +1,97 @@
+.header-container {
+    position: fixed; /* Fix the navbar at the top */
+    top: 0;
+    left: 0;
+    width: 100%; /* Full width of the screen */
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space between logo, search, and buttons */
+    background-color: #333; /* Navbar background color */
+    color: white;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add shadow for a subtle effect */
+    z-index: 1000; /* Ensure it's above other content */
+    flex-wrap: nowrap; /* Prevent wrapping into multiple rows */
+  }
+  
+  .logo {
+    height: 60px; /* Adjust size as needed */
+    width: auto; /* Maintain aspect ratio */
+  }
+  
+  .header-container input {
+    flex: 1;
+    margin: 0 10px;
+    padding: 8px;
+    font-size: 1em;
+    width: 150px; /* Set a fixed width for the search input */
+    max-width: 200px; /* Limit the maximum width */
+    text-align: center;
+    border-radius: 4px;
+  }
+  
+  .button-container {
+    display: flex;
+    gap: 10px;
+    padding: 0 10px;
+  }
+  
+  .button {
+    background-color: #ff9800;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 1em;
+  }
+  
+  .button:hover {
+    background-color: #ffa726;
+    cursor: pointer;
+  }
+  
+  /* Responsive Design for Smaller Screens */
+  @media (max-width: 768px) {
+    .header-container {
+      justify-content: space-between; /* Maintain space between elements */
+      padding: 10px 15px; /* Adjust padding for smaller screens */
+      gap: 10px;
+    }
+  
+    .logo {
+      height: 50px; /* Adjust logo size */
+    }
+  
+    .header-container input {
+      width: 100px; /* Make the search input smaller */
+    }
+  
+    .button-container {
+      gap: 5px; /* Reduce space between buttons */
+    }
+  
+    .button {
+      padding: 6px 10px; /* Reduce button size */
+      font-size: 0.9em;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .header-container {
+      padding: 10px 5px; /* Reduce padding further for very small screens */
+    }
+  
+    .logo {
+      height: 40px; /* Smaller logo on very small screens */
+    }
+  
+    .header-container input {
+      width: 80px; /* Smaller input field */
+    }
+  
+    .button {
+      padding: 6px 8px; /* Even smaller buttons */
+      font-size: 0.8em;
+    }
+  }
+  

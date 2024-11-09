@@ -1,0 +1,118 @@
+.feed2-container {
+    display: flex;
+    flex-direction: column; /* Stack label and carousel vertically */
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    background-color: #8b8b8b33;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    overflow: hidden;
+}
+
+.feed2-header {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.feed-heading {
+    font-size: 1.5em;
+    color: #333;
+    margin: 0; /* Remove default margin for better spacing */
+}
+
+.carousel-wrapper {
+    position: relative; /* To position buttons relative to the carousel */
+    display: flex;
+    justify-content: center; /* Keep carousel items centered */
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+
+.carousel {
+    display: flex;
+    gap: 15px;
+    justify-content: center; /* Center carousel items */
+    width: 100%;
+}
+
+.carousel-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 140px; /* Fixed width to show two items */
+}
+
+.movie-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.movie-name {
+    font-size: 14px;
+    text-align: center;
+    color: #333;
+}
+
+.carousel-btn {
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    position: absolute; /* Position buttons absolutely */
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10; /* Ensure buttons appear above the carousel */
+}
+
+.carousel-btn:hover {
+    background-color: #555;
+}
+
+.carousel-btn.prev {
+    left: 10px; /* Position left button */
+}
+
+.carousel-btn.next {
+    right: 10px; /* Position right button */
+}
+
+@media (max-width: 480px) {
+    .carousel-item {
+        width: 120px; /* Adjust for smaller screens */
+    }
+
+    .movie-image {
+        width: 80px;
+        height: 80px;
+    }
+
+    .movie-name {
+        font-size: 12px;
+    }
+
+    .carousel-btn {
+        width: 25px;
+        height: 25px;
+        font-size: 16px;
+    }
+}
