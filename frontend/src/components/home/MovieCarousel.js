@@ -6,13 +6,13 @@ const MovieCarousel = ({ movies }) => {
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? movies.length - 2 : prevIndex - 1
+      prevIndex === 0 ? movies.length - 3 : prevIndex - 3
     );
   };
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex + 2 >= movies.length ? 0 : prevIndex + 1
+      prevIndex + 2 >= movies.length ? 0 : prevIndex + 3
     );
   };
 
