@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import '../Css/Feed2.css';
+import '../../styles/MovieCarousel.css';
 
-const Feed2 = ({ movies }) => {
+const MovieCarousel = ({ movies }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? movies.length - 2 : prevIndex - 1
+      prevIndex === 0 ? movies.length - 3 : prevIndex - 3
     );
   };
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex + 2 >= movies.length ? 0 : prevIndex + 1
+      prevIndex + 2 >= movies.length ? 0 : prevIndex + 3
     );
   };
 
@@ -37,4 +37,4 @@ const Feed2 = ({ movies }) => {
   );
 };
 
-export default Feed2;
+export default MovieCarousel;

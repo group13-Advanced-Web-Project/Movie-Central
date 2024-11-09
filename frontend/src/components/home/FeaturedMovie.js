@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import '../Css/Feed1.css';
+import '../../styles/FeaturedMovie.css';
 
-function Feed1({ movies }) {
+function FeaturedMovie({ movies }) {
   const [movie, setMovie] = useState(null);
 
   useEffect(() => {
@@ -36,4 +36,4 @@ function Feed1({ movies }) {
   );
 }
 
-export default Feed1;
+export default FeaturedMovie;
