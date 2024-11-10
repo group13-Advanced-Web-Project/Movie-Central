@@ -6,11 +6,13 @@
     margin-top: 20px;
     background-color: #8b8b8b33;
     padding: 20px;
+    padding-bottom: 30px;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 600px;
     overflow: hidden;
+    height: auto;
 }
 
 .feed2-header {
@@ -31,6 +33,7 @@
     align-items: center;
     gap: 15px;
     width: 100%;
+    height: 220px;
 }
 
 .carousel {
@@ -49,6 +52,8 @@
     padding: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 140px; /* Fixed width to show two items */
+    height: 200px; /* Fixed height for each item to keep them consistent */
+    overflow: hidden;
 }
 
 .movie-image {
@@ -99,6 +104,7 @@
 @media (max-width: 480px) {
     .carousel-item {
         width: 120px; /* Adjust for smaller screens */
+        height: 220px;
     }
 
     .movie-image {

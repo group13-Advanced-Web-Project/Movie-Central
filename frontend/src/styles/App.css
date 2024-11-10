@@ -62,7 +62,7 @@
   max-width: 25%; /* Limit width for Feed2 */
   min-width: 150px; /* Ensure a minimum width for smaller screens */
   box-sizing: border-box; /* Include padding and border in the width */
-  max-height: 300px;
+  max-height: 320px;
 }
 
 /* Responsive design for smaller screens */
