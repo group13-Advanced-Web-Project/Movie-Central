@@ -32,6 +32,7 @@ The **Full-Stack Movie Database** is a modern web application designed to allow 
 - [About](#about)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
+- [Architecture](#architecture)
 - [How It Works](#how-it-works)
 - [Installation and Setup](#installation-and-setup)
 - [Database Schema](#database-schema)
@@ -88,6 +89,10 @@ This project integrates **React**, **Node.js**, **Express**, and **MySQL**, crea
 |------------|-------------|
 | **Frontend** | Hosted on **Netlify** for fast, reliable, and continuous deployment. |
 | **Backend**  | Deployed on **Heroku** (or your preferred hosting platform) for API and database services. |
+
+
+## Architecture
+![Architecture](docs/diagrams/architecture.jpg)
 
 ## How It Works
 
