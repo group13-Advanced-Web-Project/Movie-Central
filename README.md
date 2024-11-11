@@ -21,10 +21,10 @@ The **Full-Stack Movie Database** is a modern web application designed to allow 
 | Name      | Role        |
 |-----------|-------------|
 | Curtis    | Git         |
-| Sanjaya   | Frontend    |
+| Sujeewa   | Frontend    |
 | Mahesh    | Frontend    |
 | Steffi    | Backend     |
-| Sujeewa   | Backend     |
+| Sanjaya   | Backend     |
 | Riku      | CI/CD       |
 
 ## Table of Contents
@@ -32,12 +32,14 @@ The **Full-Stack Movie Database** is a modern web application designed to allow 
 - [About](#about)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
+- [Architecture](#architecture)
 - [How It Works](#how-it-works)
 - [Installation and Setup](#installation-and-setup)
 - [Database Schema](#database-schema)
 - [API Endpoints](#api-endpoints)
 - [Screenshots](#screenshots)
 - [Links](#links)
+- [Deployment](#deployment)
 
 ## About
 
@@ -88,6 +90,10 @@ This project integrates **React**, **Node.js**, **Express**, and **MySQL**, crea
 |------------|-------------|
 | **Frontend** | Hosted on **Netlify** for fast, reliable, and continuous deployment. |
 | **Backend**  | Deployed on **Heroku** (or your preferred hosting platform) for API and database services. |
+
+
+## Architecture
+![Architecture](docs/diagrams/architecture.jpg)
 
 ## How It Works
 
@@ -149,3 +155,7 @@ The app should now be running locally at `http://localhost:3000`.
 - **Live Project**: [URL to live site]
 - **Documentation**: [URL to full documentation]
 - **Demo**: [URL to demo or video walkthrough]
+
+## Deployment
+- Frontend deployed using Netlify: https://awamovieapp.netlify.app/
+  
