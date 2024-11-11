@@ -157,5 +157,5 @@ The app should now be running locally at `http://localhost:3000`.
 - **Demo**: [URL to demo or video walkthrough]
 
 ## Deployment
-- Frontend deployed using Netlify: https://awamovieapp.netlify.app/
-  
+- Frontend deployed using Netlify to insure fast, reliable, and continuous deployment: https://awamovieapp.netlify.app/
+![Build Settings](docs/assets/buildsettings.png)
