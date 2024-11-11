@@ -52,7 +52,7 @@ The **Full-Stack Movie Database** allows users to explore movies, view their sho
 - **Join or Create Movie Groups**: Connect with friends by forming or joining customizable movie groups.
 - **Review Movies**: Share thoughts on movies they've watched with ratings and reviews.
 
- ![Database Schema](docs/wireframe/0-wireframe_overview.png)
+ ![Frontend Wireframe](docs/diagrams/frontend/wireframe/0-wireframe_overview.png)
 
 This project integrates **React**, **Node.js**, **Express**, and **MySQL**, creating an interactive and scalable movie browsing experience.
 
@@ -140,7 +140,7 @@ The app should now be running locally at `http://localhost:3000`.
 
 ## Database Schema
 
-![Database Schema](docs/database/database-diagram.png)
+![Database Schema](docs/diagrams/database/database-diagram.png)
 
 ## API Endpoints
 
