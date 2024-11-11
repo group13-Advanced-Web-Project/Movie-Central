@@ -39,6 +39,7 @@ The **Full-Stack Movie Database** is a modern web application designed to allow 
 - [API Endpoints](#api-endpoints)
 - [Screenshots](#screenshots)
 - [Links](#links)
+- [Deployment](#deployment)
 
 ## About
 
@@ -154,3 +155,7 @@ The app should now be running locally at `http://localhost:3000`.
 - **Live Project**: [URL to live site]
 - **Documentation**: [URL to full documentation]
 - **Demo**: [URL to demo or video walkthrough]
+
+## Deployment
+- Frontend deployed using Netlify: https://awamovieapp.netlify.app/
+  
