@@ -21,10 +21,10 @@ The **Full-Stack Movie Database** is a modern web application designed to allow 
 | Name      | Role        |
 |-----------|-------------|
 | Curtis    | Git         |
-| Sanjaya   | Frontend    |
+| Sujeewa   | Frontend    |
 | Mahesh    | Frontend    |
 | Steffi    | Backend     |
-| Sujeewa   | Backend     |
+| Sanjaya   | Backend     |
 | Riku      | CI/CD       |
 
 ## Table of Contents
