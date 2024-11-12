@@ -33,7 +33,7 @@ function Moviepage() {
       return (
         <div>
           <Navbar />
-          <div className="error-message">Error: {error}</div>
+          <div className="moviepage-error-message">Error: {error}</div>
           <Footer />
         </div>
       );
@@ -43,7 +43,7 @@ function Moviepage() {
       return (
         <div>
           <Navbar />
-          <div className="loading-message">Loading...</div>
+          <div className="moviepage-loading-message">Loading...</div>
           <Footer />
         </div>
       );
@@ -54,9 +54,9 @@ function Moviepage() {
         <Navbar />
         
         <div className="moviepage-container">
-          <div className="movie-details">
-            <img src={movie.poster_path} alt={movie.title} className="movie-poster" />
-            <div className="movie-info">
+          <div className="moviepage-details">
+            <img src={movie.poster_path} alt={movie.title} className="moviepage-poster" />
+            <div className="moviepage-info">
               <h1>{movie.title}</h1>
               <p><strong>Overview:</strong> {movie.overview}</p>
               <p><strong>Release Date:</strong> {movie.release_date}</p>
@@ -66,6 +66,6 @@ function Moviepage() {
         <Footer />
       </div>
     );
-  }
+}
   
-  export default Moviepage;
+export default Moviepage;

@@ -1,81 +1,80 @@
 :root {
     --header-height: 60px; /* Define the header height */
     --footer-height: 50px; /* Define the footer height */
-  }
-  
-  .moviepage-container {
-      padding: 20px;
-      background-color: #f4f4f4;
-      min-height: calc(100vh - var(--header-height) - var(--footer-height)); /* Subtract header and footer heights from full viewport height */
-      display: flex;
-      justify-content: center;
-      align-items: flex-start; /* Aligns content to the top */
-      margin-top: var(--header-height); /* Add space for the header */
-  }
-  
-  .movie-details {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start; /* Align text and content to the left */
-      background-color: #8b8b8b33;
-      padding: 20px;
-      margin: 20px auto;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      max-width: 900px;
-      width: 100%;
-      box-sizing: border-box; /* Ensure padding fits within the container */
-  }
-  
-  .movie-poster {
-      width: 300px;
-      border-radius: 8px;
-      margin-bottom: 15px;
-  }
-  
-  .movie-info h1 {
-      font-size: 28px;
-      margin-bottom: 10px;
-      color: #333;
-  }
-  
-  .movie-info p {
-      font-size: 16px;
-      color: #666;
-      line-height: 1.6;
-      margin-bottom: 10px;
-  }
-  
-  .error-message,
-  .loading-message {
-      text-align: center;
-      font-size: 18px;
-      color: #d9534f;
-      margin-top: 20px;
-  }
-  
-  @media (max-width: 768px) {
-      .movie-details {
-          padding: 15px;
-          max-width: 100%; /* Allow it to stretch for smaller screens */
-      }
-  
-      .movie-info h1 {
-          font-size: 20px;
-      }
-  
-      .movie-info p {
-          font-size: 14px;
-      }
-  }
-  
-  @media (max-width: 480px) {
-      .movie-info h1 {
-          font-size: 18px;
-      }
-  
-      .movie-info p {
-          font-size: 12px;
-      }
-  }
-  
+}
+
+.moviepage-container {
+    padding: 20px;
+    background-color: #f4f4f4;
+    min-height: calc(100vh - var(--header-height) - var(--footer-height)); /* Subtract header and footer heights from full viewport height */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Aligns content to the top */
+    margin-top: var(--header-height); /* Add space for the header */
+}
+
+.moviepage-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align text and content to the left */
+    background-color: #8b8b8b33;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    width: 100%;
+    box-sizing: border-box; /* Ensure padding fits within the container */
+}
+
+.moviepage-poster {
+    width: 300px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.moviepage-info h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.moviepage-info p {
+    font-size: 16px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.moviepage-error-message,
+.moviepage-loading-message {
+    text-align: center;
+    font-size: 18px;
+    color: #d9534f;
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .moviepage-details {
+        padding: 15px;
+        max-width: 100%; /* Allow it to stretch for smaller screens */
+    }
+
+    .moviepage-info h1 {
+        font-size: 20px;
+    }
+
+    .moviepage-info p {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .moviepage-info h1 {
+        font-size: 18px;
+    }
+
+    .moviepage-info p {
+        font-size: 12px;
+    }
+}

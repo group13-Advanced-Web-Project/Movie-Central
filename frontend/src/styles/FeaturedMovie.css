@@ -1,5 +1,5 @@
 .feed1-container {
-  margin-top: calc(var(--header-height, 20px)); /* Dynamically adjust based on navbar height */
+  margin-top: 20px; /* Same as .feed2-container to keep consistent gap from navbar */
   padding: 20px;
   display: flex;
   justify-content: flex-start;
