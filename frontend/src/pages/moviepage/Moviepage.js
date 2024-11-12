@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom'; // To get the search term from the URL
-import Navbar from '../../components/Navbar'; // Adjust the path based on your folder structure
-import Footer from '../../components/Footer'; // Adjust the path based on your folder structure
-import '../../styles/Moviepage.css'; // Optional for styling
-
+import { useParams } from 'react-router-dom'; 
+import Navbar from '../../components/Navbar'; 
+import Footer from '../../components/Footer'; 
+import '../../styles/Moviepage.css'; 
 
 function Moviepage() {
-    const { movieName } = useParams(); // Get the movie name from the URL
+    const { movieName } = useParams(); 
     const [movie, setMovie] = useState(null);
     const [error, setError] = useState(null);
   
@@ -19,7 +18,7 @@ function Moviepage() {
           }
   
           const data = await response.json();
-          setMovie(data[0]); // Assuming only one movie matches the name
+          setMovie(data[0]); 
         } catch (err) {
           setError(err.message);
           setMovie(null);
@@ -62,6 +61,13 @@ function Moviepage() {
               <p><strong>Release Date:</strong> {movie.release_date}</p>
             </div>
           </div>
+          
+          {/* Right-side component for movie showtime */}
+          <div className="moviepage-showtime">
+            <h2>Movie Showtime</h2>
+            <p>Details will be added later.</p>
+          </div>
+          
         </div>
         <Footer />
       </div>
