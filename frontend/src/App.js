@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './styles/App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/home/Home.js';
+import Moviepage from './pages/moviepage/Moviepage.js';
 
 function App() {
   const [movies, setMovies] = useState([]);
@@ -37,6 +38,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home movies={movies} />} />
+        <Route path="/movie/:movieName" element={<Moviepage />} /> {/* Dynamic route */}
       </Routes>
     </Router>
   );
