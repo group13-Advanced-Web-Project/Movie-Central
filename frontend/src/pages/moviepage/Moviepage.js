@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'; 
 import Navbar from '../../components/Navbar'; 
 import Footer from '../../components/Footer'; 
-import '../../styles/Moviepage.css'; 
+import '../../styles/MoviePage.css'; 
 
-function Moviepage() {
+function MoviePage() {
     const { movieName } = useParams(); 
     const [movie, setMovie] = useState(null);
     const [error, setError] = useState(null);
@@ -74,4 +74,4 @@ function Moviepage() {
     );
 }
   
-export default Moviepage;
+export default MoviePage;
