@@ -1,8 +1,7 @@
-:root {
-    --header-height: 60px; /* Define the header height */
-    --footer-height: 50px; /* Define the footer height */
-    --main-bg-color: #8b8b8b33; /* Same background color for both sections */
-    --section-gap: 20px; /* Gap between sections */
+.moviepage-main {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 body {
@@ -23,9 +22,9 @@ body {
 }
 
 .moviepage-container {
-    padding: 50px;
+    padding: 20px;
     margin-top: var(--header-height); /* Add gap from the navbar */
-    background-color: #f4f4f4;
+    background-color: #ffffff;
     min-height: calc(100vh - var(--header-height) - var(--footer-height)); /* Subtract header and footer heights from full viewport height */
     display: flex;
     justify-content: space-between; /* Space between left and right side */
@@ -44,6 +43,7 @@ body {
 .moviepage-details {
     flex: 2; /* Allow movie details to take up more space */
     max-width: 900px;
+    background-color: #8b8b8b33;
     width: 100%;
     margin-bottom: var(--section-gap); /* Add gap below the movie details */
 }
@@ -53,6 +53,7 @@ body {
     margin-left: 20px;
     margin-bottom: var(--section-gap); /* Add gap below the movie showtime */
     text-align: center;
+    background-color: #8b8b8b33;
 }
 
 .moviepage-poster {

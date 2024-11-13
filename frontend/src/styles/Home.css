@@ -1,0 +1,139 @@
+/* home.css */
+
+/* Home container layout to make sure the footer stays at the bottom */
+.home-container {
+  display: flex;
+  flex-direction: column; /* Stack content vertically */
+  min-height: 100vh; /* Ensure the body takes the full viewport height */
+}
+
+/* Home navbar styles */
+.home-navbar-container {
+  height: 60px;             /* Set a fixed height for the navbar */
+  background-color: #333;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+/* Home main content area */
+.home-main-content {
+  display: flex;             /* Make the main content a flex container */
+  flex-direction: row;       /* Align children side by side */
+  justify-content: space-between; /* Space between feed1 and feed2 */
+  padding: 20px;
+  gap: 20px;                 /* Space between feed1 and feed2 */
+  background-color: #ffffff;
+}
+
+/* Featured Movie (feed1) Container */
+.feed1-container {
+  width: 60%;                /* Set width to 50% for both feed1 and feed2 */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  background-color: #8b8b8b33;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  text-align: left;
+  }
+
+.feed1-header {
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.movie-details {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 100%;
+  text-align: left;
+  overflow-wrap: break-word;
+}
+
+.large-movie-image {
+  width: 300px;
+  height: auto;
+  border-radius: 8px;
+  max-width: 100%;
+}
+
+.movie-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.movie-info h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.movie-info p {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.5;
+}
+
+.feed-heading {
+  font-size: 1.5em;
+  color: #740404;
+  margin-bottom: 10px;
+  text-align: left;
+  padding-left: 10px;
+}
+
+/* Movie Carousel (feed2) Container */
+.feed2-container {
+  width: 40%;                /* Set width to 50% for both feed1 and feed2 */
+  padding: 20px;
+  background-color: #8b8b8b33;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  text-align: left;
+  
+  margin-bottom: auto;       /* 20px margin at the bottom */
+  height: auto;              /* Let the height be determined by the content */
+  box-sizing: border-box;    /* Include padding and border in height calculation */
+}
+
+/* Media Queries for responsiveness */
+@media (max-width: 768px) {
+  /* Stack feed1 and feed2 vertically on smaller screens */
+  .home-main-content {
+    flex-direction: column;
+    align-items: center; /* Center align the containers */
+  }
+
+  .feed1-container, .feed2-container {
+    width: 100%;         /* Take full width on smaller screens */
+    margin-top: 20px;    /* Add consistent gap between the two containers */
+  }
+
+  .movie-details {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .large-movie-image {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .movie-info h2 {
+    font-size: 18px;
+  }
+
+  .movie-info p {
+    font-size: 12px;
+  }
+}
