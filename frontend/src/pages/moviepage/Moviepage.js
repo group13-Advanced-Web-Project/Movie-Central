@@ -54,7 +54,15 @@ function MoviePage() {
         
         <div className="moviepage-container">
           <div className="moviepage-details">
-            <img src={movie.poster_path} alt={movie.title} className="moviepage-poster" />
+          <img 
+              src={movie.poster_path || '/assets/sample_image.jpg'} 
+              alt={movie.title || "Sample Movie"} 
+              className="moviepage-poster" 
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = '/assets/sample_image.jpg';
+              }}
+            />
             <div className="moviepage-info">
               <h1>{movie.title}</h1>
               <p><strong>Overview:</strong> {movie.overview}</p>
@@ -62,7 +70,6 @@ function MoviePage() {
             </div>
           </div>
           
-          {/* Right-side component for movie showtime */}
           <div className="moviepage-showtime">
             <h2>Movie Showtime</h2>
             <p>Details will be added later.</p>
