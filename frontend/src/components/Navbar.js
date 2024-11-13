@@ -5,7 +5,7 @@ import '../styles/Navbar.css';
 function Navbar() {
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
-  const searchContainerRef = useRef(null); 
+  const searchContainerRef = useRef(null);
   const navigate = useNavigate();
 
   const handleInputChange = async (e) => {
@@ -17,7 +17,7 @@ function Navbar() {
         const response = await fetch(`http://localhost:3001/search-movies?query=${encodeURIComponent(value)}`);
         if (response.ok) {
           const data = await response.json();
-          setSuggestions(data.slice(0, 4)); 
+          setSuggestions(data.length > 0 ? data.slice(0, 4) : []); // Only show top 4 results or empty if no match
         } else {
           setSuggestions([]);
         }
@@ -31,16 +31,16 @@ function Navbar() {
   };
 
   const handleSuggestionClick = (movieTitle) => {
-    setSearchTerm(movieTitle); 
-    setSuggestions([]); 
-    navigate(`/movie/${encodeURIComponent(movieTitle)}`); 
+    setSearchTerm(movieTitle);
+    setSuggestions([]);
+    navigate(`/movie/${encodeURIComponent(movieTitle)}`);
   };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (searchContainerRef.current && !searchContainerRef.current.contains(event.target)) {
-        setSuggestions([]); 
-        setSearchTerm(''); 
+        setSuggestions([]);
+        setSearchTerm('');
       }
     };
 
@@ -60,18 +60,17 @@ function Navbar() {
           value={searchTerm}
           onChange={handleInputChange}
         />
-        {searchTerm.trim() && suggestions.length === 0 && (
-          <div className="no-results">No results found for "{searchTerm}"</div>
-        )}
-        {suggestions.length > 0 && (
-          <ul className="suggestions-list">
-            {suggestions.map((movie) => (
+        <ul className="suggestions-list">
+          {suggestions.length > 0 ? (
+            suggestions.map((movie) => (
               <li key={movie.id} onClick={() => handleSuggestionClick(movie.title)}>
                 {movie.title}
               </li>
-            ))}
-          </ul>
-        )}
+            ))
+          ) : searchTerm.trim() ? (
+            <li className="no-results">No results found for "{searchTerm}"</li>
+          ) : null}
+        </ul>
       </div>
       <div className="button-container">
         <button className="button">Sign in</button>
