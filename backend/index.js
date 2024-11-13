@@ -1,7 +1,18 @@
 import express from 'express';
 import cors from 'cors';
 import axios from 'axios';
+
 import xml2js from 'xml2js';
+
+import dotenv from 'dotenv';
+import pkg from 'express-openid-connect';
+const { auth, requiresAuth } = pkg;
+import authRouter from './routers/auth/authRouter.js';
+
+
+dotenv.config();
+
+
 
 const port = 3001;
 const tmdb_api_key = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxYjQ4NjkxNDc2NTEyMzk3NmVkZmQyMDBhMDNkNTE4ZiIsIm5iZiI6MTczMTMxNzkyNS41ODU3ODI4LCJzdWIiOiI2NzMxYmQ5ZjYxNjI2YWMxMDZiZTY3ZTQiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.1M1h2M2yeqOEiy5JM46dtKHEDRj_a7y5LLd5308GIbk"
@@ -9,6 +20,7 @@ const schedule_url = "https://www.finnkino.fi/xml/Schedule"
 
 const app = express();
 app.use(cors());
+app.use('/auth/', authRouter); ;
 
 const getShowtimes = async (movieTitle) => {
     try {
@@ -90,5 +102,8 @@ app.get('/search-movies', async(req,res) => {
         res.status(500).json({ error: 'Failed to fetch movie data' });
     }
 })
+
+
+  
 
 app.listen(port);

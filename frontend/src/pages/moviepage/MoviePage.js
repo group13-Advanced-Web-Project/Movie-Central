@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom'; 
 import Navbar from '../../components/Navbar'; 
 import Footer from '../../components/Footer'; 
-import '../../styles/Moviepage.css'; 
+import '../../styles/MoviePage.css'; 
 
-function Moviepage() {
+function MoviePage() {
     const { movieName } = useParams(); 
     const [movie, setMovie] = useState(null);
     const [error, setError] = useState(null);
@@ -49,12 +49,20 @@ function Moviepage() {
     }
   
     return (
-      <div>
+      <div className="moviepage-main">
         <Navbar />
         
         <div className="moviepage-container">
           <div className="moviepage-details">
-            <img src={movie.poster_path} alt={movie.title} className="moviepage-poster" />
+          <img 
+              src={movie.poster_path || '/assets/sample_image.jpg'} 
+              alt={movie.title || "Sample Movie"} 
+              className="moviepage-poster" 
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = '/assets/sample_image.jpg';
+              }}
+            />
             <div className="moviepage-info">
               <h1>{movie.title}</h1>
               <p><strong>Overview:</strong> {movie.overview}</p>
@@ -62,7 +70,6 @@ function Moviepage() {
             </div>
           </div>
           
-          {/* Right-side component for movie showtime */}
           <div className="moviepage-showtime">
             <h2>Movie Showtime</h2>
             <p>Details will be added later.</p>
@@ -74,4 +81,4 @@ function Moviepage() {
     );
 }
   
-export default Moviepage;
+export default MoviePage;
