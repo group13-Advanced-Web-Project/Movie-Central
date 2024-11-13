@@ -1,5 +1,5 @@
 .feed1-container {
-  margin-top: calc(var(--header-height, 20px)); /* Dynamically adjust based on navbar height */
+  margin-top: 20px; /* Same as .feed2-container to keep consistent gap from navbar */
   padding: 20px;
   display: flex;
   justify-content: flex-start;
@@ -9,6 +9,12 @@
   background-color: #8b8b8b33;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
+  text-align: left; /* Ensure content inside this container is aligned left */
+}
+
+.feed1-header {
+  text-align: left; /* Ensure the header text is left-aligned */
+  margin-bottom: 10px;
 }
 
 .movie-details {
@@ -17,14 +23,18 @@
   gap: 20px; /* Space between image and text */
   padding: 20px;
   border-radius: 8px;
-  max-width: 900px;
+  max-width: 100%; /* Ensure it takes full width of the parent container */
   width: 100%; /* Ensure it takes full width on smaller screens */
+  box-sizing: border-box; /* Include padding and border in the width calculation */
+  text-align: left; /* Ensuring the movie details text is left-aligned */
+  overflow-wrap: break-word; /* Prevent text overflow */
 }
 
 .large-movie-image {
   width: 300px; /* Fixed image width */
   height: auto;
   border-radius: 8px;
+  max-width: 100%; /* Ensure the image doesn't exceed the container width */
 }
 
 .movie-info {
@@ -38,25 +48,25 @@
   font-size: 24px;
   margin-bottom: 10px;
   color: #333;
+  text-align: left; /* Left-align the title */
 }
 
 .movie-info p {
   font-size: 16px;
   color: #666;
   line-height: 1.5;
+  text-align: left; /* Left-align the text */
 }
 
 .feed-heading {
   font-size: 1.5em;
   color: #740404;
   margin-bottom: 10px;
-  text-align: left;
+  text-align: left; /* Ensuring heading is left-aligned */
   padding-left: 10px;
 }
-.feed1-header {
-  text-align: center;
-  margin-bottom: 10px;
-}
+
+
 /* Media Queries for responsiveness */
 @media (max-width: 768px) {
   .feed1-container {
