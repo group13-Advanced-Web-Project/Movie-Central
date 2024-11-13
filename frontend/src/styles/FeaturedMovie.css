@@ -1,10 +1,10 @@
 .feed1-container {
-  margin-top: 20px; /* Same as .feed2-container to keep consistent gap from navbar */
-  padding: 20px;
+  margin-top: 0px; /* Same as .feed2-container to keep consistent gap from navbar */
+  padding: 0px;
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  width: 100%; /* Take full width of the parent container */
+  width: 50%; /* Take full width of the parent container */
   flex-direction: column; /* Stack content on smaller screens */
   background-color: #8b8b8b33;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);

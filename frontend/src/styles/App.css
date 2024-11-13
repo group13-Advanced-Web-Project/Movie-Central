@@ -1,10 +1,9 @@
-@import '~slick-carousel/slick/slick.css';
-@import '~slick-carousel/slick/slick-theme.css';
 
 .App {
   text-align: center;
 }
 
+/* App logo */
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -40,38 +39,13 @@
   }
 }
 
-.main-content {
-  margin-top: 80px; /* Add margin to push content below the navbar */
-  padding: 20px;
-  background-color: #f9f9f9;
+/* Footer for the entire app */
+footer {
+  height: 50px;
+  background-color: #333;
+  color: white;
+  text-align: center;
   display: flex;
-  justify-content: space-between; /* Add space between Feed1 and Feed2 */
-  flex-wrap: wrap;
-  gap: 20px; /* Add gap between the feeds */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.feed1-container {
-  flex: 2; /* Feed1 takes more space */
-  max-width: 70%; /* Adjust width to fit alongside Feed2 */
-  box-sizing: border-box; /* Include padding and border in the width */
-}
-
-.feed2-container {
-  flex: 1; /* Feed2 takes less space */
-  max-width: 25%; /* Limit width for Feed2 */
-  min-width: 150px; /* Ensure a minimum width for smaller screens */
-  box-sizing: border-box; /* Include padding and border in the width */
-  max-height: 320px;
-}
-
-/* Responsive design for smaller screens */
-@media (max-width: 768px) {
-  .main-content {
-    flex-direction: column; /* Stack Feed1 and Feed2 vertically */
-  }
-
-  .feed1-container, .feed2-container {
-    max-width: 100%; /* Full width for both containers */
-  }
+  justify-content: center;
+  align-items: center;
 }

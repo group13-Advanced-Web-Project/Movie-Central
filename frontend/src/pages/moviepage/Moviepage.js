@@ -49,7 +49,7 @@ function Moviepage() {
     }
   
     return (
-      <div>
+      <div className="moviepage-main">
         <Navbar />
         
         <div className="moviepage-container">

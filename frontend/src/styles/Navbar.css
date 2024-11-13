@@ -1,5 +1,5 @@
 .header-container {
-  position: fixed; /* Fix the navbar at the top */
+  position: relative; /* Fix the navbar at the top */
   top: 0;
   left: 0;
   width: 100%; /* Full width of the screen */
