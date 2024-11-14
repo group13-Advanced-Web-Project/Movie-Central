@@ -87,14 +87,14 @@ app.get('/search-movies', async(req,res) => {
         }
 
         const formattedMovies = await Promise.all(movies.map(async (movie) => {
-            const showtimes = await getShowtimes(movie.title);
+            // const showtimes = await getShowtimes(movie.title);
             return {
                 id: movie.id,
                 title: movie.title,
                 overview: movie.overview,
                 poster_path: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : null,
                 release_date: movie.release_date,
-                showtimes: showtimes
+                // showtimes: showtimes
             }
         }))
         res.json(formattedMovies);
