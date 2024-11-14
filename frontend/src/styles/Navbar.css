@@ -2,7 +2,6 @@
   position: relative; /* Fix the navbar at the top */
   top: 0;
   left: 0;
-  width: 100%; /* Full width of the screen */
   display: flex;
   align-items: center;
   justify-content: space-between; /* Space between logo, search, and buttons */
