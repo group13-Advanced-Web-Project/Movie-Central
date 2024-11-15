@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "devStart": "nodemon index.js"
+    "devStart": "cross-env NODE_ENV=development nodemon index.js"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +19,10 @@
     "node-fetch": "^3.3.2",
     "express-openid-connect": "^2.17.1",
     "nodemon": "^3.1.7",
+    "pg": "^8.13.1"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
     "pg": "^8.13.1",
     "xml2js": "^0.6.2"
   }
