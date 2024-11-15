@@ -1,44 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import './styles/App.css';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/home/Home.js';
-import MoviePage from './pages/moviepage/MoviePage.js';
+import './styles/App.css';
+import Home from './pages/home/Home';
+import Showtimes from './pages/Showtimes/Showtimes';
+import Moviepage from './pages/moviepage/MoviePage'; 
+import useMovies from './pages/Showtimes/UseMovies'; 
 
 function App() {
-  const [movies, setMovies] = useState([]);
-
-  useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const response = await fetch('https://www.finnkino.fi/xml/Events/');
-        const text = await response.text();
-        const parser = new DOMParser();
-        const xml = parser.parseFromString(text, 'text/xml');
-        const events = Array.from(xml.getElementsByTagName('Event')).map((event) => ({
-          id: event.getElementsByTagName('ID')[0]?.textContent || 'No ID',
-          title: event.getElementsByTagName('Title')[0]?.textContent || 'No Title',
-          description: event.getElementsByTagName('ShortSynopsis')[0]?.textContent || 'No Description',
-          imageUrl: event.getElementsByTagName('EventLargeImagePortrait')[0]?.textContent || '',
-          genres: event.getElementsByTagName('Genres')[0]?.textContent || 'No Genres',
-          duration: event.getElementsByTagName('LengthInMinutes')[0]?.textContent || 'Unknown',
-          rating: event.getElementsByTagName('Rating')[0]?.textContent || 'No Rating',
-          cast: event.getElementsByTagName('Cast')[0]?.textContent || 'No Cast Information',
-        }));
-
-        setMovies(events);
-      } catch (error) {
-        console.error('Error fetching movie data:', error);
-      }
-    };
-
-    fetchMovies();
-  }, []);
+  const { movies, fetchMovies } = useMovies();
 
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home movies={movies} />} />
-        <Route path="/movie/:movieName" element={<MoviePage />} /> {/* Dynamic route */}
+        <Route path="/movie/:movieName" element={<Moviepage />} />
+        <Route path="/showtimes" element={<Showtimes movies={movies} fetchShowSchedule={fetchMovies} />} />
       </Routes>
     </Router>
   );
