@@ -111,15 +111,6 @@ app.get("/search-movies", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch movie data" });
   }
 });
-app.get("/users", async (req, res) => {
-  // Create endpoint route
-  try {
-    const result = await getAll();
-    res.json(result.rows);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch users" });
-  }
-});
 
 app.get("/check-db-connection", async (req, res) => {
   try {
