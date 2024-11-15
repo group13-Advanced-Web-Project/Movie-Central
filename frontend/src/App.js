@@ -5,6 +5,7 @@ import Home from './pages/home/Home';
 import Showtimes from './pages/Showtimes/Showtimes';
 import Moviepage from './pages/moviepage/MoviePage'; 
 import useMovies from './pages/Showtimes/UseMovies'; 
+import Profile from './pages/Profile';
 
 function App() {
   const { movies, fetchMovies } = useMovies();
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<Home movies={movies} />} />
         <Route path="/movie/:movieName" element={<Moviepage />} />
         <Route path="/showtimes" element={<Showtimes movies={movies} fetchShowSchedule={fetchMovies} />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>
   );

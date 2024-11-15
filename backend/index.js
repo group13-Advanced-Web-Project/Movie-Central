@@ -1,13 +1,10 @@
 import express from "express";
 import cors from "cors";
 import axios from "axios";
-
 import xml2js from "xml2js";
-
 import dotenv from "dotenv";
 import pkg from "express-openid-connect";
 const { auth, requiresAuth } = pkg;
-import authRouter from "./router/auth/authRouter.js";
 const enviroment = process.env.NODE_ENV;
 import userRouter from "./router/userRoute/userRouter.js";
 import { pool } from "./helpers/db.js";
@@ -22,7 +19,6 @@ const schedule_url = "https://www.finnkino.fi/xml/Schedule";
 
 const app = express();
 app.use(cors());
-app.use("/auth/", authRouter);
 app.use("/users/", userRouter);
 
 const getShowtimes = async (movieTitle) => {
