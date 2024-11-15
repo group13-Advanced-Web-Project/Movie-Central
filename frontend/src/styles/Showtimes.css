@@ -1,0 +1,97 @@
+.movie-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.movie-card {
+  background-color: white;
+  border: 2px solid red;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 16px;
+  text-align: center;
+}
+
+.theater-area-top {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.image-container {
+  margin-bottom: 15px;
+}
+
+.image-card {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.movie-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: red;
+  margin-top: 0;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.showtimes-list {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items:flex-start;
+}
+
+.showtime-item {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #000;
+  margin: 5px 0;
+}
+
+.time-slot {
+  display: block;
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #000;
+}
+
+.auditorium-info {
+  font-size: 1.1em;
+  color: #666;
+  font-weight: bold;
+}
+
+.presentation-method {
+  display: block;
+  font-size: 1em;
+  color: red;
+  font-weight: bold;
+  margin-top: -5px;
+}
+
+.no-movies-message {
+  font-size: 1.2em;
+  color: #888;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.image-placeholder {
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ddd;
+  color: #555;
+  font-size: 0.9em;
+  border-radius: 8px;
+}
