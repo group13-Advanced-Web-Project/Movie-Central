@@ -1,9 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Navbar.css';
 import useFetchedMovies from '../pages/useFetchedMovies';  
 
+
+
 function Navbar() {
+  const { loginWithRedirect } = useAuth0();
+  const { logout } = useAuth0();
+  const { isAuthenticated } = useAuth0();
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [years, setYears] = useState([]);
@@ -36,7 +42,8 @@ function Navbar() {
     }
   }, [movies, loading]);  // Recompute when movies are updated
 
-  const handleInputChange = (e) => {
+  const handleInputChange = async (e) => {
+    
     const value = e.target.value;
     setSearchTerm(value);
 
@@ -100,6 +107,9 @@ function Navbar() {
     };
   }, []);
 
+ 
+
+
   return (
     <div className="header-container">
       <div className="navbar-logo">
@@ -146,10 +156,26 @@ function Navbar() {
           ) : null}
         </ul>
       </div>
+     {!isAuthenticated ? (
       <div className="button-container">
-        <button className="button">Sign in</button>
-        <button className="button">Sign up</button>
+         <button onClick={() => navigate('/')}>Home</button>
+
+         <button onClick={() => navigate('/showtimes')}>Showtimes</button>
+        <button className="button"  onClick={() => loginWithRedirect()}>Log In</button>
+        <button className="button" onClick={() => loginWithRedirect()}>Sign up</button>
       </div>
+     ) : (
+      <div className="button-container">
+         <button onClick={() => navigate('/')}>Home</button>
+         <button onClick={() => navigate('/showtimes')}>Showtimes</button>
+        <button onClick={() => navigate('/profile')}>
+          Profile
+        </button>
+        <button onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
+          Log Out
+        </button>
+      </div>
+     )}
     </div>
   );
 }
