@@ -19,6 +19,7 @@ const schedule_url = "https://www.finnkino.fi/xml/Schedule";
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 app.use("/users/", userRouter);
 
 const getShowtimes = async (movieTitle) => {
