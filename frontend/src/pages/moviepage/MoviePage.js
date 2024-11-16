@@ -66,6 +66,7 @@ function MoviePage() {
             <div className="moviepage-info">
               <h1>{movie.title}</h1>
               <p><strong>Overview:</strong> {movie.overview}</p>
+              <p><strong>Genres:</strong> {movie.genres.join(", ")}</p>
               <p><strong>Release Date:</strong> {movie.release_date}</p>
             </div>
           </div>
