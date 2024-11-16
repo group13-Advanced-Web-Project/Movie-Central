@@ -1,65 +1,67 @@
-.moviepage-main {
+.home-container {
     display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
+    flex-direction: column; 
+    min-height: 100vh; 
+    
+  }
+
 
 body {
-    margin: 0;
+    margin-top: var(--header-height); 
+    margin-bottom: var(--footer-height); 
     padding: 0;
     display: flex;
-    flex-direction: column; /* Ensure the page content is arranged in columns */
-}
-
-.navbar-container {
-    height: var(--header-height); /* Make sure the navbar height is fixed */
-    background-color: #333; /* Example navbar background color */
-    position: fixed; /* Make navbar stay on top */
-    width: 100%; /* Ensure navbar spans across the entire width */
-    top: 0;
-    left: 0;
-    z-index: 1000; /* Ensure navbar stays above content */
+    flex-direction: column; 
 }
 
 .moviepage-container {
     padding: 20px;
-    margin-top: var(--header-height); /* Add gap from the navbar */
+    margin-top: var(--header-height);
     background-color: #ffffff;
-    min-height: calc(100vh - var(--header-height) - var(--footer-height)); /* Subtract header and footer heights from full viewport height */
+    min-height: calc(100vh - var(--header-height) - var(--footer-height));
     display: flex;
-    justify-content: space-between; /* Space between left and right side */
-    align-items: flex-start; /* Aligns content to the top */
+    width: 50%;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    flex: 1;
 }
 
-.moviepage-details,
-.moviepage-showtime {
-    background-color: var(--main-bg-color);
+.moviepage-loading-message,
+.moviepage-error-message {
+    text-align: center;
+    font-size: 18px;
+    color: #d9534f;
+    margin-top: 20px;
+    flex: 1; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.moviepage-details {
+    display: flex;
+    flex-direction: row; 
+    align-items: center; 
+    gap: 20px;
     padding: 20px;
+    background-color: #676a7f7a;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box; /* Ensure padding fits within the container */
-}
-
-.moviepage-details {
-    flex: 2; /* Allow movie details to take up more space */
-    max-width: 900px;
-    background-color: #8b8b8b33;
-    width: 100%;
-    margin-bottom: var(--section-gap); /* Add gap below the movie details */
-}
-
-.moviepage-showtime {
-    flex: 1; /* Allow movie showtime to take less space */
-    margin-left: 20px;
-    margin-bottom: var(--section-gap); /* Add gap below the movie showtime */
-    text-align: center;
-    background-color: #8b8b8b33;
 }
 
 .moviepage-poster {
     width: 300px;
     border-radius: 8px;
-    margin-bottom: 15px;
+    object-fit: cover;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.moviepage-info {
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    gap: 10px;
 }
 
 .moviepage-info h1 {
@@ -72,19 +74,20 @@ body {
     font-size: 16px;
     color: #666;
     line-height: 1.6;
-    margin-bottom: 10px;
+}
+
+.moviepage-showtime {
+    text-align: center;
+    background-color: #8b8b8b33;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .moviepage-showtime h2 {
     font-size: 1.5em;
     color: #333;
     margin-bottom: 15px;
-}
-
-.moviepage-showtime p {
-    font-size: 1em;
-    color: #666;
-    margin-top: 10px;
 }
 
 .moviepage-error-message,
@@ -94,39 +97,27 @@ body {
     color: #d9534f;
     margin-top: 20px;
 }
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: auto; 
+}
 
+/* Responsive layout adjustments */
 @media (max-width: 768px) {
-    .moviepage-container {
-        flex-direction: column; /* Stack the components vertically on smaller screens */
+    .moviepage-details {
+        flex-direction: column; 
         align-items: center;
     }
 
-    .moviepage-details {
-        max-width: 100%; /* Allow it to stretch for smaller screens */
-        margin-bottom: var(--section-gap); /* Ensure gap is added between stacked sections */
+    .moviepage-poster {
+        width: 100%; 
+        max-width: 300px;
     }
 
-    .moviepage-showtime {
-        margin-left: 0;
-        max-width: 100%; /* Make it take full width in smaller screens */
-        margin-bottom: var(--section-gap); /* Gap for smaller screens */
-    }
-
-    .moviepage-info h1 {
-        font-size: 20px;
-    }
-
-    .moviepage-info p {
-        font-size: 14px;
-    }
-}
-
-@media (max-width: 480px) {
-    .moviepage-info h1 {
-        font-size: 18px;
-    }
-
-    .moviepage-info p {
-        font-size: 12px;
+    .moviepage-info {
+        text-align: center;
     }
 }
