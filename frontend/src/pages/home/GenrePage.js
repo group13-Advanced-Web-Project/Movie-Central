@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import useFetchedMovies from '../useFetchedMovies';
+import { useMovies } from '../../context/MoviesContext';
 import '../../styles/GenrePage.css';
-
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 
 const GenrePage = () => {
   const { genre } = useParams();
-  const { movies, loading } = useFetchedMovies();
+  const { movies, loading } = useMovies();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(8);
 

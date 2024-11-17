@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
 import FeaturedMovie from '../../components/home/FeaturedMovie';
 import MovieCarousel from '../../components/home/MovieCarousel';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
-import useFetchedMovies from '../../pages/useFetchedMovies'; 
+import { useMovies } from '../../context/MoviesContext';
 import '../../styles/Home.css';
 
 function Home() {
-  const { movies, loading, error } = useFetchedMovies(); 
+  const { movies, loading, error } = useMovies(); 
 
   return (
     <div className="home-container">
