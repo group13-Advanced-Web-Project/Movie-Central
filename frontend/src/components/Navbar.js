@@ -158,15 +158,12 @@ function Navbar() {
       </div>
      {!isAuthenticated ? (
       <div className="button-container">
-         <button onClick={() => navigate('/')}>Home</button>
-
          <button onClick={() => navigate('/showtimes')}>Showtimes</button>
         <button className="button"  onClick={() => loginWithRedirect()}>Log In</button>
         <button className="button" onClick={() => loginWithRedirect()}>Sign up</button>
       </div>
      ) : (
       <div className="button-container">
-         <button onClick={() => navigate('/')}>Home</button>
          <button onClick={() => navigate('/showtimes')}>Showtimes</button>
         <button onClick={() => navigate('/profile')}>
           Profile
