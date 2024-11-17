@@ -6,7 +6,7 @@ const router = Router();
 
 router.get("/check-db-connection", async (req, res) => {
   try {
-    await pool.query("SELECT 1");
+    await pool.query("SELECT * FROM users");
     res.json({ message: "Database connection successful" });
   } catch (error) {
     res.status(500).json({ error: "Failed to connect to the database", details: error.message });
