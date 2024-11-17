@@ -45,7 +45,7 @@ function Navbar() {
         if (value.trim()) {
             const filteredSuggestions = movies
                 .filter((movie) => movie.title.toLowerCase().includes(value.toLowerCase()))
-                .slice(0, 4);
+                .slice(0, 6);
             setSuggestions(filteredSuggestions);
         } else {
             setSuggestions([]);

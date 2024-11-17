@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom'; // Import Link for navigation
 import '../../styles/FeaturedMovie.css';
 
 function FeaturedMovie({ movies }) {
   const [movie, setMovie] = useState(null);
 
   useEffect(() => {
-    // Ensure that the movies are not empty and only run once after movies are fetched
     if (movies && movies.length > 0 && !movie) {
       const randomMovie = movies[Math.floor(Math.random() * movies.length)];
       setMovie(randomMovie);
     }
-  }, [movies, movie]); // Add movie as a dependency to prevent reruns once it's set
+  }, [movies, movie]);
 
   return (
     <div className="feed1-container">
@@ -19,9 +19,17 @@ function FeaturedMovie({ movies }) {
       </div>
       {movie ? (
         <div className="movie-details">
-          <img src={movie.imageUrl} alt={movie.title} className="large-movie-image" />
+          <Link to={`/movie/${movie.title}`}>
+            <img
+              src={movie.imageUrl}
+              alt={movie.title}
+              className="large-movie-image"
+            />
+          </Link>
           <div className="movie-info">
-            <h2>{movie.title}</h2>
+            <Link to={`/movie/${movie.title}`} className="movie-title-link">
+              <h2>{movie.title}</h2>
+            </Link>
             <p><strong>Description:</strong> {movie.description || 'No Description Available'}</p>
             <p><strong>Genres:</strong> {movie.genres || 'No Genres Available'}</p>
             <p><strong>Duration:</strong> {movie.duration || 'Unknown'} minutes</p>
