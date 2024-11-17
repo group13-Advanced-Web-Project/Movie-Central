@@ -9,7 +9,7 @@ router.get("/check-db-connection", async (req, res) => {
     await pool.query("SELECT 1");
     res.json({ message: "Database connection successful" });
   } catch (error) {
-    res.status(500).json({ error: "Failed to connect to the database" });
+    res.status(500).json({ error: "Failed to connect to the database", details: error.message });
   }
 });
 
