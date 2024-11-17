@@ -5,7 +5,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 import Home from './pages/home/Home';
 import Showtimes from './pages/Showtimes/Showtimes';
-import Moviepage from './pages/moviepage/MoviePage'; 
+import MoviePage from './pages/moviepage/MoviePage'; 
+import GenrePage from './pages/home/GenrePage.js';  // Import GenrePage
+import YearPage from './pages/home/YearPage.js';  // Import YearPage
 import useMovies from './pages/Showtimes/UseMovies'; 
 import Profile from './pages/Profile';
 
@@ -14,7 +16,7 @@ function App() {
 
   const [accountRegistered, setAccountRegistered] = React.useState(false);
   const { movies, fetchMovies } = useMovies();
-
+  
   const handleCheckAccount = async () => {
     const userId = user.sub;
     console.log("Sending user ID to server:", userId);
@@ -74,9 +76,11 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home movies={movies} />} />
-        <Route path="/movie/:movieName" element={<Moviepage />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/movie/:movieName" element={<MoviePage />} />
         <Route path="/showtimes" element={<Showtimes movies={movies} fetchShowSchedule={fetchMovies} />} />
+        <Route path="/genre/:genre" element={<GenrePage />} />    {/* Add GenrePage route */}
+        <Route path="/year/:year" element={<YearPage />} />      {/* Add YearPage route */}
         <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>

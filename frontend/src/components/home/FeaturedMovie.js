@@ -27,6 +27,7 @@ function FeaturedMovie({ movies }) {
             <p><strong>Duration:</strong> {movie.duration || 'Unknown'} minutes</p>
             <p><strong>Rating:</strong> {movie.rating || 'No Rating Available'}</p>
             <p><strong>Cast:</strong> {movie.cast || 'No Cast Information'}</p>
+            <p><strong>Year:</strong> {movie.year || 'Unknown'}</p>
           </div>
         </div>
       ) : (
