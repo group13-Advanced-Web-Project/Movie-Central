@@ -1,4 +1,3 @@
-// src/pages/UseMovies.js
 import { useState, useEffect } from 'react';
 import { fetchShowSchedule } from './fetchShowSchedule'; 
 
