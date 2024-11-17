@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom'; 
-import useFetchedMovies from '../useFetchedMovies'; 
-import '../../styles/YearPage.css'; 
-
+import { useMovies } from '../../context/MoviesContext';
+import '../../styles/YearPage.css';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 
 const YearPage = () => {
   const { year } = useParams();
-  const { movies, loading } = useFetchedMovies();
+  const { movies, loading, error } = useMovies();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(8); 
 

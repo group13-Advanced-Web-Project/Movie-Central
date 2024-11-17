@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'; // Import Link for navigation
 import '../../styles/MovieCarousel.css';
 
 const MovieCarousel = ({ movies }) => {
@@ -26,8 +27,16 @@ const MovieCarousel = ({ movies }) => {
         <div className="carousel">
           {movies.slice(currentIndex, currentIndex + 3).map((movie, index) => (
             <div key={index} className="carousel-item">
-              <img src={movie.imageUrl} alt={movie.title} className="movie-image" />
-              <p className="movie-name">{movie.title}</p>
+              <Link to={`/movie/${movie.title}`}>
+                <img
+                  src={movie.imageUrl}
+                  alt={movie.title}
+                  className="movie-image"
+                />
+              </Link>
+              <Link to={`/movie/${movie.title}`} className="movie-name-link">
+                <p className="movie-name">{movie.title}</p>
+              </Link>
             </div>
           ))}
         </div>
