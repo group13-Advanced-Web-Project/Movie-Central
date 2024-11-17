@@ -3,6 +3,16 @@ import { pool } from "../../helpers/db.js";
 
 const router = Router();
 
+
+router.get("/check-db-connection", async (req, res) => {
+  try {
+    await pool.query("SELECT 1");
+    res.json({ message: "Database connection successful" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to connect to the database" });
+  }
+});
+
 router.get("/all", (req, res) => {
   try {
     pool.query("SELECT * FROM users", (error, result) => {
