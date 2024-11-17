@@ -11,6 +11,8 @@ import YearPage from './pages/home/YearPage.js';  // Import YearPage
 import useMovies from './pages/Showtimes/UseMovies'; 
 import Profile from './pages/Profile';
 
+const serverUrl = process.env.REACT_APP_API_URL
+
 function App() {
   const { user, isAuthenticated } = useAuth0(); 
 
@@ -21,7 +23,7 @@ function App() {
     const userId = user.sub;
     console.log("Sending user ID to server:", userId);
 
-    const response = await fetch("http://localhost:3001/users/check-account", {
+    const response = await fetch(serverUrl+"/users/check-account", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -45,7 +47,7 @@ function App() {
     const postData = { auth0_user_id: user.sub };
     console.log("Sending POST data:", postData);
 
-    const response = await fetch("http://localhost:3001/users/add", {
+    const response = await fetch(serverUrl+"/users/add", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

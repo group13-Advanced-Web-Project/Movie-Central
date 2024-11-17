@@ -7,6 +7,6 @@
 
 
 
-INSERT INTO users (auth0_user_id) VALUES ('auth0|1234567890abcdef');
-INSERT INTO users (auth0_user_id) VALUES ('auth0|abcdef1234567890');
-INSERT INTO users (auth0_user_id) VALUES ('auth0|12345678tdghyujcjf');
+INSERT INTO users (user_id) VALUES ('auth0|1234567890abcdef');
+INSERT INTO users (user_id) VALUES ('auth0|abcdef1234567890');
+INSERT INTO users (user_id) VALUES ('auth0|12345678tdghyujcjf');

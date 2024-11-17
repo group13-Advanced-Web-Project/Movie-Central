@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "devStart": "cross-env NODE_ENV=development nodemon index.js",
-    "start": "cross-env NODE_ENV=deployment node index.js"
+    "start": "cross-env NODE_ENV=remote node index.js"
   },
   "keywords": [],
   "author": "",

@@ -3,6 +3,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
+const serverUrl = process.env.REACT_APP_API_URL
+
+
 const Profile = () => {
   const { user, isAuthenticated, logout } = useAuth0();
 
@@ -12,7 +15,7 @@ const Profile = () => {
     const postData = { auth0_user_id: user.sub };
     console.log("Sending POST data:", postData);
 
-    const response = await fetch("http://localhost:3001/users/user-info", {
+    const response = await fetch(serverUrl+"/users/user-info", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -36,7 +39,7 @@ const Profile = () => {
     const postData = { auth0_user_id: user.sub };
     console.log("Sending POST data:", postData);
 
-    const response = await fetch("http://localhost:3001/users/remove-account", {
+    const response = await fetch(serverUrl+"/users/remove-account", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
