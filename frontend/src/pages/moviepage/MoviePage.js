@@ -5,7 +5,8 @@ import Footer from '../../components/Footer';
 import '../../styles/MoviePage.css';
 import { useMovies } from '../../context/MoviesContext'; 
 
-const serverUrl = process.env.REACT_APP_API_URL;
+// const serverUrl = process.env.REACT_APP_API_URL;
+const serverUrl = 'http://localhost:3001';
 
 function MoviePage() {
     const { movieName } = useParams();
@@ -65,7 +66,7 @@ function MoviePage() {
                                 <p><strong>Overview:</strong> {movie.overview}</p>
                                 <p><strong>Release Year:</strong> {movie.release_date ? movie.release_date.split('-')[0] : 'N/A'}</p>
                                 <p><strong>Duration:</strong> {movie.duration} minutes</p>
-                                <p><strong>Genres:</strong> {movie.genres?.join(', ') || 'N/A'}</p>
+                                <p><strong>Genres:</strong> {movie.genres || 'N/A'}</p>
                                 <p><strong>Rating:</strong> {movie.rating}</p>
                                 <p><strong>Cast:</strong> {movie.cast}</p>
                             </div>
