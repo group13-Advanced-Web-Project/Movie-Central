@@ -5,19 +5,40 @@ import Footer from '../../components/Footer';
 import '../../styles/MoviePage.css';
 import { useMovies } from '../../context/MoviesContext'; 
 
+// const serverUrl = process.env.REACT_APP_API_URL;
+const serverUrl = 'http://localhost:3001';
+
 function MoviePage() {
     const { movieName } = useParams();
-    const { movies, loading, error } = useMovies();
     const [movie, setMovie] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        if (movies.length > 0) {
-            const foundMovie = movies.find(movie =>
-                movie.title?.toLowerCase().trim() === movieName.toLowerCase().trim()
-            );
-            setMovie(foundMovie || null);
+      const fetchMovie = async () => {
+        setLoading(true);
+        try {
+          const response = await fetch(
+            `${serverUrl}/movies/search-movies?query=${encodeURIComponent(movieName)}`
+          );
+
+          if (!response.ok) {
+            throw new Error("Movie not found");
+          }
+          const data = await response.json();
+          if (data && data.length > 0) {
+            setMovie(data[0]);
+          } else {
+            setMovie(null);
+          }
+        } catch (error) {
+          setError(error.message);
+        } finally {
+          setLoading(false);
         }
-    }, [movies, movieName]);
+      };
+      fetchMovie();
+    }, [movieName, serverUrl]);
 
     return (
         <div className="home-container">
@@ -32,7 +53,7 @@ function MoviePage() {
                     <div className="moviepage-container">
                         <div className="moviepage-details">
                             <img
-                                src={movie.imageUrl || '/assets/sample_image.jpg'}
+                                src={movie.poster_path || '/assets/sample_image.jpg'}
                                 alt={movie.title || "Sample Movie"}
                                 className="moviepage-poster"
                                 onError={(e) => {
@@ -42,10 +63,10 @@ function MoviePage() {
                             />
                             <div className="moviepage-info">
                                 <h1>{movie.title}</h1>
-                                <p><strong>Overview:</strong> {movie.description}</p>
-                                <p><strong>Release Year:</strong> {movie.year}</p>
+                                <p><strong>Overview:</strong> {movie.overview}</p>
+                                <p><strong>Release Year:</strong> {movie.release_date ? movie.release_date.split('-')[0] : 'N/A'}</p>
                                 <p><strong>Duration:</strong> {movie.duration} minutes</p>
-                                <p><strong>Genres:</strong> {movie.genres}</p>
+                                <p><strong>Genres:</strong> {movie.genres || 'N/A'}</p>
                                 <p><strong>Rating:</strong> {movie.rating}</p>
                                 <p><strong>Cast:</strong> {movie.cast}</p>
                             </div>
