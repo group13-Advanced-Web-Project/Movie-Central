@@ -1,6 +1,6 @@
 .feed2-container {
     display: flex;
-    flex-direction: column; /* Stack label and carousel vertically */
+    flex-direction: column; 
     align-items: center;
     gap: 10px;
     margin-top: 0px;
@@ -23,24 +23,26 @@
 .feed-heading {
     font-size: 1.5em;
     color: #333;
-    margin: 0; /* Remove default margin for better spacing */
+    margin: 0; 
 }
 
 .carousel-wrapper {
-    position: relative; /* To position buttons relative to the carousel */
+    position: relative; 
     display: flex;
-    justify-content: center; /* Keep carousel items centered */
+    justify-content: center; 
     align-items: center;
     gap: 15px;
     width: 100%;
     height: 220px;
+    overflow: hidden; 
 }
 
 .carousel {
     display: flex;
     gap: 15px;
-    justify-content: center; /* Center carousel items */
-    width: 100%;
+    justify-content: center; 
+    animation: scroll-left 800s linear infinite; 
+    height: 100%; 
 }
 
 .carousel-item {
@@ -51,8 +53,8 @@
     border-radius: 8px;
     padding: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 140px; /* Fixed width to show two items */
-    height: 200px; /* Fixed height for each item to keep them consistent */
+    width: 140px;
+    height: 200px; 
     overflow: hidden;
 }
 
@@ -71,39 +73,23 @@
 }
 
 .movie-name-link {
-    text-decoration: none; /* Remove underline from the link */
-    color: #ffffff; /* Set link color */
-  }
-
-.carousel-btn {
-    background-color: #333;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    position: absolute; /* Position buttons absolutely */
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10; /* Ensure buttons appear above the carousel */
+    text-decoration: none; 
+    color: #ffffff; 
 }
 
 .carousel-btn:hover {
     background-color: #555;
 }
 
-.carousel-btn.prev {
-    left: 10px; /* Position left button */
-}
 
-.carousel-btn.next {
-    right: 10px; /* Position right button */
+/* Animation for smooth scrolling */
+@keyframes scroll-left {
+    0% {
+        transform: translateX(0); /* Start at the initial position */
+    }
+    100% {
+        transform: translateX(-100%); /* Move to the left until the last item is out */
+    }
 }
 
 @media (max-width: 480px) {
