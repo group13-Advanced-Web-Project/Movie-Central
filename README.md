@@ -1,6 +1,34 @@
 ## [!!  Figma Flowchart diagram - Link !!](https://www.figma.com/board/GEDwmSbW4mDdORlsn0Op3P/Untitled?node-id=25-457&t=9W4VubSLSSegfJfW-1)
 
 
+
+
+## Table of Contents
+
+- [Architecture Diagram](#architecture-diagram)
+- [Frontend Diagram](#frontend-diagram)
+- [Server Diagram](#server-diagram)
+- [Database Diagram](#database-diagram)
+
+
+
+## Architecture Diagram
+![Architecture Diagram](docs/diagrams/architecture.jpg)
+
+## Frontend Diagram
+
+![Frontend Diagram](docs/diagrams/frontend/frontend-flow.png)
+
+## Server Diagram
+
+![Server Diagram](docs/diagrams/server/server-flow.png)
+
+## Database Diagram
+
+![Database Diagram](docs/diagrams/database/database-structure.png)
+
+
+
 ![React](https://img.shields.io/badge/Frontend-React-61DAFB)
 ![HTML](https://img.shields.io/badge/Markup-HTML-E34F26)
 ![CSS](https://img.shields.io/badge/Styles-CSS-1572B6)
@@ -30,19 +58,18 @@ The **Full-Stack Movie Database** is a modern web application designed to allow 
 | Sanjaya   | Backend     |
 | Riku      | CI/CD       |
 
-## Table of Contents
-
 - [About](#about)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Architecture](#architecture)
 - [How It Works](#how-it-works)
 - [Installation and Setup](#installation-and-setup)
-- [Database Schema](#database-schema)
 - [API Endpoints](#api-endpoints)
 - [Screenshots](#screenshots)
 - [Links](#links)
 - [Deployment](#deployment)
+
+
 
 ## About
 
@@ -54,8 +81,6 @@ The **Full-Stack Movie Database** allows users to explore movies, view their sho
 - **Create and Share Favorite Lists**: Users can curate and share their favorite movies with a unique link.
 - **Join or Create Movie Groups**: Connect with friends by forming or joining customizable movie groups.
 - **Review Movies**: Share thoughts on movies they've watched with ratings and reviews.
-
- ![Frontend Wireframe](docs/diagrams/frontend/wireframe/0-wireframe_overview.png)
 
 This project integrates **React**, **Node.js**, **Express**, and **MySQL**, creating an interactive and scalable movie browsing experience.
 
@@ -95,8 +120,7 @@ This project integrates **React**, **Node.js**, **Express**, and **MySQL**, crea
 | **Backend**  | Deployed on **Heroku** (or your preferred hosting platform) for API and database services. |
 
 
-## Architecture
-![Architecture](docs/diagrams/architecture.jpg)
+
 
 ## How It Works
 
@@ -141,9 +165,7 @@ To run the project locally, follow these steps:
 
 The app should now be running locally at `http://localhost:3000`.
 
-## Database Schema
 
-![Database Schema](docs/diagrams/database/database-diagram.png)
 
 ## API Endpoints
 
@@ -161,4 +183,5 @@ The app should now be running locally at `http://localhost:3000`.
 
 ## Deployment
 - Frontend deployed using Netlify to insure fast, reliable, and continuous deployment: https://awamovieapp.netlify.app/
+-
 ![Build Settings](docs/assets/buildsettings.png)
