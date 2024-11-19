@@ -1,8 +1,9 @@
-// src/pages/FetchShowSchedule.js
 export const fetchShowSchedule = async (date, areaCode) => {
   try {
     const response = await fetch(`https://www.finnkino.fi/xml/Schedule/?area=${areaCode}&dt=${date}`);
     const text = await response.text();
+    console.log('Raw XML Response:', text); // Debugging
+
     const parser = new DOMParser();
     const xml = parser.parseFromString(text, 'text/xml');
 
@@ -15,10 +16,6 @@ export const fetchShowSchedule = async (date, areaCode) => {
       startTimeUTC: show.getElementsByTagName('dttmShowStartUTC')[0]?.textContent || 'No Start Time UTC',
       endTime: show.getElementsByTagName('dttmShowEnd')[0]?.textContent || 'No End Time',
       endTimeUTC: show.getElementsByTagName('dttmShowEndUTC')[0]?.textContent || 'No End Time UTC',
-      showSalesStartTime: show.getElementsByTagName('ShowSalesStartTime')[0]?.textContent || 'No Sales Start Time',
-      showSalesStartTimeUTC: show.getElementsByTagName('ShowSalesStartTimeUTC')[0]?.textContent || 'No Sales Start Time UTC',
-      showSalesEndTime: show.getElementsByTagName('ShowSalesEndTime')[0]?.textContent || 'No Sales End Time',
-      showSalesEndTimeUTC: show.getElementsByTagName('ShowSalesEndTimeUTC')[0]?.textContent || 'No Sales End Time UTC',
       theatre: show.getElementsByTagName('Theatre')[0]?.textContent || 'No Theatre',
       auditorium: show.getElementsByTagName('TheatreAuditorium')[0]?.textContent || 'No Auditorium',
       duration: show.getElementsByTagName('LengthInMinutes')[0]?.textContent || 'Unknown',
