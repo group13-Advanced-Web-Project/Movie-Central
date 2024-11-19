@@ -2,10 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Navbar.css';
-import { useMovies } from '../context/MoviesContext'; 
+import { useMovies } from '../context/MoviesContext';
 
 function Navbar() {
-    const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
+    const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
     const { movies, loading } = useMovies();
     const [searchTerm, setSearchTerm] = useState('');
     const [suggestions, setSuggestions] = useState([]);
@@ -133,6 +133,7 @@ function Navbar() {
                         </div>
                     )}
                 </div>
+                <button className="navbar-link" onClick={() => navigate('/showtimes')}>SHOWTIME</button>
             </div>
             <div className="search-container" ref={searchContainerRef}>
                 <input type="text" placeholder="Search Movie" value={searchTerm} onChange={handleInputChange} />
@@ -150,15 +151,17 @@ function Navbar() {
             </div>
             {!isAuthenticated ? (
                 <div className="button-container">
-                    <button onClick={() => navigate('/showtimes')}>Showtimes</button>
-                    <button className="button"  onClick={() => loginWithRedirect()}>Log In</button>
-                    <button className="button" onClick={() => loginWithRedirect()}>Sign Up</button>
+                    <button className="button" onClick={() => loginWithRedirect()}>Log In</button>
                 </div>
             ) : (
                 <div className="button-container">
-                    <button onClick={() => navigate('/showtimes')}>Showtimes</button>
-                    <button onClick={() => navigate('/profile')}>Profile</button>
-                    <button onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
+                    <img 
+                        src={user.picture} 
+                        alt="Profile" 
+                        onClick={() => navigate('/profile')} 
+                        style={{ width: '40px', borderRadius: '50%', cursor: 'pointer' }} 
+                    />
+                    <button className="button" onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
                         Log Out
                     </button>
                 </div>
