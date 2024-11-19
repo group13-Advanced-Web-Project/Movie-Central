@@ -44,12 +44,12 @@ const getFavoritesTable = async () => {
             <table className='tables-table'>
                 <thead>
                     <tr c>
-                        <th>ID</th>
-                        <th>User ID</th>
-                        <th>Fave_1</th>
-                        <th>Fave_2</th>
-                        <th>Fave_3</th>
-                        <th>Fave_4</th>
+                        <th>id</th>
+                        <th>user_id</th>
+                        <th>fave_1</th>
+                        <th>fave_2</th>
+                        <th>fave_3</th>
+                        <th>fave_4</th>
 
                     </tr>
                 </thead>

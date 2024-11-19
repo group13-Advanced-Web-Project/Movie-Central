@@ -44,10 +44,10 @@ const getMovieTable = async () => {
             <table className='tables-table'>
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Movie ID</th>
-                        <th>Review 1</th>
-                        <th>Review 2</th>
+                        <th>id</th>
+                        <th>movie_id</th>
+                        <th>review_1</th>
+                        <th>review_2</th>
                       
 
                     </tr>

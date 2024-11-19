@@ -42,13 +42,13 @@ const getReviewTable = async () => {
             <table className='tables-table'>
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Review ID</th>
-                        <th>Movie ID</th>
-                        <th>User ID</th>
-                        <th>Description</th>
-                        <th>Rating</th>
-                        <th>Timestamp</th>
+                        <th>id</th>
+                        <th>review_id</th>
+                        <th>movie_id</th>
+                        <th>user_id</th>
+                        <th>description</th>
+                        <th>rating</th>
+                        <th>timestamp</th>
               
                       
 

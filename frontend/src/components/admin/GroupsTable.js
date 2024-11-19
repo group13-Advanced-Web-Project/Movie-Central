@@ -43,12 +43,12 @@ const getGroupsTable = async () => {
             <table className='tables-table'>
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Groups ID</th>
-                        <th>Member 1</th>
-                        <th>Member 2</th>
-                        <th>Member 3</th>
-                        <th>Member 4</th>
+                        <th>id</th>
+                        <th>group_id</th>
+                        <th>member_1</th>
+                        <th>member_2</th>
+                        <th>member_3</th>
+                        <th>member_4</th>
 
 
                       
