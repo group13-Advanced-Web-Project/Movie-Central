@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'; 
 import '../../styles/MovieCarousel.css';
 
+// const serverUrl = process.env.REACT_APP_API_URL;
+const serverUrl = 'http://localhost:3001';
+
 // Fisher-Yates shuffle function
 const shuffleMovies = (movies) => {
   const shuffled = [...movies]; 
@@ -15,12 +18,28 @@ const shuffleMovies = (movies) => {
 const MovieCarousel = ({ movies }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [shuffledMovies, setShuffledMovies] = useState([]); 
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   
   useEffect(() => {
-    const shuffled = shuffleMovies(movies);
-    setShuffledMovies(shuffled); 
-  }, [movies]);
+    const fetchMovies = async () => {
+      try {
+        const response = await fetch(`${serverUrl}/movies/trending-movies`);
+        if (!response.ok) {
+          throw new Error("Movies not found");
+        }
+        const movies = await response.json();
+        const shuffled = shuffleMovies(movies);
+        setShuffledMovies(shuffled); 
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchMovies();
+  }, []);
 
  
   const loopedMovies = [...shuffledMovies, ...shuffledMovies]; 
@@ -47,7 +66,7 @@ const MovieCarousel = ({ movies }) => {
             <div key={index} className="carousel-item">
               <Link to={`/movie/${movie.title}`}>
                 <img
-                  src={movie.imageUrl}
+                  src={movie.poster_path || '/assets/sample_image.jpg'}
                   alt={movie.title}
                   className="movie-image"
                 />
