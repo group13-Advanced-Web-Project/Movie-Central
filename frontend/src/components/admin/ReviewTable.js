@@ -1,14 +1,37 @@
 
 import React, {useState} from 'react';
+import { useEffect } from 'react';
+
+const serverUrl = process.env.REACT_APP_API_URL
+
 
 function ReviewTable (){
 
-const [testReviewData, setTestReviewData] = useState([
+const [reviewData, setReviewData] = useState([]);
 
+const getReviewTable = async () => {
+ 
+   
 
-    {id: 1, Review_id: "54456", movie_id: "1", user_id: "5", description: "Great movie", rating: "5", timestamp: "2021-10-10 10:00:00" },
+    const response = await fetch(serverUrl+"/admin/review", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("auth0:id_token")}`,
+      },
+     
+    });
+    setReviewData(await response.json());
 
-]);
+    // console.log(response);
+    // console.log(reviewData);
+  };
+
+  useEffect(() => {
+  
+      getReviewTable();
+    
+  }, []);
 
     return(
         <>
@@ -16,7 +39,7 @@ const [testReviewData, setTestReviewData] = useState([
             <h2>Review Table</h2>
         </div>
         <div>
-            <table>
+            <table className='tables-table'>
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -32,10 +55,10 @@ const [testReviewData, setTestReviewData] = useState([
                     </tr>
                 </thead>
                 <tbody>
-                    {testReviewData.map((user, index) => (
+                    {reviewData.map((user, index) => (
                         <tr key={index}>
                             <td>{user.id}</td>
-                            <td>{user.Review_id}</td>
+                            <td>{user.review_id}</td>
                             <td>{user.movie_id}</td>
                             <td>{user.user_id}</td>
                             <td>{user.description}</td>

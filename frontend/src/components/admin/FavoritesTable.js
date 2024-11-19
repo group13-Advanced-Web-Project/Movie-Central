@@ -1,14 +1,39 @@
 
 import React, {useState} from 'react';
+import { useEffect } from 'react';
+
+
+const serverUrl = process.env.REACT_APP_API_URL
+
 
 function FavoritesTable (){
 
-const [testFavoritesData, setTestFavoritesData] = useState([
+const [favoritesData, setFavoritesData] = useState([]);
 
 
-    {id:"1",user_id: 1, fave_1: "54456", fave_2: "12345", fave_3: "67890", fave_4: "617590", },
+const getFavoritesTable = async () => {
+ 
+   
 
-]);
+    const response = await fetch(serverUrl+"/admin/favorites", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("auth0:id_token")}`,
+      },
+     
+    });
+    setFavoritesData(await response.json());
+
+    // console.log(response);
+    // console.log(favoritesData);
+  };
+
+  useEffect(() => {
+  
+      getFavoritesTable();
+    
+  }, []);
 
     return(
         <>
@@ -16,9 +41,9 @@ const [testFavoritesData, setTestFavoritesData] = useState([
             <h2>Favorites Table</h2>
         </div>
         <div>
-            <table>
+            <table className='tables-table'>
                 <thead>
-                    <tr>
+                    <tr c>
                         <th>ID</th>
                         <th>User ID</th>
                         <th>Fave_1</th>
@@ -28,10 +53,10 @@ const [testFavoritesData, setTestFavoritesData] = useState([
 
                     </tr>
                 </thead>
-                <tbody>
-                    {testFavoritesData.map((user, index) => (
-                        <tr key={index}>
-                            <td>{user.id}</td>
+                <tbody >
+                    {favoritesData.map((user, index) => (
+                        <tr  key={index}>
+                            <td >{user.id}</td>
                             <td>{user.user_id}</td>
                             <td>{user.fave_1}</td>
                             <td>{user.fave_2}</td>

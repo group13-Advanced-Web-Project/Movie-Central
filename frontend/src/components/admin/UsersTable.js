@@ -1,18 +1,42 @@
 
 import React, {useState} from 'react';
+import { useEffect } from 'react';
+
+
+const serverUrl = process.env.REACT_APP_API_URL
+
 
 function UsersTable (){
 
-const [testUserData, setTestUserData] = useState([
+const [userData, setUserData] = useState([
 
-    {user_id: 1, role: "admin"},
-    {user_id: 2, role: "user"},
-    {user_id: 3, role: "user"},
-    {user_id: 4, role: "user"},
-    {user_id: 5, role: "user"},
-    {user_id: 6, role: "user"},
+
 
 ]);
+
+const getUsersTable = async () => {
+ 
+   
+
+    const response = await fetch(serverUrl+"/admin/users", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("auth0:id_token")}`,
+      },
+     
+    });
+    setUserData(await response.json());
+
+    // console.log(response);
+    // console.log(userData);
+  };
+
+  useEffect(() => {
+  
+      getUsersTable();
+    
+  }, []);
 
     return(
         <>
@@ -20,7 +44,7 @@ const [testUserData, setTestUserData] = useState([
             <h2>User Table</h2>
         </div>
         <div>
-            <table>
+            <table className='tables-table'>
                 <thead>
                     <tr>
                         <th>User ID</th>
@@ -28,7 +52,7 @@ const [testUserData, setTestUserData] = useState([
                     </tr>
                 </thead>
                 <tbody>
-                    {testUserData.map((user, index) => (
+                    {userData.map((user, index) => (
                         <tr key={index}>
                             <td>{user.user_id}</td>
                             <td>{user.role}</td>

@@ -1,14 +1,38 @@
 
 import React, {useState} from 'react';
+import { useEffect } from 'react';
+
+const serverUrl = process.env.REACT_APP_API_URL
+
 
 function GroupsTable (){
 
-const [testGroupsData, setTestGroupsData] = useState([
+const [groupsData, setGroupsData] = useState([]);
 
 
-    {id: 1, Groups_id: "54456", member_1: "1", member_2:"2", member_3:"3", member_4:"4"  },
+const getGroupsTable = async () => {
+ 
+   
 
-]);
+    const response = await fetch(serverUrl+"/admin/Groups", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("auth0:id_token")}`,
+      },
+     
+    });
+    setGroupsData(await response.json());
+
+    // console.log(response);
+    // console.log(groupsData);
+  };
+
+  useEffect(() => {
+  
+      getGroupsTable();
+    
+  }, []);
 
     return(
         <>
@@ -16,7 +40,7 @@ const [testGroupsData, setTestGroupsData] = useState([
             <h2>Groups Table</h2>
         </div>
         <div>
-            <table>
+            <table className='tables-table'>
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -32,10 +56,10 @@ const [testGroupsData, setTestGroupsData] = useState([
                     </tr>
                 </thead>
                 <tbody>
-                    {testGroupsData.map((user, index) => (
+                    {groupsData.map((user, index) => (
                         <tr key={index}>
                             <td>{user.id}</td>
-                            <td>{user.Groups_id}</td>
+                            <td>{user.group_id}</td>
                             <td>{user.member_1}</td>
                             <td>{user.member_2}</td>
                             <td>{user.member_3}</td>

@@ -1,14 +1,39 @@
 
 import React, {useState} from 'react';
+import { useEffect } from 'react';
+
+
+const serverUrl = process.env.REACT_APP_API_URL
+
 
 function MovieTable (){
 
-const [testMovieData, setTestMovieData] = useState([
+const [movieData, setMovieData] = useState([]);
 
 
-    {id: 1, movie_id: "54456", review_1: "1", review_2: "5" },
+const getMovieTable = async () => {
+ 
+   
 
-]);
+    const response = await fetch(serverUrl+"/admin/movie", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("auth0:id_token")}`,
+      },
+     
+    });
+    setMovieData(await response.json());
+
+    // console.log(response);
+    // console.log(movieData);
+  };
+
+  useEffect(() => {
+  
+      getMovieTable();
+    
+  }, []);
 
     return(
         <>
@@ -16,7 +41,7 @@ const [testMovieData, setTestMovieData] = useState([
             <h2>Movie Table</h2>
         </div>
         <div>
-            <table>
+            <table className='tables-table'>
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -28,7 +53,7 @@ const [testMovieData, setTestMovieData] = useState([
                     </tr>
                 </thead>
                 <tbody>
-                    {testMovieData.map((user, index) => (
+                    {movieData.map((user, index) => (
                         <tr key={index}>
                             <td>{user.id}</td>
                             <td>{user.movie_id}</td>

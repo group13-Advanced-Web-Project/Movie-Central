@@ -41,6 +41,66 @@ router.post("/authenticate", async (req, res) => {
     }
 });
 
+router.get("/users", async (req, res) => {
+    try {
+        pool.query("SELECT * FROM users", (error, results) => {
+            if (error) {
+                return res.status(500).json({ error: "Database query failed", details: error.message });
+            }
+            res.status(200).json(results.rows);
+        });
+    } catch (error) {
+        return res.status(500).json({ error: "Server error", details: error.message });
+    }
+});
+router.get("/favorites", async (req, res) => {
+    try {
+        pool.query("SELECT * FROM favorites", (error, results) => {
+            if (error) {
+                return res.status(500).json({ error: "Database query failed", details: error.message });
+            }
+            res.status(200).json(results.rows);
+        });
+    } catch (error) {
+        return res.status(500).json({ error: "Server error", details: error.message });
+    }
+});
+router.get("/movie", async (req, res) => {
+    try {
+        pool.query("SELECT * FROM movie", (error, results) => {
+            if (error) {
+                return res.status(500).json({ error: "Database query failed", details: error.message });
+            }
+            res.status(200).json(results.rows);
+        });
+    } catch (error) {
+        return res.status(500).json({ error: "Server error", details: error.message });
+    }
+});
+router.get("/review", async (req, res) => {
+    try {
+        pool.query("SELECT * FROM review", (error, results) => {
+            if (error) {
+                return res.status(500).json({ error: "Database query failed", details: error.message });
+            }
+            res.status(200).json(results.rows);
+        });
+    } catch (error) {
+        return res.status(500).json({ error: "Server error", details: error.message });
+    }
+});
+router.get("/groups", async (req, res) => {
+    try {
+        pool.query("SELECT * FROM groups", (error, results) => {
+            if (error) {
+                return res.status(500).json({ error: "Database query failed", details: error.message });
+            }
+            res.status(200).json(results.rows);
+        });
+    } catch (error) {
+        return res.status(500).json({ error: "Server error", details: error.message });
+    }
+});
 
 export default router;
 
