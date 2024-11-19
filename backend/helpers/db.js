@@ -12,7 +12,7 @@ const openDb = () => {
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT,
     ssl: {
-      rejectUnauthorized: false, // Enable SSL with self-signed certificates
+      rejectUnauthorized: false, // Enable SSL with self-signed certificates, 
     },
   });
   return pool;

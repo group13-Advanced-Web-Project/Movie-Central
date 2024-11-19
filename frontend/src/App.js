@@ -10,6 +10,7 @@ import GenrePage from './pages/home/GenrePage.js';  // Import GenrePage
 import YearPage from './pages/home/YearPage.js';  // Import YearPage
 import useMovies from './pages/Showtimes/UseMovies'; 
 import Profile from './pages/Profile';
+import AdminPage from './pages/admin/AdminPage.js';
 
 const serverUrl = process.env.REACT_APP_API_URL
 
@@ -84,6 +85,7 @@ function App() {
         <Route path="/genre/:genre" element={<GenrePage />} />    {/* Add GenrePage route */}
         <Route path="/year/:year" element={<YearPage />} />      {/* Add YearPage route */}
         <Route path="/profile" element={<Profile />} />
+        <Route path="/admin" element={<AdminPage />} />
       </Routes>
     </Router>
   );

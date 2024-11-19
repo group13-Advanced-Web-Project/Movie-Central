@@ -2,12 +2,14 @@ import React, { useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { useNavigate } from 'react-router-dom';
 
 const serverUrl = process.env.REACT_APP_API_URL
 
 
 const Profile = () => {
   const { user, isAuthenticated, logout } = useAuth0();
+  const navigate = useNavigate();
 
   const [userDatabaseInfo, setUserDatabaseInfo] = React.useState([]);
 
@@ -109,7 +111,16 @@ const Profile = () => {
             <p>No database information available</p>
           )}
 
+          <div>
           <button onClick={handleRemoveAccountClick}>Remove account</button>
+
+          </div>
+          <div>
+          <button onClick={() => navigate('/admin')}>Admin Dash</button>
+
+          </div>
+
+
 
           <Footer />
         </div>

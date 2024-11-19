@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import userRouter from "./router/userRoute/userRouter.js";
+import adminRouter from "./router/adminRouter/adminRouter.js";
 import movieRouter from "./router/movieRoute/movieRouter.js";
 import { pool } from "./helpers/db.js";
 
@@ -16,6 +17,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/users/", userRouter);
+app.use("/admin/", adminRouter);
 app.use("/movies/", movieRouter);
 
 app.get("/", (req, res) => {

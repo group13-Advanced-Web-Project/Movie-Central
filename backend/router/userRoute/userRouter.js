@@ -55,21 +55,24 @@ router.post("/check-account", (req, res) => {
   }
 });
 
-
 router.post("/add", (req, res) => {
   try {
     const { auth0_user_id } = req.body;
     pool.query(
-      "INSERT INTO users (user_id) VALUES ($1) RETURNING *",
+      "INSERT INTO users (user_id, role) VALUES ($1, 'user') RETURNING *",
       [auth0_user_id],
       (error, result) => {
-        if (error) return (error); // Pass any query errors to the error handler
+        if (error) {
+          console.error("Query error:", error); // Log query error
+          return res.status(500).json({ error: error.message }); // Pass any query errors to the error handler
+        }
 
         return res.status(200).json(result.rows); // Return all rows as JSON
       }
     );
   } catch (error) {
-    return (error); // Pass any other errors to the error handler
+    console.error("Catch error:", error); // Log catch error
+    return res.status(500).json({ error: error.message }); // Pass any other errors to the error handler
   }
 });
 
