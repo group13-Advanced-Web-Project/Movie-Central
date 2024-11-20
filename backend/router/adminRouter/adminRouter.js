@@ -41,6 +41,41 @@ router.post("/authenticate", async (req, res) => {
     }
 });
 
+
+router.post("/query", async (req, res) => {
+    try {
+        const { query, params } = req.body;
+
+        console.log("Admin Query Execution:");
+        console.log("Query:", query);
+        console.log("Params:", params);
+
+        pool.query(query, params || [], (error, results) => {
+            if (error) {
+                console.error("Database query failed:", error.message);
+                return res.status(500).json({
+                    error: "Database query failed",
+                    details: error.message,
+                });
+            }
+
+            // Send results back to the frontend
+            res.status(200).json({
+                success: true,
+                data: results.rows,
+            });
+        });
+    } catch (error) {
+        console.error("Server error:", error.message);
+        return res.status(500).json({
+            success: false,
+            error: "Server error",
+            details: error.message,
+        });
+    }
+});
+
+
 router.get("/users", async (req, res) => {
     try {
         pool.query("SELECT * FROM users", (error, results) => {

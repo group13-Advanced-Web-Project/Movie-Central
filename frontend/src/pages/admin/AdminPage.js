@@ -9,7 +9,8 @@ import MovieTable from "../../components/admin/MovieTable";
 import ReviewTable from "../../components/admin/ReviewTable";
 import GroupsTable from "../../components/admin/GroupsTable";
 
-import '../../components/admin/styles/Tables.css'
+import "../../components/admin/styles/Tables.css";
+import QueryBox from "../../components/admin/QueryBox";
 
 const serverUrl = process.env.REACT_APP_API_URL;
 
@@ -62,7 +63,7 @@ function AdminPage() {
       </div>
 
       {adminAuthenticated ? (
-        <div style={{marginLeft:"auto", marginRight:"auto"}}>
+        <div style={{ marginLeft: "auto", marginRight: "auto" }}>
           <div className="tables-container-div">
             <UsersTable />
           </div>
@@ -79,6 +80,9 @@ function AdminPage() {
           </div>
           <div className="tables-container-div">
             <GroupsTable />
+          </div>
+          <div>
+            <QueryBox />
           </div>
         </div>
       ) : (
