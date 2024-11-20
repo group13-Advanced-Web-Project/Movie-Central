@@ -3,6 +3,11 @@ import axios from "axios";
 import dotenv from "dotenv";
 import { Router } from "express";
 import { pool } from "../../helpers/db.js";
+import EventEmitter from "events";
+import pLimit from "p-limit";
+
+EventEmitter.defaultMaxListeners = 20;
+const limit = pLimit(50);
 
 dotenv.config();
 
@@ -11,8 +16,79 @@ const tmdb_api_key = process.env.TMDB_API_KEY;
 
 router.get("/", (req, res) => {
     res.json({ message: "Hello from Movie Router!" });
-  });
-  
+});
+
+
+router.get("/fetch-movies", async (req, res) => {
+    const allMovies = [];
+    let currentPage = 1;
+    const maxPages = 5;
+    let hasError = false;
+
+    try {
+        while (currentPage <= maxPages) {
+            const response = await limit(() =>
+                axios.get(
+                    `https://api.themoviedb.org/3/movie/popular?page=${currentPage}`,
+                    { headers: { Authorization: `Bearer ${tmdb_api_key}` } }
+                )
+            );
+
+            const movies = response.data.results;
+            allMovies.push(...movies);
+            currentPage++;
+        }
+
+        const movies = await Promise.all(
+            allMovies.map(async (movie) => {
+                try {
+                    const [detailsResponse, castResponse] = await Promise.all([
+                        axios.get(`https://api.themoviedb.org/3/movie/${movie.id}`, {
+                            headers: { Authorization: `Bearer ${tmdb_api_key}` },
+                        }),
+                        axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/credits`, {
+                            headers: { Authorization: `Bearer ${tmdb_api_key}` },
+                        })
+                    ]);
+
+                    const genres = detailsResponse.data.genres.map((genre) => genre.name).join(", ");
+                    const duration = detailsResponse.data.runtime || "Unknown";
+                    const cast = castResponse.data.cast.slice(0, 10).map((actor) => actor.name).join(", ");
+
+                    return {
+                        id: movie.id,
+                        title: movie.title,
+                        overview: movie.overview,
+                        poster_path: movie.poster_path
+                            ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                            : null,
+                        release_date: movie.release_date || "Unknown",
+                        genres: genres || "Unknown",
+                        rating: movie.vote_average || "N/A",
+                        duration: duration,
+                        cast: cast || "Unknown",
+                        year: movie.release_date ? movie.release_date.split("-")[0] : "Unknown",
+                    };
+                } catch (error) {
+                    hasError = true;
+                    console.error("Error fetching movie details:", error.message);
+                    return null;
+                }
+            })
+        );
+
+        if (hasError) {
+            return res.status(500).json({ error: "Failed to fetch movies" });
+        }
+
+        const filteredMovies = movies.filter((movie) => movie !== null);
+        res.json(filteredMovies);
+    } catch (error) {
+        console.error("Error fetching movies:", error.message);
+        res.status(500).json({ error: error.message || "Failed to fetch movies" });
+    }
+});
+
 router.get("/search-movies", async (req, res) => {
     const { query } = req.query;
   
@@ -36,9 +112,11 @@ router.get("/search-movies", async (req, res) => {
       if (!movies || movies.length === 0) {
         return res.status(404).json({ error: "Movie not found" });
       }
+
+      const limitedMovies = movies.slice(0, 10);
   
       const formattedMovies = await Promise.all(
-        movies.map(async (movie) => {
+        limitedMovies.map(async (movie) => {
 
           const detailsResponse = await axios.get(`https://api.themoviedb.org/3/movie/${movie.id}?api_key=${tmdb_api_key}`,
           {

@@ -86,7 +86,7 @@ const YearPage = () => {
                   <div className="year-page__movie-tile" key={movie.id}>
                     <Link to={`/movie/${movie.title}`}>
                       <img
-                        src={movie.imageUrl}
+                        src={movie.poster_path || '/assets/sample_image.jpg'}
                         alt={movie.title}
                         className="year-page__movie-poster"
                       />
