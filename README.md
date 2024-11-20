@@ -9,6 +9,7 @@
 - [Frontend Diagram](#frontend-diagram)
 - [Server Diagram](#server-diagram)
 - [Database Diagram](#database-diagram)
+- [Account Delete Diagram](#account-delete)
 
 
 
@@ -26,6 +27,10 @@
 ## Database Diagram
 
 ![Database Diagram](docs/diagrams/database/database-structure.png)
+
+## Account Delete Diagram
+
+![Account Delete Diagram](docs/diagrams/database/account-delete-diagram.png)
 
 
 
