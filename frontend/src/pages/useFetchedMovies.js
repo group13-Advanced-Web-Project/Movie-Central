@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 
-// const serverUrl = process.env.REACT_APP_API_URL;
-const serverUrl = 'http://localhost:3001';
+const serverUrl = process.env.REACT_APP_API_URL;
+// const serverUrl = 'http://localhost:3001';
 
 const useFetchedMovies = () => {
   const [movies, setMovies] = useState([]);
