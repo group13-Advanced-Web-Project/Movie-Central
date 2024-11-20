@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'; 
 import '../../styles/MovieCarousel.css';
 
-// const serverUrl = process.env.REACT_APP_API_URL;
-const serverUrl = 'http://localhost:3001';
+const serverUrl = process.env.REACT_APP_API_URL;
+// const serverUrl = 'http://localhost:3001';
 
 // Fisher-Yates shuffle function
 const shuffleMovies = (movies) => {

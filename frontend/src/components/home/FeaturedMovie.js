@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'; // Import Link for navigation
 import '../../styles/FeaturedMovie.css';
 
-// const serverUrl = process.env.REACT_APP_API_URL;
-const serverUrl = 'http://localhost:3001';
+const serverUrl = process.env.REACT_APP_API_URL;
+// const serverUrl = 'http://localhost:3001';
 
 function FeaturedMovie({ movies }) {
   const [movie, setMovie] = useState(null);
