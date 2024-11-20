@@ -22,14 +22,14 @@ router.get("/", (req, res) => {
 router.get("/fetch-movies", async (req, res) => {
     const allMovies = [];
     let currentPage = 1;
-    const maxPages = 5;
+    const maxPages = 50;
     let hasError = false;
 
     try {
         while (currentPage <= maxPages) {
             const response = await limit(() =>
                 axios.get(
-                    `https://api.themoviedb.org/3/movie/popular?page=${currentPage}`,
+                    `https://api.themoviedb.org/3/movie/now_playing?page=${currentPage}&region=FI`,
                     { headers: { Authorization: `Bearer ${tmdb_api_key}` } }
                 )
             );
@@ -89,72 +89,72 @@ router.get("/fetch-movies", async (req, res) => {
     }
 });
 
-router.get("/search-movies", async (req, res) => {
-    const { query } = req.query;
+// router.get("/search-movies", async (req, res) => {
+//     const { query } = req.query;
   
-    if (!query) {
-      return res.status(400).json({ error: "Query is required" });
-    }
+//     if (!query) {
+//       return res.status(400).json({ error: "Query is required" });
+//     }
   
-    try {
-      const url = `https://api.themoviedb.org/3/search/movie?api_key=${tmdb_api_key}&query=${encodeURIComponent(
-        query
-      )}`;
+//     try {
+//       const url = `https://api.themoviedb.org/3/search/movie?api_key=${tmdb_api_key}&query=${encodeURIComponent(
+//         query
+//       )}`;
   
-      const response = await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${tmdb_api_key}`,
-        },
-      });
+//       const response = await axios.get(url, {
+//         headers: {
+//           Authorization: `Bearer ${tmdb_api_key}`,
+//         },
+//       });
   
-      const movies = response.data.results || [];
+//       const movies = response.data.results || [];
   
-      if (!movies || movies.length === 0) {
-        return res.status(404).json({ error: "Movie not found" });
-      }
+//       if (!movies || movies.length === 0) {
+//         return res.status(404).json({ error: "Movie not found" });
+//       }
 
-      const limitedMovies = movies.slice(0, 10);
+//       const limitedMovies = movies.slice(0, 10);
   
-      const formattedMovies = await Promise.all(
-        limitedMovies.map(async (movie) => {
+//       const formattedMovies = await Promise.all(
+//         limitedMovies.map(async (movie) => {
 
-          const detailsResponse = await axios.get(`https://api.themoviedb.org/3/movie/${movie.id}?api_key=${tmdb_api_key}`,
-          {
-            headers: {
-              Authorization: `Bearer ${tmdb_api_key}`
-            }
-          });
+//           const detailsResponse = await axios.get(`https://api.themoviedb.org/3/movie/${movie.id}?api_key=${tmdb_api_key}`,
+//           {
+//             headers: {
+//               Authorization: `Bearer ${tmdb_api_key}`
+//             }
+//           });
 
-          const castResponse = await axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${tmdb_api_key}`,
-            {
-                headers: {
-                Authorization: `Bearer ${tmdb_api_key}`
-                }
-            });
+//           const castResponse = await axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${tmdb_api_key}`,
+//             {
+//                 headers: {
+//                 Authorization: `Bearer ${tmdb_api_key}`
+//                 }
+//             });
 
-            const cast = castResponse.data.cast.slice(0,10).map((actor) => actor.name).join(", ");
-            const genres = detailsResponse.data.genres.map((genre) => genre.name).join(", ");
+//             const cast = castResponse.data.cast.slice(0,10).map((actor) => actor.name).join(", ");
+//             const genres = detailsResponse.data.genres.map((genre) => genre.name).join(", ");
   
-          return {
-            id: movie.id,
-            title: movie.title,
-            overview: movie.overview,
-            poster_path: movie.poster_path
-              ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-              : null,
-            release_date: movie.release_date,
-            genres: genres.length ? genres : "Unknown",
-            rating: detailsResponse.data.vote_average,
-            duration: detailsResponse.data.runtime,
-            cast: cast
-          };
-        })
-      );
-      res.json(formattedMovies);
-    } catch (error) {
-      res.status(500).json({ error: "Failed to fetch movie data" });
-    }
-});
+//           return {
+//             id: movie.id,
+//             title: movie.title,
+//             overview: movie.overview,
+//             poster_path: movie.poster_path
+//               ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+//               : null,
+//             release_date: movie.release_date,
+//             genres: genres.length ? genres : "Unknown",
+//             rating: detailsResponse.data.vote_average,
+//             duration: detailsResponse.data.runtime,
+//             cast: cast
+//           };
+//         })
+//       );
+//       res.json(formattedMovies);
+//     } catch (error) {
+//       res.status(500).json({ error: "Failed to fetch movie data" });
+//     }
+// });
 
 router.get("/movies-by-genre", async (req, res) => {
     const { genre } = req.query;
