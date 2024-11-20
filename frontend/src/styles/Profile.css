@@ -1,0 +1,126 @@
+/* Profile Page Layout */
+.profile-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    min-height: 100vh;
+  }
+  
+  /* Left Section: User Details */
+  .profile-details {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+  
+  .profile-picture {
+    width: 120px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+  }
+  
+  .user-name {
+    color: #333;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .remove-btn,
+  .admin-btn {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  /* Center Section: Favorites */
+  .profile-favorites {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+  
+  .movie-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .movie-card {
+    width: 120px;
+    text-align: center;
+  }
+  
+  .movie-poster {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+  
+  .movie-title {
+    font-size: 12px;
+    margin-top: 5px;
+  }
+  
+  /* Right Section: Watched and Watchlist */
+  .profile-watchlist {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .watched-section,
+  .watchlist-section {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+  
+  /* Section Titles */
+  .section-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .shareable-btn {
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .shareable-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .shareable-link {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .shareable-link a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .shareable-link a:hover {
+    text-decoration: underline;
+  }
+  
+  

@@ -3,9 +3,8 @@ import { useParams } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import '../../styles/MoviePage.css';
-import { useMovies } from '../../context/MoviesContext'; 
+import { FaHeart } from 'react-icons/fa'; // Import the heart icon
 
-// const serverUrl = process.env.REACT_APP_API_URL;
 const serverUrl = 'http://localhost:3001';
 
 function MoviePage() {
@@ -13,32 +12,42 @@ function MoviePage() {
     const [movie, setMovie] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [favorite, setFavorite] = useState(false); // Favorite state
+    const isLoggedIn = true; // Replace with your actual login check logic
 
     useEffect(() => {
-      const fetchMovie = async () => {
-        setLoading(true);
-        try {
-          const response = await fetch(
-            `${serverUrl}/movies/search-movies?query=${encodeURIComponent(movieName)}`
-          );
+        const fetchMovie = async () => {
+            setLoading(true);
+            try {
+                const response = await fetch(
+                    `${serverUrl}/movies/search-movies?query=${encodeURIComponent(movieName)}`
+                );
 
-          if (!response.ok) {
-            throw new Error("Movie not found");
-          }
-          const data = await response.json();
-          if (data && data.length > 0) {
-            setMovie(data[0]);
-          } else {
-            setMovie(null);
-          }
-        } catch (error) {
-          setError(error.message);
-        } finally {
-          setLoading(false);
-        }
-      };
-      fetchMovie();
+                if (!response.ok) {
+                    throw new Error("Movie not found");
+                }
+                const data = await response.json();
+                if (data && data.length > 0) {
+                    setMovie(data[0]);
+                } else {
+                    setMovie(null);
+                }
+            } catch (error) {
+                setError(error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchMovie();
     }, [movieName, serverUrl]);
+
+    const toggleFavorite = () => {
+        if (!isLoggedIn) {
+            alert("You must be logged in to mark favorites!");
+            return;
+        }
+        setFavorite((prev) => !prev);
+    };
 
     return (
         <div className="home-container">
@@ -52,15 +61,21 @@ function MoviePage() {
                 {movie && (
                     <div className="moviepage-container">
                         <div className="moviepage-details">
-                            <img
-                                src={movie.poster_path || '/assets/sample_image.jpg'}
-                                alt={movie.title || "Sample Movie"}
-                                className="moviepage-poster"
-                                onError={(e) => {
-                                    e.target.onerror = null;
-                                    e.target.src = '/assets/sample_image.jpg';
-                                }}
-                            />
+                            <div className="moviepage-poster-container">
+                                <img
+                                    src={movie.poster_path || '/assets/sample_image.jpg'}
+                                    alt={movie.title || "Sample Movie"}
+                                    className="moviepage-poster"
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = '/assets/sample_image.jpg';
+                                    }}
+                                />
+                                <FaHeart
+                                    className={`heart-icon ${favorite ? 'filled' : ''}`}
+                                    onClick={toggleFavorite}
+                                />
+                            </div>
                             <div className="moviepage-info">
                                 <h1>{movie.title}</h1>
                                 <p><strong>Overview:</strong> {movie.overview}</p>

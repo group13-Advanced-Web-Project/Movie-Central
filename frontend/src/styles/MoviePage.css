@@ -2,9 +2,7 @@
     display: flex;
     flex-direction: column; 
     min-height: 100vh; 
-    
-  }
-
+}
 
 body {
     margin-top: var(--header-height); 
@@ -23,7 +21,7 @@ body {
     flex-direction: column;
     gap: 20px;
     align-items: center;
-    justify-content: center;  /* Ensures vertical centering */
+    justify-content: center;
     flex: 1;
     max-width: 1200px; /* Optional: limit max width */
     margin: 0 auto; /* Center the container horizontally */
@@ -40,6 +38,7 @@ body {
     justify-content: center;
     align-items: center;
 }
+
 .moviepage-details {
     display: flex;
     flex-direction: row; 
@@ -51,11 +50,29 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+.moviepage-poster-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px; /* Space between the image and the heart icon */
+}
+
 .moviepage-poster {
     width: 300px;
     border-radius: 8px;
     object-fit: cover;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.heart-icon {
+    font-size: 24px;
+    color: #ccc; /* Default unselected color */
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.heart-icon.filled {
+    color: red; /* Selected color */
 }
 
 .moviepage-info {
@@ -78,27 +95,6 @@ body {
     line-height: 1.6;
 }
 
-.moviepage-showtime {
-    text-align: center;
-    background-color: #8b8b8b33;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.moviepage-showtime h2 {
-    font-size: 1.5em;
-    color: #333;
-    margin-bottom: 15px;
-}
-
-.moviepage-error-message,
-.moviepage-loading-message {
-    text-align: center;
-    font-size: 18px;
-    color: #d9534f;
-    margin-top: 20px;
-}
 footer {
     background-color: #333;
     color: #fff;
