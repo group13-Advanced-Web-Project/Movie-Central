@@ -5,8 +5,8 @@ import Footer from '../../components/Footer';
 import '../../styles/MoviePage.css';
 import { useMovies } from '../../context/MoviesContext'; 
 
-// const serverUrl = process.env.REACT_APP_API_URL;
-const serverUrl = 'http://localhost:3001';
+const serverUrl = process.env.REACT_APP_API_URL;
+// const serverUrl = 'http://localhost:3001';
 
 function MoviePage() {
     const { movieName } = useParams();
