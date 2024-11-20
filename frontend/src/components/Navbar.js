@@ -28,7 +28,7 @@ function Navbar() {
 
             movies.forEach((movie) => {
                 if (movie.year && movie.year !== 'Unknown') yearsSet.add(movie.year);
-                if (movie.genres && movie.genres !== 'No Genre') {
+                if (movie.genres && movie.genres !== 'Unknown') {
                     movie.genres.split(',').forEach((genre) => genresSet.add(genre.trim()));
                 }
             });

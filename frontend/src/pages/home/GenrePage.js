@@ -85,7 +85,7 @@ const GenrePage = () => {
                     <div className="genre-page__movie-tile" key={movie.id}>
                       <Link to={`/movie/${movie.title}`}>
                         <img
-                          src={movie.imageUrl}
+                          src={movie.poster_path || '/assets/sample_image.jpg'}
                           alt={movie.title}
                           className="genre-page__movie-poster"
                         />
