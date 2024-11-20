@@ -7,7 +7,8 @@ import ReviewPopup from '../../components/ReviewPopup';
 import { submitReview } from '../../utils/api'; // Import the API function
 import '../../styles/MoviePage.css';
 
-const serverUrl = process.env.REACT_APP_API_URL; // Use env variable for API
+const serverUrl = process.env.REACT_APP_API_URL;
+// const serverUrl = 'http://localhost:3001';
 
 function MoviePage() {
     const { movieName } = useParams();
