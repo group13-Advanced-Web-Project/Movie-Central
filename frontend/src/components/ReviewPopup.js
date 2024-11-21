@@ -15,9 +15,9 @@ const ReviewPopup = ({ movieId, onClose, onSubmit }) => {
     if (description && rating && user?.sub) { // Ensure user.sub (auth0Id) is available
       const review = {
         movieId,
-        description,
-        rating,
         user_id: user.sub, // Include auth0Id from Auth0
+        description,
+        rating,        
         timestamp: new Date().toISOString(),
       };
 

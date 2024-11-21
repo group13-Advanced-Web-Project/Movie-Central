@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useAuth0 } from '@auth0/auth0-react'; // Import Auth0
+import { useParams } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react'; 
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import ReviewPopup from '../../components/ReviewPopup'; 
-import { submitReview } from '../../utils/api'; // Import the API function
+import { submitReview } from '../../utils/api'; 
 import '../../styles/MoviePage.css';
 
 const serverUrl = process.env.REACT_APP_API_URL;
@@ -16,10 +16,8 @@ function MoviePage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isPopupOpen, setPopupOpen] = useState(false);
-
-    const { user, isAuthenticated, loginWithRedirect } = useAuth0(); // Get user info
-    const navigate = useNavigate();
-
+    const { user, isAuthenticated, loginWithRedirect } = useAuth0(); 
+    
     useEffect(() => {
         const fetchMovie = async () => {
             setLoading(true);
@@ -44,18 +42,18 @@ function MoviePage() {
             }
         };
         fetchMovie();
-    }, [movieName]);
+    }, [movieName, serverUrl]);
 
     const handleAddReviewClick = () => {
         if (isAuthenticated) {
-            setPopupOpen(true); // Open review popup if logged in
+            setPopupOpen(true); 
         } else {
-            loginWithRedirect(); // Redirect to login
+            loginWithRedirect();
         }
     };
 
     const handleReviewSubmit = async (review) => {
-        if (!user?.sub) { // Ensure auth0Id is available
+        if (!user?.sub) { 
             alert('Failed to get user ID. Please try again.');
             return;
         }
@@ -63,8 +61,7 @@ function MoviePage() {
         try {
             await submitReview({
                 ...review,
-                movieId: movie.id,
-                reviewerAuth0Id: user.sub, // Use the logged-in user's auth0Id
+                movieId: movie.id,                
             });
             alert('Review submitted successfully!');
         } catch (error) {
