@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react'; 
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import ReviewPopup from '../../components/ReviewPopup'; 
+import { submitReview } from '../../utils/api'; 
 import '../../styles/MoviePage.css';
-import { useMovies } from '../../context/MoviesContext'; 
 
 const serverUrl = process.env.REACT_APP_API_URL;
 // const serverUrl = 'http://localhost:3001';
@@ -13,32 +15,59 @@ function MoviePage() {
     const [movie, setMovie] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
+    const [isPopupOpen, setPopupOpen] = useState(false);
+    const { user, isAuthenticated, loginWithRedirect } = useAuth0(); 
+    
     useEffect(() => {
-      const fetchMovie = async () => {
-        setLoading(true);
-        try {
-          const response = await fetch(
-            `${serverUrl}/movies/search-movies?query=${encodeURIComponent(movieName)}`
-          );
+        const fetchMovie = async () => {
+            setLoading(true);
+            try {
+                const response = await fetch(
+                    `${serverUrl}/movies/search-movies?query=${encodeURIComponent(movieName)}`
+                );
 
-          if (!response.ok) {
-            throw new Error("Movie not found");
-          }
-          const data = await response.json();
-          if (data && data.length > 0) {
-            setMovie(data[0]);
-          } else {
-            setMovie(null);
-          }
-        } catch (error) {
-          setError(error.message);
-        } finally {
-          setLoading(false);
-        }
-      };
-      fetchMovie();
+                if (!response.ok) {
+                    throw new Error("Movie not found");
+                }
+                const data = await response.json();
+                if (data && data.length > 0) {
+                    setMovie(data[0]);
+                } else {
+                    setMovie(null);
+                }
+            } catch (error) {
+                setError(error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchMovie();
     }, [movieName, serverUrl]);
+
+    const handleAddReviewClick = () => {
+        if (isAuthenticated) {
+            setPopupOpen(true); 
+        } else {
+            loginWithRedirect();
+        }
+    };
+
+    const handleReviewSubmit = async (review) => {
+        if (!user?.sub) { 
+            alert('Failed to get user ID. Please try again.');
+            return;
+        }
+
+        try {
+            await submitReview({
+                ...review,
+                movieId: movie.id,                
+            });
+            alert('Review submitted successfully!');
+        } catch (error) {
+            alert('Failed to submit review. Please try again.');
+        }
+    };
 
     return (
         <div className="home-container">
@@ -69,12 +98,25 @@ function MoviePage() {
                                 <p><strong>Genres:</strong> {movie.genres || 'N/A'}</p>
                                 <p><strong>Rating:</strong> {movie.rating}</p>
                                 <p><strong>Cast:</strong> {movie.cast}</p>
+
+                                {/* Review Link */}
+                                <button onClick={handleAddReviewClick} className="review-link">
+                                    Add Review
+                                </button>
                             </div>
                         </div>
                     </div>
                 )}
             </div>
             <Footer />
+
+            {isPopupOpen && (
+                <ReviewPopup
+                    movieId={movie?.id}
+                    onClose={() => setPopupOpen(false)}
+                    onSubmit={handleReviewSubmit}
+                />
+            )}
         </div>
     );
 }

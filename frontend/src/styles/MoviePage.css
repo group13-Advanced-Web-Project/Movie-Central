@@ -107,6 +107,34 @@ footer {
     margin-top: auto; 
 }
 
+.review-link {
+    background-color: #3e4246;  /* Blue background */
+    color: #fff;  /* White text */
+    font-size: 16px;  /* Font size */
+    padding: 10px 20px;  /* Padding around the text */
+    border: none;  /* No border */
+    border-radius: 5px;  /* Rounded corners */
+    cursor: pointer;  /* Pointer cursor on hover */
+    transition: background-color 0.3s, transform 0.2s;  /* Smooth transition effects */
+    width: 20%;  /* Full width */
+    align-self: center;  /* Center the button */
+}
+
+.review-link:hover {
+    background-color: #0056b3;  /* Darker blue on hover */
+    transform: translateY(-2px);  /* Slight lift effect */
+}
+
+.review-link:focus {
+    outline: none;  /* Remove default focus outline */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.8);  /* Blue glow effect on focus */
+}
+
+.review-link:active {
+    background-color: #004085;  /* Even darker blue on active click */
+    transform: translateY(0);  /* Remove lift effect */
+}
+
 /* Responsive layout adjustments */
 @media (max-width: 768px) {
     .moviepage-details {
