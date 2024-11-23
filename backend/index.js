@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import userRouter from "./router/userRoute/userRouter.js";
 import adminRouter from "./router/adminRouter/adminRouter.js";
 import movieRouter from "./router/movieRoute/movieRouter.js";
+import reviewsRouter from "./router/reviewsRouter/reviewsRouter.js";
 import { pool } from "./helpers/db.js";
 
 dotenv.config();
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use("/users/", userRouter);
 app.use("/admin/", adminRouter);
 app.use("/movies/", movieRouter);
+app.use("/reviews/", reviewsRouter);
 
 app.get("/", (req, res) => {
   res.json({ message: "Hello from server!" });

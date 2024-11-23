@@ -1,3 +1,9 @@
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS favorites;
+DROP TABLE IF EXISTS movie;
+DROP TABLE IF EXISTS review;
+DROP TABLE IF EXISTS groups;
+
 
 -- Create users table
 CREATE TABLE users ( 
@@ -28,7 +34,7 @@ VALUES ('auth0_sub', 'movie.id1', 'movie.id2', 'movie.id3', 'movie.id4');
 -- Create movie table
 CREATE TABLE movie (
     id SERIAL PRIMARY KEY,
-    movie_id VARCHAR(255) NOT NULL,
+    movie_id VARCHAR(255) NOT NULL UNIQUE,
     review_1 VARCHAR(255),
     review_2 VARCHAR(255)
 );
@@ -45,7 +51,10 @@ CREATE TABLE review (
     user_id VARCHAR(255) NOT NULL,
     description TEXT,
     rating INT,
-    timestamp VARCHAR(255)
+    timestamp VARCHAR(255),
+    CONSTRAINT fk_movie_id FOREIGN KEY (movie_id) REFERENCES movie (movie_id) ON DELETE CASCADE,
+    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE,
+    CONSTRAINT unique_review UNIQUE (movie_id, user_id)
 );
 
 -- Insert dummy data into review table
