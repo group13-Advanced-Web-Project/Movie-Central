@@ -135,6 +135,51 @@ footer {
     transform: translateY(0);  /* Remove lift effect */
 }
 
+.moviepage-image-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.favorite-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px; /* Adjust spacing below the image */
+}
+
+.favorite-button {
+    width: 100px; /* Adjust width to fit text */
+    height: 60px; /* Adjust height for text */
+    background-color: transparent; /* Transparent background */
+    border: 2px solid black; /* Default black circular border */
+    border-radius: 30px; /* Rounded rectangle (pill-shaped) button */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px; /* Adjust text size */
+    color: black; /* Default text color */
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.3s, background-color 0.3s, color 0.3s;
+    text-transform: uppercase; /* Optional: uppercase text */
+    font-weight: bold; /* Optional: bold text */
+}
+
+.favorite-button:hover {
+    transform: scale(1.1); /* Slight zoom effect on hover */
+    border-color: #ff4d4d; /* Change border to red */
+    background-color: #ffe6e6; /* Light red background */
+    color: #ff4d4d; /* Red text color on hover */
+}
+
+.favorite-button.favorited {
+    border-color: #ff4d4d; /* Red border for favorited state */
+    background-color: #ff4d4d; /* Red background for favorited state */
+    color: white; /* White text for favorited state */
+}
+
 /* Responsive layout adjustments */
 @media (max-width: 768px) {
     .moviepage-details {
