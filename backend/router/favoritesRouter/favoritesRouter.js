@@ -7,16 +7,23 @@ router.post('/add', async (req, res) => {
     try {
         const { user_id, fave_1, fave_2, fave_3, fave_4 } = req.body;
 
-        pool.query("INSERT INTO favorites (user_id, fave_1, fave_2, fave_3, fave_4)  VALUES ($1, $2, $3, $4, $5)",
+        pool.query("INSERT INTO favorites (user_id, fave_1, fave_2, fave_3, fave_4) VALUES ($1, $2, $3, $4, $5)",
             [user_id, fave_1, fave_2, fave_3, fave_4],
-            (error, results) => {
+            (error) => {
                 if (error) {
+                    if (error.code === '23505') { // Unique violation error code for PostgreSQL
+                        return res.status(400).json({
+                            error: "Duplicate user_id",
+                            details: "The user_id already exists in the favorites table",
+                        });
+                    }
                     console.error("Database query failed:", error.message);
                     return res.status(500).json({
                         error: "Database query failed",
                         details: error.message,
                     });
                 }
+                res.status(200).json({ message: "Favorite added successfully" });
             }
         );
     } catch (error) {
@@ -30,23 +37,15 @@ router.post('/add', async (req, res) => {
 
 // Update favorite
 
-router.put('/update/:id', async (req, res) => {
+router.put('/update/:user_id', async (req, res) => {
     try {
-        const { id } = req.params;
+        const { user_id } = req.params;
         const { fave_1, fave_2, fave_3, fave_4 } = req.body;
-        const parsedId = parseInt(user_id, 10);
-
-        if (isNaN(parsedId)) {
-            return res.status(400).json({
-                error: "Invalid ID",
-                details: "The provided ID is not a valid integer",
-            });
-        }
 
         pool.query(
-            "UPDATE favorites SET fave_1 = $1, fave_2 = $2, fave_3 = $3, fave_4 = $4 WHERE id = $5",
-            [fave_1, fave_2, fave_3, fave_4, parsedId],
-            (error, results) => {
+            "UPDATE favorites SET fave_1 = $1, fave_2 = $2, fave_3 = $3, fave_4 = $4 WHERE user_id = $5",
+            [fave_1, fave_2, fave_3, fave_4, user_id],
+            (error) => {
                 if (error) {
                     console.error("Database query failed:", error.message);
                     return res.status(500).json({
@@ -68,9 +67,9 @@ router.put('/update/:id', async (req, res) => {
 
 // Delete favorite
 
-router.delete('/delete/:id', async (req, res) => {
+router.delete('/delete/:user_id', async (req, res) => {
     try {
-        const { id } = req.params;
+        const { user_id } = req.params;
         const { fave_1, fave_2, fave_3, fave_4 } = req.body;
 
         let query = "UPDATE favorites SET";
@@ -98,8 +97,8 @@ router.delete('/delete/:id', async (req, res) => {
             });
         }
 
-        query += ` ${updates.join(', ')} WHERE id = $${index}`;
-        params.push(id);
+        query += ` ${updates.join(', ')} WHERE user_id = $${index}`;
+        params.push(user_id);
 
         pool.query(query, params, (error, results) => {
             if (error) {
@@ -111,8 +110,8 @@ router.delete('/delete/:id', async (req, res) => {
             }
             if (results.rowCount === 0) {
                 return res.status(404).json({
-                    error: "Favorite entry not found",
-                    details: `No favorite entry found with id ${id}`,
+                    error: "User not found",
+                    details: `No user found with user_id ${user_id}`,
                 });
             }
             res.status(200).json({ message: "Favorite movies deleted successfully" });
