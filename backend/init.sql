@@ -9,14 +9,15 @@ DROP TABLE IF EXISTS groups;
 CREATE TABLE users ( 
     id SERIAL PRIMARY KEY,
     user_id VARCHAR(255) UNIQUE NOT NULL,
+    email VARCHAR(255) NOT NULL,
     role VARCHAR(255) NOT NULL
 );
 
 
-INSERT INTO users (user_id, role) VALUES ('REMOTE DB WORKING', 'user');
-INSERT INTO users (user_id, role) VALUES ('auth0|66f639c08901fee18cf8a761', 'admin');
-INSERT INTO users (user_id, role) VALUES ('auth0_sub64654', 'user');
-INSERT INTO users (user_id, role) VALUES ('Deleted User', 'guest');
+INSERT INTO users (user_id, email, role) VALUES ('REMOTE DB WORKING', 'user1@example.com', 'user');
+INSERT INTO users (user_id, email, role) VALUES ('auth0|66f639c08901fee18cf8a761','user2@example.com', 'admin');
+INSERT INTO users (user_id, email, role) VALUES ('auth0_sub64654', 'user3@example.com', 'user');
+INSERT INTO users (user_id, email, role) VALUES ('Deleted User', 'Deleted User', 'guest');
 
 
 -- Create favorites table
@@ -49,17 +50,20 @@ VALUES ('12345', 'review_id1', 'review_id2');
 CREATE TABLE review (
     review_id SERIAL PRIMARY KEY,
     movie_id VARCHAR(255) NOT NULL,
+    movie_name VARCHAR(255) NOT NULL,
     user_id VARCHAR(255) DEFAULT 'Deleted User',
+    user_email VARCHAR(255) DEFAULT 'Deleted User',
     description TEXT,
     rating INT,
     timestamp VARCHAR(255) DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE SET DEFAULT,
+    CONSTRAINT fk_user_email FOREIGN KEY (user_email) REFERENCES users (email) ON DELETE SET DEFAULT,
     CONSTRAINT unique_review UNIQUE (movie_id, user_id)
 );
 
 -- Insert dummy data into review table
-INSERT INTO review (movie_id, user_id, description, rating) 
-VALUES ('12345', 'auth0_sub64654', 'good movie', 4);
+INSERT INTO review (movie_id, movie_name, user_id, user_name, description, rating) 
+VALUES ('12345', 'Movie', 'auth0_sub64654', 'user@foo.com', 'good movie', 4);
 
 -- Create groups table
 CREATE TABLE groups (
@@ -81,7 +85,8 @@ CREATE OR REPLACE FUNCTION delete_user()
 RETURNS TRIGGER AS $$
 BEGIN
     UPDATE review
-    SET user_id = 'Deleted User'
+    SET user_id = 'Deleted User',
+        user_email = 'Deleted User'
     WHERE user_id = OLD.user_id;
     RETURN OLD;
 END;
