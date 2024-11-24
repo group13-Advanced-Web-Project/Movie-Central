@@ -19,6 +19,7 @@ function MoviePage() {
     const [isPopupOpen, setPopupOpen] = useState(false);
     const [isFavorite, setFavorite] = useState(false);
     const [favoriteMovies, setFavoriteMovies] = useState([]); // State for user's favorite movies
+    const [reviews, setReviews] = useState([]); // State for reviews
     const { user, isAuthenticated, loginWithRedirect } = useAuth0();
 
     useEffect(() => {
@@ -37,6 +38,7 @@ function MoviePage() {
                 if (data && data.length > 0) {
                     setMovie(data[0]);
                     checkIfFavorite(data[0].id);
+                    fetchReviews(data[0].id); // Fetch reviews for the movie
                 } else {
                     setMovie(null);
                 }
@@ -49,11 +51,11 @@ function MoviePage() {
 
         const checkIfFavorite = async (movieId) => {
             if (!isAuthenticated || !user?.sub) return;
-        
+
             try {
                 const response = await fetch(
                     `${serverUrl}/favorites/${movieId}?userId=${encodeURIComponent(user.sub)}`);
-        
+
                 if (response.ok) {
                     const { isFavorite } = await response.json();
                     setFavorite(isFavorite);
@@ -65,24 +67,38 @@ function MoviePage() {
                 setFavorite(false);
             }
         };
-        
+
         const fetchFavoriteMovies = async () => {
             if (!isAuthenticated || !user?.sub) return;
-        
+
             try {
                 const response = await fetch(`${serverUrl}/favorites?userId=${encodeURIComponent(user.sub)}`);
-        
+
                 if (!response.ok) {
                     throw new Error('Failed to fetch favorite movies.');
                 }
-        
+
                 const data = await response.json();
                 setFavoriteMovies(data);
             } catch (error) {
                 console.error('Error fetching favorite movies:', error);
             }
         };
-        
+
+        const fetchReviews = async (movieId) => {
+            try {
+                const response = await fetch(`${serverUrl}/reviews/movie/${movieId}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setReviews(data);
+                } else {
+                    console.error('Failed to fetch reviews');
+                }
+            } catch (error) {
+                console.error('Error fetching reviews:', error);
+            }
+        };
+
         fetchMovie();
         fetchFavoriteMovies(); // Fetch user's favorite movies
     }, [movieName, serverUrl]);
@@ -102,11 +118,12 @@ function MoviePage() {
         }
 
         try {
-            await submitReview({
+            const newReview = await submitReview({
                 ...review,
-                movieId: movie.id,
+                movie_id: movie.id,
+                user_id: user.sub,
             });
-            alert('Review submitted successfully!');
+            setReviews((prevReviews) => [newReview, ...prevReviews]); // Add new review to the reviews list            
         } catch (error) {
             alert('Failed to submit review. Please try again.');
         }
@@ -194,6 +211,28 @@ function MoviePage() {
                                 </button>
                             </div>
                         </div>
+
+                        {/* Reviews Section */}
+                        <div className="moviepage-reviews">
+                            <h3>Reviews</h3>
+                            {reviews.length === 0 ? (
+                                <p>No reviews yet. Be the first to add one!</p>
+                            ) : (
+                                reviews.map((review, index) => (
+                                    <div key={index} className="review-item">
+                                        <div className="review-header">
+                                            <span className="reviewer-name">
+                                                <span className="reviewer-label">Reviewed By:</span> {review.reviewerName || "Anonymous"}
+                                            </span>
+                                            <span className="review-rating">
+                                                <span className="rating-label">Rating:</span> {review.rating}/5
+                                            </span>
+                                        </div>
+                                        <p className="review-description">{review.description}</p>
+                                    </div>
+                                ))
+                            )}
+                        </div>
                     </div>
                 )}
 
@@ -202,7 +241,7 @@ function MoviePage() {
 
             {isPopupOpen && (
                 <ReviewPopup
-                    movieId={movie?.id}
+                    movie_id={movie?.id}
                     onClose={() => setPopupOpen(false)}
                     onSubmit={handleReviewSubmit}
                 />

@@ -15,7 +15,11 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+
+//     const { movie_id, user_id, description, rating, timestamp } = req.body;
+
     const { movie_id, user_id, description, rating } = req.body;
+
 
     if (!movie_id || !user_id || !description || !rating) {
         return res.status(400).json({ error: "Missing required fields" });
@@ -33,10 +37,17 @@ router.post('/', async (req, res) => {
         }
 
         const result = await pool.query(
+
+//             `INSERT INTO review (movie_id, user_id, description, rating, timestamp)
+//             VALUES ($1, $2, $3, $4, $5)
+//             RETURNING *;`,
+//             [movie_id, user_id, description, rating, timestamp]
+
             `INSERT INTO review (movie_id, user_id, description, rating)
             VALUES ($1, $2, $3, $4)
             RETURNING *;`,
             [movie_id, user_id, description, rating]
+
         );
         res.json(result.rows[0]);
     } catch (error) {
