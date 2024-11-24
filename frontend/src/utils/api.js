@@ -1,24 +1,37 @@
-const API_URL = process.env.REACT_APP_API_URL;
+const serverUrl = process.env.REACT_APP_API_URL;
 
+// Submit a review
 export const submitReview = async (review) => {
-  try {
-    const response = await fetch(`${API_URL}/reviews`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('auth0:id_token')}`,
-      },
-      body: JSON.stringify(review),
-    });
+    try {
+        const response = await fetch(`${serverUrl}/reviews`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(review),
+        });
 
-    if (!response.ok) {
-      const errorMessage = await response.text();
-      throw new Error(`Failed to submit review: ${errorMessage}`);
+        if (!response.ok) {
+            throw new Error('Failed to submit review');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error submitting review:', error.message);
+        throw error;
     }
-
-    return await response.json(); // Return JSON response for further use
-  } catch (error) {
-    console.error('Error submitting review:', error);
-    throw error; // Allow caller to handle the error
-  }
 };
+
+
+// Fetch reviews by movie_id
+export const fetchReviews = async (movie_id) => {
+    try {
+        const response = await fetch(`${serverUrl}/reviews/movie/${movie_id}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch reviews');
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching reviews:', error.message);
+        throw error;
+    }
+};
+

@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    const { review_id, movie_id, user_id, description, rating, timestamp } = req.body;
+    const { movie_id, user_id, description, rating, timestamp } = req.body;
 
     if (!movie_id || !user_id || !description || !rating) {
         return res.status(400).json({ error: "Missing required fields" });
@@ -24,10 +24,10 @@ router.post('/', async (req, res) => {
 
     try {
         const result = await pool.query(
-            `INSERT INTO review (review_id, movie_id, user_id, description, rating, timestamp)
-            VALUES ($1, $2, $3, $4, $5, $6)
+            `INSERT INTO review (movie_id, user_id, description, rating, timestamp)
+            VALUES ($1, $2, $3, $4, $5)
             RETURNING *;`,
-            [review_id, movie_id, user_id, description, rating, timestamp]
+            [movie_id, user_id, description, rating, timestamp]
         );
         res.json(result.rows[0]);
     } catch (error) {
