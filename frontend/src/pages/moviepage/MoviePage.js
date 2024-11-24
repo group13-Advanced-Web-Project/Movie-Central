@@ -201,15 +201,19 @@ function MoviePage() {
                                 <p><strong>Overview:</strong> {movie.overview}</p>
                                 <p><strong>Release Year:</strong> {movie.release_date ? movie.release_date.split('-')[0] : 'N/A'}</p>
                                 <p><strong>Duration:</strong> {movie.duration} minutes</p>
-                                <p><strong>Genres:</strong> {movie.genres || 'N/A'}</p>
-                                <p><strong>Rating:</strong> {movie.rating}</p>
+                                <p><strong>Genres: </strong> {movie.genres || 'N/A'}</p>
+                                <p><strong>Rating: </strong> 
+                                    {reviews.length > 0 
+                                        ? `${(reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length).toFixed(1)} / 5` 
+                                        : "No rating yet"}
+                                </p>
                                 <p><strong>Cast:</strong> {movie.cast}</p>
 
                                 {/* Review Link */}
                                 <button onClick={handleAddReviewClick} className="review-link">
                                     Add Review
                                 </button>
-                            </div>
+                            </div>   
                         </div>
 
                         {/* Reviews Section */}
