@@ -1,0 +1,152 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+/* Main Container */
+.main-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 20px;
+}
+
+/* Left Panel (Auth0 Details) */
+.left-panel {
+  width: 20%;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  border: 2px solid rgb(215, 114, 41);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.left-panel img {
+  display: block;
+  margin: 0 auto 20px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid #db811b;
+}
+
+.left-panel p {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+.left-panel button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #dbaa22;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.left-panel button:hover {
+  background-color: #45a049;
+}
+
+/* Center Panel (My Favorites) */
+.center-panel {
+  width: 55%;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  border: 2px solid green;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.center-panel h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 20px;
+  justify-items: center;
+}
+
+.movie-card {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.movie-card img {
+  width: 100%;
+  height: 150px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.movie-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Right Panel (Watched and Watchlist) */
+.right-panel {
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  border: 2px solid green;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.section h2 {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.section .movie-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.section .movie-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f9f9f9;
+  border: 2px solid #4caf50;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.section .movie-card img {
+  width: 100%;
+  height: 80px;
+  border-radius: 5px;
+  object-fit: cover;
+  margin-bottom: 5px;
+}
+
+.section .movie-card p {
+  font-size: 14px;
+  margin: 0;
+  color: #333;
+}
