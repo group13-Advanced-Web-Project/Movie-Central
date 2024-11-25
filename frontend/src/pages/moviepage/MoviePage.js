@@ -21,6 +21,7 @@ function MoviePage() {
     const [favoriteMovies, setFavoriteMovies] = useState(""); // State for user's favorite movies
     const [reviews, setReviews] = useState([]); // State for reviews
     const { user, isAuthenticated, loginWithRedirect } = useAuth0();
+    const { movie_id } = useParams(); // Updated from movieName
 
     useEffect(() => {
         const fetchMovie = async () => {
@@ -110,7 +111,7 @@ function MoviePage() {
                 if (response.ok) {
                     const data = await response.json();
                     setReviews(data);
-                    // console.log('Reviews fetched successfully:', data);
+                    
                 } else {
                     console.error('Failed to fetch reviews');
                 }
@@ -121,7 +122,7 @@ function MoviePage() {
 
         checkIfFavorite();
         fetchMovie();
-        // fetchFavoriteMovies(); // Fetch user's favorite movies
+        
     }, [movieName, serverUrl]);
 
     const handleAddReviewClick = () => {
