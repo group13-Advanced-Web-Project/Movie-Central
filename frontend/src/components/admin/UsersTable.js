@@ -35,6 +35,7 @@ function UsersTable() {
             <tr>
               <th>id</th>
               <th>user_id</th>
+              <th>email</th>
               <th>role</th>
             </tr>
           </thead>
@@ -43,6 +44,7 @@ function UsersTable() {
               <tr key={index}>
                 <td>{user.id}</td>
                 <td>{user.user_id}</td>
+                <td>{user.email}</td>
                 <td>{user.role}</td>
               </tr>
             ))}

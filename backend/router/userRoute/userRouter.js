@@ -57,22 +57,28 @@ router.post("/check-account", (req, res) => {
 
 router.post("/add", (req, res) => {
   try {
-    const { auth0_user_id } = req.body;
+    const { auth0_user_id, email } = req.body; // Destructure email from the request body
+
+    // Ensure both auth0_user_id and email are provided
+    if (!auth0_user_id || !email) {
+      return res.status(400).json({ error: "auth0_user_id and email are required." });
+    }
+
     pool.query(
-      "INSERT INTO users (user_id, role) VALUES ($1, 'user') RETURNING *",
-      [auth0_user_id],
+      "INSERT INTO users (user_id, email, role) VALUES ($1, $2, 'user') RETURNING *",
+      [auth0_user_id, email],
       (error, result) => {
         if (error) {
           console.error("Query error:", error); // Log query error
-          return res.status(500).json({ error: error.message }); // Pass any query errors to the error handler
+          return res.status(500).json({ error: error.message }); // Handle query errors
         }
 
-        return res.status(200).json(result.rows); // Return all rows as JSON
+        return res.status(200).json(result.rows); // Return the inserted row as JSON
       }
     );
   } catch (error) {
-    console.error("Catch error:", error); // Log catch error
-    return res.status(500).json({ error: error.message }); // Pass any other errors to the error handler
+    console.error("Catch error:", error); // Log unexpected errors
+    return res.status(500).json({ error: error.message }); // Handle other errors
   }
 });
 

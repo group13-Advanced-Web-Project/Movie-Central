@@ -42,13 +42,16 @@ const getReviewTable = async () => {
             <table className='tables-table'>
                 <thead>
                     <tr>
-                        <th>id</th>
+                     
                         <th>review_id</th>
                         <th>movie_id</th>
+                        <th>name</th>
                         <th>user_id</th>
+                        <th>email</th>
                         <th>description</th>
                         <th>rating</th>
                         <th>timestamp</th>
+
               
                       
 
@@ -57,10 +60,12 @@ const getReviewTable = async () => {
                 <tbody>
                     {reviewData.map((user, index) => (
                         <tr key={index}>
-                            <td>{user.id}</td>
+                         
                             <td>{user.review_id}</td>
                             <td>{user.movie_id}</td>
+                            <td>{user.movie_name}</td>
                             <td>{user.user_id}</td>
+                            <td>{user.user_email}</td>
                             <td>{user.description}</td>
                             <td>{user.rating}</td>
                             <td>{user.timestamp}</td>                       

@@ -30,7 +30,7 @@ function App() {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem("auth0:id_token")}`,
       },
-      body: JSON.stringify({ auth0_user_id: userId })
+      body: JSON.stringify({ auth0_user_id: userId, email: user.email })
     });
 
     console.log(response);
@@ -45,7 +45,7 @@ function App() {
   };
 
   const handleCreateAccount = async () => {
-    const postData = { auth0_user_id: user.sub };
+    const postData = { auth0_user_id: user.sub, email: user.email };
     console.log("Sending POST data:", postData);
 
     const response = await fetch(serverUrl+"/users/add", {
