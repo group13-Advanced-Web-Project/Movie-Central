@@ -5,7 +5,6 @@ import { useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import UsersTable from "../../components/admin/UsersTable";
 import FavoritesTable from "../../components/admin/FavoritesTable";
-import MovieTable from "../../components/admin/MovieTable";
 import ReviewTable from "../../components/admin/ReviewTable";
 import GroupsTable from "../../components/admin/GroupsTable";
 
@@ -71,9 +70,8 @@ function AdminPage() {
           <div className="tables-container-div">
             <FavoritesTable />
           </div>
-          <div className="tables-container-div">
-            <MovieTable />
-          </div>
+     
+     
 
           <div className="tables-container-div">
             <ReviewTable />
