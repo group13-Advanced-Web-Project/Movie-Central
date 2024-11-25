@@ -1,7 +1,9 @@
 import { Router } from "express";
 import { pool } from "../../helpers/db.js";
+import axios from "axios";
 
 const router = Router();
+const tmdb_api_key = process.env.TMDB_API_KEY;
 
 router.get('/', async (req, res) => {
     try {
@@ -15,13 +17,9 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+    const { movie_id, user_id, description, rating, user_email } = req.body;
 
-//     const { movie_id, user_id, description, rating, timestamp } = req.body;
-
-    const { movie_id, user_id, description, rating } = req.body;
-
-
-    if (!movie_id || !user_id || !description || !rating) {
+    if (!movie_id || !user_id || !description || !rating || !user_email) {
         return res.status(400).json({ error: "Missing required fields" });
     }
 
@@ -36,18 +34,26 @@ router.post('/', async (req, res) => {
             return res.status(400).json({ error: "User has already given a review to this movie" });
         }
 
+        let movie_name = "Unknown";
+        try {
+            const response = await axios.get(`https://api.themoviedb.org/3/movie/${movie_id}?api_key=${tmdb_api_key}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${tmdb_api_key}`
+                }
+            });
+            if (response.data && response.data.title) {
+                movie_name = response.data.title;
+            }
+        } catch (error) {
+            console.error("Failed to fetch movie data: ", error.message);
+        }
+
         const result = await pool.query(
-
-//             `INSERT INTO review (movie_id, user_id, description, rating, timestamp)
-//             VALUES ($1, $2, $3, $4, $5)
-//             RETURNING *;`,
-//             [movie_id, user_id, description, rating, timestamp]
-
-            `INSERT INTO review (movie_id, user_id, description, rating)
-            VALUES ($1, $2, $3, $4)
+            `INSERT INTO review (movie_id, movie_name, user_id, user_email, description, rating)
+            VALUES ($1, $2, $3, $4, $5, $6)
             RETURNING *;`,
-            [movie_id, user_id, description, rating]
-
+            [movie_id, movie_name, user_id, user_email, description, rating]
         );
         res.json(result.rows[0]);
     } catch (error) {
