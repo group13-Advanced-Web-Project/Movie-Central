@@ -2,7 +2,7 @@ export const fetchShowSchedule = async (date, areaCode) => {
   try {
     const response = await fetch(`https://www.finnkino.fi/xml/Schedule/?area=${areaCode}&dt=${date}`);
     const text = await response.text();
-    console.log('Raw XML Response:', text); // Debugging
+    // console.log('Raw XML Response:', text); // Debugging
 
     const parser = new DOMParser();
     const xml = parser.parseFromString(text, 'text/xml');

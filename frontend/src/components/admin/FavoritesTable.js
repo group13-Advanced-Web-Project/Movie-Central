@@ -47,9 +47,7 @@ const getFavoritesTable = async () => {
                         <th>id</th>
                         <th>user_id</th>
                         <th>fave_1</th>
-                        <th>fave_2</th>
-                        <th>fave_3</th>
-                        <th>fave_4</th>
+                 
 
                     </tr>
                 </thead>
@@ -59,9 +57,7 @@ const getFavoritesTable = async () => {
                             <td >{user.id}</td>
                             <td>{user.user_id}</td>
                             <td>{user.fave_1}</td>
-                            <td>{user.fave_2}</td>
-                            <td>{user.fave_3}</td>
-                            <td>{user.fave_4}</td>
+                   
                         </tr>
                     ))}
                 </tbody>

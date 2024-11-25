@@ -18,7 +18,7 @@ function MoviePage() {
     const [error, setError] = useState(null);
     const [isPopupOpen, setPopupOpen] = useState(false);
     const [isFavorite, setFavorite] = useState(false);
-    const [favoriteMovies, setFavoriteMovies] = useState([]); // State for user's favorite movies
+    const [favoriteMovies, setFavoriteMovies] = useState(""); // State for user's favorite movies
     const [reviews, setReviews] = useState([]); // State for reviews
     const { user, isAuthenticated, loginWithRedirect } = useAuth0();
 
@@ -51,39 +51,58 @@ function MoviePage() {
 
         const checkIfFavorite = async (movieId) => {
             if (!isAuthenticated || !user?.sub) return;
-
+        
             try {
                 const response = await fetch(
-                    `${serverUrl}/favorites/${movieId}?userId=${encodeURIComponent(user.sub)}`);
-
+                    `${serverUrl}/favorites/all`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ user_id: user.sub })
+                    }
+                );
+        
                 if (response.ok) {
-                    const { isFavorite } = await response.json();
-                    setFavorite(isFavorite);
+                    const favoriteMovies = await response.json();
+                    // console.log('Favorite movies:', favoriteMovies[0], "current movie id:", movieId);
+        
+                    // Directly check if movieId exists in the favoriteMovies array
+                    if (favoriteMovies[0] == movieId) {
+                        setFavorite(true);
+                        console.log('Movie is a favorite');
+                    } else {
+                        setFavorite(false);
+                        console.log('Movie is not a favorite');
+                    }
+        
                 } else {
                     throw new Error('Failed to fetch favorite status.');
                 }
             } catch (error) {
                 console.error('Error fetching favorite status:', error);
-                setFavorite(false);
+                setFavorite(false); // Default to false if there's an error
             }
         };
+        
+        
 
-        const fetchFavoriteMovies = async () => {
-            if (!isAuthenticated || !user?.sub) return;
+        // const fetchFavoriteMovies = async () => {
+        //     if (!isAuthenticated || !user?.sub) return;
 
-            try {
-                const response = await fetch(`${serverUrl}/favorites?userId=${encodeURIComponent(user.sub)}`);
+        //     try {
+        //         const response = await fetch(`${serverUrl}/favorites?userId=${encodeURIComponent(user.sub)}`);
 
-                if (!response.ok) {
-                    throw new Error('Failed to fetch favorite movies.');
-                }
+        //         if (!response.ok) {
+        //             throw new Error('Failed to fetch favorite movies.');
+        //         }
 
-                const data = await response.json();
-                setFavoriteMovies(data);
-            } catch (error) {
-                console.error('Error fetching favorite movies:', error);
-            }
-        };
+        //         const data = await response.json();
+        //         setFavoriteMovies(data);
+        //     } catch (error) {
+        //         console.error('Error fetching favorite movies:', error);
+        //     }
+        // };
 
         const fetchReviews = async (movieId) => {
             try {
@@ -91,6 +110,7 @@ function MoviePage() {
                 if (response.ok) {
                     const data = await response.json();
                     setReviews(data);
+                    // console.log('Reviews fetched successfully:', data);
                 } else {
                     console.error('Failed to fetch reviews');
                 }
@@ -99,8 +119,9 @@ function MoviePage() {
             }
         };
 
+        checkIfFavorite();
         fetchMovie();
-        fetchFavoriteMovies(); // Fetch user's favorite movies
+        // fetchFavoriteMovies(); // Fetch user's favorite movies
     }, [movieName, serverUrl]);
 
     const handleAddReviewClick = () => {
@@ -122,6 +143,7 @@ function MoviePage() {
                 ...review,
                 movie_id: movie.id,
                 user_id: user.sub,
+                user_email: user.email,
             });
             setReviews((prevReviews) => [newReview, ...prevReviews]); // Add new review to the reviews list            
         } catch (error) {
@@ -134,36 +156,37 @@ function MoviePage() {
             loginWithRedirect();
             return;
         }
-
+    
         if (!user?.sub) {
             alert('Failed to identify user. Please log in and try again.');
             return;
         }
-
+    
         try {
-            const response = await fetch(`${serverUrl}/favorites`, {
-                method: isFavorite ? 'DELETE' : 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ userId: user.sub, movieId: movie.id }),
+            const method = isFavorite ? 'DELETE' : 'POST';
+            
+            const response = await fetch(`${serverUrl}/favorites/`, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: user.sub, movieId: movie.id }),
             });
-
+    
             if (response.ok) {
+                const successMessage = isFavorite
+                    ? 'Movie removed from favorites.'
+                    : 'Movie added to favorites.';
                 setFavorite(!isFavorite);
-                alert(
-                    isFavorite
-                        ? 'Movie removed from favorites.'
-                        : 'Movie added to favorites.'
-                );
+                alert(successMessage);
             } else {
-                alert('Failed to update favorite status. Please try again.');
+                const { error } = await response.json();
+                alert(error || 'Failed to update favorite status.');
             }
         } catch (error) {
             console.error('Error toggling favorite:', error);
             alert('An error occurred. Please try again later.');
         }
     };
+    
 
     return (
         <div className="home-container">
@@ -226,7 +249,7 @@ function MoviePage() {
                                     <div key={index} className="review-item">
                                         <div className="review-header">
                                             <span className="reviewer-name">
-                                                <span className="reviewer-label">Reviewed By:</span> {review.reviewerName || "Anonymous"}
+                                                <span className="reviewer-label">Reviewed By:</span> {review.user_email || "Anonymous"}
                                             </span>
                                             <span className="review-rating">
                                                 <span className="rating-label">Rating:</span> {review.rating}/5

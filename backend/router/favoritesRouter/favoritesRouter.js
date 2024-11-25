@@ -3,119 +3,129 @@ import { pool } from '../../helpers/db.js';
 
 const router = Router();
 
-router.post('/add', async (req, res) => {
+router.post('/', async (req, res) => {
     try {
-        const { user_id, fave_1, fave_2, fave_3, fave_4 } = req.body;
+        const { user_id, movieId } = req.body;
 
-        pool.query("INSERT INTO favorites (user_id, fave_1, fave_2, fave_3, fave_4) VALUES ($1, $2, $3, $4, $5)",
-            [user_id, fave_1, fave_2, fave_3, fave_4],
-            (error) => {
-                if (error) {
-                    if (error.code === '23505') { // Unique violation error code for PostgreSQL
-                        return res.status(400).json({
-                            error: "Duplicate user_id",
-                            details: "The user_id already exists in the favorites table",
+        // Check if the user already has a favorite
+        const checkQuery = "SELECT * FROM favorites WHERE user_id = $1";
+        const values = [user_id];
+
+        pool.query(checkQuery, values, (checkError, checkResult) => {
+            if (checkError) {
+                console.error("Error checking favorites:", checkError.message);
+                return res.status(500).json({
+                    error: "Database query failed",
+                    details: checkError.message,
+                });
+            }
+
+            if (checkResult.rows.length > 0) {
+                // If a favorite already exists for the user, update it
+                const updateQuery = "UPDATE favorites SET fave_1 = $2 WHERE user_id = $1";
+                pool.query(updateQuery, [user_id, movieId], (updateError) => {
+                    if (updateError) {
+                        console.error("Error updating favorite:", updateError.message);
+                        return res.status(500).json({
+                            error: "Database query failed",
+                            details: updateError.message,
                         });
                     }
-                    console.error("Database query failed:", error.message);
-                    return res.status(500).json({
-                        error: "Database query failed",
-                        details: error.message,
-                    });
-                }
-                res.status(200).json({ message: "Favorite added successfully" });
+                    return res.status(200).json({ message: "Favorite updated successfully" });
+                });
+            } else {
+                // If no favorite exists, insert a new row
+                const insertQuery = "INSERT INTO favorites (user_id, fave_1) VALUES ($1, $2)";
+                pool.query(insertQuery, [user_id, movieId], (insertError) => {
+                    if (insertError) {
+                        console.error("Error inserting favorite:", insertError.message);
+                        return res.status(500).json({
+                            error: "Database query failed",
+                            details: insertError.message,
+                        });
+                    }
+                    return res.status(200).json({ message: "Favorite added successfully" });
+                });
             }
-        );
+        });
+
     } catch (error) {
-        console.error("Database query failed:", error.message);
+        console.error("Error in /favorites route:", error.message);
         return res.status(500).json({
-            error: "Database query failed",
+            error: "Server error",
             details: error.message,
         });
     }
 });
 
-// Update favorite
 
-router.put('/update/:user_id', async (req, res) => {
+
+router.post('/all', async (req, res) => {
     try {
-        const { user_id } = req.params;
-        const { fave_1, fave_2, fave_3, fave_4 } = req.body;
+        const { user_id } = req.body; 
 
-        pool.query(
-            "UPDATE favorites SET fave_1 = $1, fave_2 = $2, fave_3 = $3, fave_4 = $4 WHERE user_id = $5",
-            [fave_1, fave_2, fave_3, fave_4, user_id],
-            (error) => {
-                if (error) {
-                    console.error("Database query failed:", error.message);
-                    return res.status(500).json({
-                        error: "Database query failed",
-                        details: error.message,
-                    });
-                }
-                res.status(200).json({ message: "Favorites updated successfully" });
-            }
-        );
-    } catch (error) {
-        console.error("Database query failed:", error.message);
-        return res.status(500).json({
-            error: "Database query failed",
-            details: error.message,
-        });
-    }
-});
-
-// Delete favorite
-
-router.delete('/delete/:user_id', async (req, res) => {
-    try {
-        const { user_id } = req.params;
-        const { fave_1, fave_2, fave_3, fave_4 } = req.body;
-
-        let query = "UPDATE favorites SET";
-        let updates = [];
-        let params = [];
-        let index = 1;
-
-        if (fave_1) {
-            updates.push(`fave_1 = NULL`);
-        }
-        if (fave_2) {
-            updates.push(`fave_2 = NULL`);
-        }
-        if (fave_3) {
-            updates.push(`fave_3 = NULL`);
-        }
-        if (fave_4) {
-            updates.push(`fave_4 = NULL`);
-        }
-
-        if (updates.length === 0) {
+        if (!user_id) {
             return res.status(400).json({
-                error: "No fields to update",
-                details: "No favorite fields were provided to delete",
+                error: "User ID is required",
             });
         }
 
-        query += ` ${updates.join(', ')} WHERE user_id = $${index}`;
-        params.push(user_id);
+        console.log("Fetching favorite movies for user_id:", user_id);
 
-        pool.query(query, params, (error, results) => {
-            if (error) {
-                console.error("Database query failed:", error.message);
-                return res.status(500).json({
-                    error: "Database query failed",
-                    details: error.message,
-                });
-            }
-            if (results.rowCount === 0) {
+        const query = "SELECT fave_1 FROM favorites WHERE user_id = $1 AND fave_1 IS NOT NULL AND fave_1 != ''";
+        const values = [user_id];
+
+        try {
+            // Using async/await for the query
+            const result = await pool.query(query, values);
+
+            if (result.rows.length === 0) {
                 return res.status(404).json({
-                    error: "User not found",
-                    details: `No user found with user_id ${user_id}`,
+                    message: "No favorite movies found for this user",
                 });
             }
-            res.status(200).json({ message: "Favorite movies deleted successfully" });
+
+            // If data exists, return the list of fave_1 values
+            res.status(200).json(result.rows.map(row => row.fave_1));
+            console.log("Favorites fetched successfully", result.rows);
+        } catch (dbError) {
+            console.error("Database query failed:", dbError.message);
+            return res.status(500).json({
+                error: "Database query failed",
+                details: dbError.message,
+            });
+        }
+    } catch (error) {
+        console.error("Error in /favorites/all route:", error.message);
+        return res.status(500).json({
+            error: "Server error",
+            details: error.message,
         });
+    }
+});
+
+
+
+//Remove favorite
+
+router.delete('/', async (req, res) => {
+    try {
+        const { user_id } = req.body;
+       
+        pool.query(
+            "DELETE FROM favorites WHERE user_id = $1",
+            [user_id],
+            (error) => {
+                if (error) {
+                    console.error("Database query failed:", error.message);
+                    return res.status(500).json({
+                        error: "Database query failed",
+                        details: error.message,
+                    });
+                }
+                res.status(200).json({ message: "Favorites removed successfully" });
+            }
+        );
     } catch (error) {
         console.error("Database query failed:", error.message);
         return res.status(500).json({
@@ -124,5 +134,6 @@ router.delete('/delete/:user_id', async (req, res) => {
         });
     }
 });
+
 
 export default router;

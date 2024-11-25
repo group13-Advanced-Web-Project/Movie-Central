@@ -41,9 +41,10 @@ const Profile = () => {
     };
 
     const fetchMovieLists = async () => {
-        const postData = { auth0_user_id: user.sub };
-
-        const favoritesResponse = await fetch(serverUrl + "/movies/favorites", {
+        const postData = { user_id: user.sub };
+        console.log("Sending POST data:", postData);
+    
+        const favoritesResponse = await fetch(serverUrl + "/favorites/all", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -51,28 +52,25 @@ const Profile = () => {
             },
             body: JSON.stringify(postData),
         });
-        setFavoriteMovies(await favoritesResponse.json());
-
-        const watchlistResponse = await fetch(serverUrl + "/movies/watchlist", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("auth0:id_token")}`,
-            },
-            body: JSON.stringify(postData),
-        });
-        setWatchlist(await watchlistResponse.json());
-
-        const watchedResponse = await fetch(serverUrl + "/movies/watched", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("auth0:id_token")}`,
-            },
-            body: JSON.stringify(postData),
-        });
-        setWatchedMovies(await watchedResponse.json());
+    
+        if (!favoritesResponse.ok) {
+            // Handle fetch errors
+            const errorData = await favoritesResponse.json();
+            console.error("Error fetching favorites:", errorData.error || "Unknown error");
+            return;
+        }
+    
+        const favoritesData = await favoritesResponse.json();
+        console.log("Favorites data:", favoritesData);
+    
+        // Check if the favorites array is empty
+        if (favoritesData.length === 0) {
+            console.log("No favorite movies found.");
+        } else {
+            setFavoriteMovies(favoritesData); 
+        }
     };
+    
 
     const generateShareableLink = () => {
         if (!userDatabaseInfo[0]?.id) {
@@ -216,15 +214,17 @@ const Profile = () => {
                             <div className="center-panel">
                                 <h2>My Favorites</h2>
                                 <div className="movie-grid">
-                                    {favoriteMovies.map((movie, index) => (
-                                        <div key={index} className="movie-card">
-                                            <img
-                                                src={movie.poster_path || "/assets/sample_image.jpg"}
-                                                alt={movie.title}
-                                            />
-                                            <p>{movie.title}</p>
-                                        </div>
-                                    ))}
+                                {favoriteMovies.length === 0 ? (
+    <p>No favorite movies available.</p>
+) : (
+    favoriteMovies.map((movie, index) => (
+        <div key={index} className="movie-card">
+         
+            <p>Fave Movie Id:{movie}</p>
+        </div>
+    ))
+)}
+
                                 </div>
                             </div>
 
