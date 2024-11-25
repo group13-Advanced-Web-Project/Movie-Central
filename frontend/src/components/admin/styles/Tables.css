@@ -1,17 +1,17 @@
 .tables-container-div {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
-    margin-top: 0;
+    align-items: center; /* Center align the table container */
+    gap: 20px;
+    margin-top: 20px;
     background-color: #f9f9f9;
     padding: 20px;
-    border-radius: 5px;
+    border-radius: 8px;
     width: 100%;
-    max-width: 700px;
+    max-width: 1000px; /* Increased max-width to accommodate larger tables */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added subtle shadow for better visibility */
     overflow: hidden;
 }
-
 
 .tables-table {
     width: 100%;
@@ -20,19 +20,22 @@
     font-size: 14px;
     background-color: #ffffff;
     color: #333;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Added shadow to the table for depth */
 }
 
 .tables-table th {
     background-color: #e9ecef;
     font-weight: bold;
-    padding: 8px;
+    padding: 10px;
     text-align: left;
     border: 1px solid #dee2e6;
+    color: #495057;
 }
 
 .tables-table td {
-    padding: 8px;
+    padding: 10px;
     border: 1px solid #dee2e6;
+    text-align: left; /* Ensuring all table data aligns to the left */
 }
 
 .tables-table tr:nth-child(even) {
@@ -45,11 +48,18 @@
 
 .tables-header {
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .tables-heading {
-    font-size: 1.5em;
+    font-size: 1.75em;
     color: #212529;
     margin: 0;
+    font-weight: 600; /* Added a bit more weight for emphasis */
+}
+
+.tables-container-div h2 {
+    font-size: 2em;
+    color: #212529;
+    margin-bottom: 15px; /* Better spacing between heading and table */
 }
