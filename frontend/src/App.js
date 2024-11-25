@@ -6,11 +6,12 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Home from './pages/home/Home';
 import Showtimes from './pages/Showtimes/Showtimes';
 import MoviePage from './pages/moviepage/MoviePage'; 
-import GenrePage from './pages/home/GenrePage.js';  // Import GenrePage
-import YearPage from './pages/home/YearPage.js';  // Import YearPage
+import GenrePage from './pages/home/GenrePage.js';  
+import YearPage from './pages/home/YearPage.js';  
 import useMovies from './pages/Showtimes/UseMovies'; 
 import Profile from './pages/Profile';
 import AdminPage from './pages/admin/AdminPage.js';
+import ReviewPage from './pages/ReviewPage.js';
 
 const serverUrl = process.env.REACT_APP_API_URL
 
@@ -82,10 +83,12 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/movie/:movieName" element={<MoviePage />} />
         <Route path="/showtimes" element={<Showtimes movies={movies} fetchShowSchedule={fetchMovies} />} />
-        <Route path="/genre/:genre" element={<GenrePage />} />    {/* Add GenrePage route */}
-        <Route path="/year/:year" element={<YearPage />} />      {/* Add YearPage route */}
+        <Route path="/genre/:genre" element={<GenrePage />} />   
+        <Route path="/year/:year" element={<YearPage />} />      
         <Route path="/profile" element={<Profile />} />
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="/reviews" element={<ReviewPage />} />
+        <Route path="/movies/:movie_id" element={<MoviePage />} />
       </Routes>
     </Router>
   );

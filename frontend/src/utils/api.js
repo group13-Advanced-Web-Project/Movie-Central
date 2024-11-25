@@ -35,3 +35,22 @@ export const fetchReviews = async (movie_id) => {
     }
 };
 
+
+// Fetch all reviews
+export const getAllReviews = async () => {
+    try {
+        const response = await fetch(`${serverUrl}/reviews`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch all reviews');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching all reviews:', error.message);
+        throw error;
+    }
+};
