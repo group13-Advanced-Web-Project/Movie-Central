@@ -187,6 +187,14 @@ function MoviePage() {
             alert('An error occurred. Please try again later.');
         }
     };
+
+    // Function to mask the email
+    const maskEmail = (email) => {
+        const [localPart, domain] = email.split('@');
+        const maskedLocalPart = localPart.charAt(0) + '****'; // Keep the first character and mask the rest
+        return `${maskedLocalPart}@${domain}`;
+    };
+
     
 
     return (
@@ -250,7 +258,8 @@ function MoviePage() {
                                     <div key={index} className="review-item">
                                         <div className="review-header">
                                             <span className="reviewer-name">
-                                                <span className="reviewer-label">Reviewed By:</span> {review.user_email || "Anonymous"}
+                                                <span className="reviewer-label">Reviewed By:</span> 
+                                                {review.user_email ? maskEmail(review.user_email) : "Anonymous"}
                                             </span>
                                             <span className="review-rating">
                                                 <span className="rating-label">Rating:</span> {review.rating}/5
