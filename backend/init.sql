@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS groups;
 CREATE TABLE users ( 
     id SERIAL PRIMARY KEY,
     user_id VARCHAR(255) UNIQUE NOT NULL,
-    email VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
     role VARCHAR(255) NOT NULL
 );
 
@@ -62,8 +62,8 @@ CREATE TABLE review (
 );
 
 -- Insert dummy data into review table
-INSERT INTO review (movie_id, movie_name, user_id, user_name, description, rating) 
-VALUES ('12345', 'Movie', 'auth0_sub64654', 'user@foo.com', 'good movie', 4);
+INSERT INTO review (movie_id, movie_name, user_id, user_email, description, rating) 
+VALUES ('12345', 'Movie', 'auth0_sub64654', 'user3@example.com', 'good movie', 4);
 
 -- Create groups table
 CREATE TABLE groups (
