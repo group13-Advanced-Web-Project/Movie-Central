@@ -6,10 +6,9 @@ import Footer from '../../components/Footer';
 import ReviewPopup from '../../components/ReviewPopup';
 import { submitReview } from '../../utils/api';
 import '../../styles/MoviePage.css';
+import Alert from '../../components/Alert'; 
 
 const serverUrl = process.env.REACT_APP_API_URL;
-// const serverUrl = 'http://localhost:3001';
-
 
 function MoviePage() {
     const { movieName } = useParams();
@@ -18,10 +17,11 @@ function MoviePage() {
     const [error, setError] = useState(null);
     const [isPopupOpen, setPopupOpen] = useState(false);
     const [isFavorite, setFavorite] = useState(false);
-    const [favoriteMovies, setFavoriteMovies] = useState(""); // State for user's favorite movies
-    const [reviews, setReviews] = useState([]); // State for reviews
+    const [favoriteMovies, setFavoriteMovies] = useState("");
+    const [reviews, setReviews] = useState([]);
+    const [notification, alert] = useState(""); 
     const { user, isAuthenticated, loginWithRedirect } = useAuth0();
-    const { movie_id } = useParams(); // Updated from movieName
+    const { movie_id } = useParams();
 
     useEffect(() => {
         const fetchMovie = async () => {
@@ -39,7 +39,7 @@ function MoviePage() {
                 if (data && data.length > 0) {
                     setMovie(data[0]);
                     checkIfFavorite(data[0].id);
-                    fetchReviews(data[0].id); // Fetch reviews for the movie
+                    fetchReviews(data[0].id);
                 } else {
                     setMovie(null);
                 }
@@ -52,7 +52,7 @@ function MoviePage() {
 
         const checkIfFavorite = async (movieId) => {
             if (!isAuthenticated || !user?.sub) return;
-        
+
             try {
                 const response = await fetch(
                     `${serverUrl}/favorites/all`, {
@@ -63,7 +63,7 @@ function MoviePage() {
                         body: JSON.stringify({ user_id: user.sub })
                     }
                 );
-        
+
                 if (response.ok) {
                     const favoriteMovies = await response.json();
                     // console.log('Favorite movies:', favoriteMovies[0], "current movie id:", movieId);
@@ -76,7 +76,7 @@ function MoviePage() {
                         setFavorite(false);
                         console.log('Movie is not a favorite');
                     }
-        
+
                 } else {
                     throw new Error('Failed to fetch favorite status.');
                 }
@@ -103,7 +103,7 @@ function MoviePage() {
         //     } catch (error) {
         //         console.error('Error fetching favorite movies:', error);
         //     }
-        // };
+        // };        
 
         const fetchReviews = async (movieId) => {
             try {
@@ -111,7 +111,7 @@ function MoviePage() {
                 if (response.ok) {
                     const data = await response.json();
                     setReviews(data);
-                    
+
                 } else {
                     console.error('Failed to fetch reviews');
                 }
@@ -122,12 +122,17 @@ function MoviePage() {
 
         checkIfFavorite();
         fetchMovie();
-        
+
     }, [movieName, serverUrl]);
 
     const handleAddReviewClick = () => {
         if (isAuthenticated) {
-            setPopupOpen(true);
+            const userReview = reviews.find((review) => review.user_id === user.sub);
+            if (userReview) {                
+                alert("You have already submitted a review for this movie.");
+            } else {
+                setPopupOpen(true);
+            }
         } else {
             loginWithRedirect();
         }
@@ -146,7 +151,7 @@ function MoviePage() {
                 user_id: user.sub,
                 user_email: user.email,
             });
-            setReviews((prevReviews) => [newReview, ...prevReviews]); // Add new review to the reviews list            
+            setReviews((prevReviews) => [newReview, ...prevReviews]);
         } catch (error) {
             alert('Failed to submit review. Please try again.');
         }
@@ -157,21 +162,21 @@ function MoviePage() {
             loginWithRedirect();
             return;
         }
-    
+
         if (!user?.sub) {
             alert('Failed to identify user. Please log in and try again.');
             return;
         }
-    
+
         try {
             const method = isFavorite ? 'DELETE' : 'POST';
-            
+
             const response = await fetch(`${serverUrl}/favorites/`, {
                 method,
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ user_id: user.sub, movieId: movie.id }),
             });
-    
+
             if (response.ok) {
                 const successMessage = isFavorite
                     ? 'Movie removed from favorites.'
@@ -188,14 +193,13 @@ function MoviePage() {
         }
     };
 
-    // Function to mask the email
     const maskEmail = (email) => {
         const [localPart, domain] = email.split('@');
-        const maskedLocalPart = localPart.charAt(0) + '****'; // Keep the first character and mask the rest
+        const maskedLocalPart = localPart.charAt(0) + '****';
         return `${maskedLocalPart}@${domain}`;
     };
 
-    
+
 
     return (
         <div className="home-container">
@@ -241,14 +245,13 @@ function MoviePage() {
                                 </p>
                                 <p><strong>Cast:</strong> {movie.cast}</p>
 
-                                {/* Review Link */}
                                 <button onClick={handleAddReviewClick} className="review-link">
                                     Add Review
                                 </button>
-                            </div>   
+                                {notification && <Alert message={notification} onClose={() => alert('')} />}
+                            </div>
                         </div>
 
-                        {/* Reviews Section */}
                         <div className="moviepage-reviews">
                             <h3>Reviews</h3>
                             {reviews.length === 0 ? (
@@ -272,7 +275,7 @@ function MoviePage() {
                         </div>
                     </div>
                 )}
-
+                
             </div>
             <Footer />
 

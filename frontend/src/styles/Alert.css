@@ -1,0 +1,32 @@
+.custom-alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ffffff;
+    color: rgb(163, 48, 48);
+    padding: 20px;
+    border-radius: 2px;
+    box-shadow: 0 40px 20px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    border-color: black;
+}
+
+.custom-alert p {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: rgb(250, 30, 30);
+    align-content: center;
+}
+
+.custom-alert button {
+    background: none;
+    border: none;
+    color: rgb(147, 12, 12);
+    font-weight: bold;
+    
+    cursor: pointer;
+    margin-left: 10px;
+    align-items: center;
+}
