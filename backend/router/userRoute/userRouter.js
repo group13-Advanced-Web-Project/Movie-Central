@@ -28,7 +28,11 @@ router.get("/all", (req, res) => {
 router.post("/check-account", (req, res) => {
   try {
     const { auth0_user_id } = req.body;
-    console.log("Received auth0_user_id:", auth0_user_id); // Log received user ID
+
+    // Validate if the required field is missing
+    if (!auth0_user_id) {
+      return res.status(400).json({ message: "auth0_user_id is required" });
+    }
 
     // Check if the auth0_user_id exists in the users table by querying the user_id column
     pool.query(
@@ -37,27 +41,26 @@ router.post("/check-account", (req, res) => {
       (error, result) => {
         if (error) {
           console.error("Query error:", error); // Log query error
-          return (error); // Pass any query errors to the error handler
+          return res.status(500).json({ message: "Database query failed" }); // Return 500 for server error
         }
 
-        console.log("Query result:", result.rows); // Log query result
         if (result.rows.length > 0) {
           return res.status(200).json(result.rows); // Return all rows as JSON
         } else {
-          console.log("User not found"); // Log user not found
           return res.status(404).json({ message: "User not found" }); // Return 404 if no user found
         }
       }
     );
   } catch (error) {
     console.error("Catch error:", error); // Log catch error
-    return (error); // Pass any other errors to the error handler
+    return res.status(500).json({ message: "Server error" }); // Return 500 for unexpected errors
   }
 });
 
+
 router.post("/add", (req, res) => {
   try {
-    const { auth0_user_id, email } = req.body; // Destructure email from the request body
+    const { auth0_user_id, email } = req.body; // Destructure email and auth0_user_id from the request body
 
     // Ensure both auth0_user_id and email are provided
     if (!auth0_user_id || !email) {
@@ -69,18 +72,27 @@ router.post("/add", (req, res) => {
       [auth0_user_id, email],
       (error, result) => {
         if (error) {
-          console.error("Query error:", error); // Log query error
-          return res.status(500).json({ error: error.message }); // Handle query errors
+          // Check for unique constraint violation error code
+          if (error.code === '23505') { // Duplicate key violation
+            return res.status(409).json({ error: "User already exists." });
+          }
+
+          // Log any other query errors
+          console.error("Query error:", error);
+          return res.status(500).json({ error: error.message });
         }
 
-        return res.status(200).json(result.rows); // Return the inserted row as JSON
+        // Successfully inserted, return the inserted row
+        return res.status(200).json(result.rows);
       }
     );
   } catch (error) {
-    console.error("Catch error:", error); // Log unexpected errors
-    return res.status(500).json({ error: error.message }); // Handle other errors
+    // Log unexpected errors
+    console.error("Catch error:", error);
+    return res.status(500).json({ error: error.message });
   }
 });
+
 
 router.post("/user-info", (req, res) => {
   try {
@@ -118,6 +130,13 @@ router.post("/remove-account", (req, res) => {
     console.log("Received request body:", req.body);
 
     const { auth0_user_id } = req.body;
+
+    // Check if auth0_user_id is missing
+    if (!auth0_user_id) {
+      console.log("auth0_user_id is required.");
+      return res.status(400).json({ error: "auth0_user_id is required." });
+    }
+
     console.log("Received auth0_user_id:", auth0_user_id); // Log received user ID
 
     pool.query(
@@ -143,5 +162,6 @@ router.post("/remove-account", (req, res) => {
     return res.status(500).json({ error: error.message }); // Pass any other errors to the error handler
   }
 });
+
 
 export default router;

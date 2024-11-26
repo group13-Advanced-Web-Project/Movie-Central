@@ -29,4 +29,7 @@ app.get("/", (req, res) => {
   res.json({ message: "Hello from server!" });
 });
 
+// Export the app for testing
+export default app;
+
 app.listen(port);
