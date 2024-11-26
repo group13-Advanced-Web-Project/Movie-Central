@@ -53,21 +53,20 @@ describe("User Endpoints (Live Production Database)", () => {
 
   // Ensure async cleanup after all tests
   afterAll(async () => {
-    // console.log("Cleaning up after tests...");
-
+    console.log("Cleaning up after tests...");
+  
     // Close the database pool
     await pool.end();
-    // console.log("Database pool closed.");
-
+    console.log("Database pool closed.");
+  
     // Explicitly close the server if it's running
     if (server) {
-      // Return the promise to ensure Jest waits for the server to close
       await new Promise((resolve, reject) => {
         server.close((err) => {
           if (err) {
             reject(err); // Reject if there's an error closing the server
           } else {
-            // console.log("Server closed.");
+            console.log("Server closed.");
             resolve();
           }
         });
@@ -76,6 +75,8 @@ describe("User Endpoints (Live Production Database)", () => {
       console.log("Server was not running.");
     }
   });
+  
+  
 
   describe("POST /users/add", () => {
     const testUser = {

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "devStart": " nodemon index.js",
-     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles --verbose"
+     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles --forceExit --verbose"
   },
   "keywords": [],
   "author": "",
