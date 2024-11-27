@@ -50,13 +50,25 @@ CREATE TABLE review (
 
 -- Create groups table
 CREATE TABLE groups (
-    id SERIAL PRIMARY KEY,
-    group_id VARCHAR(255) NOT NULL,
-    member_1 VARCHAR(255),
-    member_2 VARCHAR(255),
-    member_3 VARCHAR(255),
-    member_4 VARCHAR(255)
+    group_id SERIAL PRIMARY KEY,
+    group_name VARCHAR(255) NOT NULL UNIQUE,
+    description TEXT
 );
+
+-- Create group members table
+CREATE TABLE group_members (
+    id SERIAL PRIMARY KEY,
+    group_id INT NOT NULL,
+    user_id VARCHAR(255) NOT NULL,
+    is_admin BOOLEAN DEFAULT FALSE,
+    status VARCHAR(255) DEFAULT 'pending',
+    FOREIGN KEY (group_id) REFERENCES groups (group_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE,
+    UNIQUE (group_id, user_id)
+);
+
+CREATE UNIQUE INDEX one_admin_per_group ON group_members (group_id)
+WHERE is_admin = TRUE;
 
 -- Handle user deletion for review table
 CREATE OR REPLACE FUNCTION delete_user()
@@ -82,6 +94,8 @@ EXECUTE FUNCTION delete_user();
 INSERT INTO users (user_id, email, role) VALUES ('REMOTE DB WORKING', 'user1@example.com', 'user');
 INSERT INTO users (user_id, email, role) VALUES ('auth0|66f639c08901fee18cf8a761','user2@example.com', 'admin');
 INSERT INTO users (user_id, email, role) VALUES ('auth0_sub64654', 'user3@example.com', 'user');
+INSERT INTO users (user_id, email, role) VALUES ('auth0_sub1', 'user4@example.com', 'user');
+INSERT INTO users (user_id, email, role) VALUES ('auth0_sub2', 'user5@example.com', 'user');
 INSERT INTO users (user_id, email, role) VALUES ('Deleted User', 'Deleted User', 'guest');
 
 -- Insert dummy data into favorites table
@@ -93,12 +107,25 @@ INSERT INTO review (movie_id, movie_name, user_id, user_email, description, rati
 VALUES ('12345', 'Movie', 'auth0_sub64654', 'user3@example.com', 'good movie', 4);
 
 
-
 -- Insert dummy data into groups table
-INSERT INTO groups (group_id, member_1, member_2, member_3, member_4) 
-VALUES ('1', 'auth0_sub1', 'auth0_sub2', 'auth0_sub3', 'auth0_sub4');
+INSERT INTO groups (group_name, description) 
+VALUES ('Group 1', 'This is a group description');
 
+-- Insert dummy data into group_members table
+INSERT INTO group_members (group_id, user_id, is_admin, status)
+VALUES (1, 'auth0_sub1', TRUE, 'accepted');
+INSERT INTO group_members (group_id, user_id, is_admin)
+VALUES (1, 'auth0_sub2', FALSE);
 
+-- Accept group members
+-- UPDATE group_members
+-- SET status = 'accepted'
+-- WHERE user_id = 'auth0_sub2';
+
+-- Reject group members
+-- UPDATE group_members
+-- SET status = 'rejected'
+-- WHERE user_id = 'auth0_sub2';
 
 
 -- select * from users

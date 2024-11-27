@@ -6,6 +6,7 @@ import adminRouter from "./router/adminRouter/adminRouter.js";
 import movieRouter from "./router/movieRoute/movieRouter.js";
 import reviewsRouter from "./router/reviewsRouter/reviewsRouter.js";
 import favoriteRouter from "./router/favoritesRouter/favoritesRouter.js";
+import groupRouter from "./router/groupRouter/groupRouter.js";
 import { pool } from "./helpers/db.js";
 
 dotenv.config();
@@ -22,7 +23,8 @@ app.use("/users/", userRouter);
 app.use("/admin/", adminRouter);
 app.use("/movies/", movieRouter);
 app.use("/reviews/", reviewsRouter);
-app.use("/favorites", favoriteRouter);
+app.use("/favorites/", favoriteRouter);
+app.use("/groups/", groupRouter);
 
 
 app.get("/", (req, res) => {
