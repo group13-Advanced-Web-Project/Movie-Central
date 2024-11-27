@@ -1,5 +1,5 @@
 import express from "express";
-import axios from "axios";
+import axios, { all } from "axios";
 import dotenv from "dotenv";
 import { Router } from "express";
 import { pool } from "../../helpers/db.js";
@@ -18,29 +18,63 @@ router.get("/", (req, res) => {
     res.json({ message: "Hello from Movie Router!" });
 });
 
+const now_playing_max_pages = 2;
+const popular_max_pages = 50;
+const trending_max_pages = 10;
 
-router.get("/fetch-movies", async (req, res) => {
+async function fetchMoviesFromEndpoint(endpoint, maxPages=50) {
     const allMovies = [];
     let currentPage = 1;
-    const maxPages = 50;
-    let hasError = false;
 
-    try {
-        while (currentPage <= maxPages) {
-            const response = await limit(() =>
-                axios.get(
-                    `https://api.themoviedb.org/3/movie/now_playing?page=${currentPage}&region=FI`,
-                    { headers: { Authorization: `Bearer ${tmdb_api_key}` } }
-                )
+    while (currentPage <= maxPages) {
+        try {
+            const response = await limit(() => 
+            axios.get(
+                `${endpoint}?api_key=${tmdb_api_key}&page=${currentPage}&region=fi`, {
+                    headers: {
+                        Authorization: `Bearer ${tmdb_api_key}`
+                    }
+                })
             );
 
-            const movies = response.data.results;
-            allMovies.push(...movies);
+            allMovies.push(...response.data.results);
             currentPage++;
+        } catch (error) {
+            console.error("Error fetching movies from endpoint:", error.message);
+            break;
         }
+    }
+    return allMovies;
+}
+
+router.get("/fetch-movies", async (req, res) => {
+    try {
+        const [nowPlayingMovies, popularMovies, trendingMovies] = await Promise.all([
+            fetchMoviesFromEndpoint(`https://api.themoviedb.org/3/movie/now_playing?region=fi`, now_playing_max_pages),
+            fetchMoviesFromEndpoint(`https://api.themoviedb.org/3/movie/popular?region=fi`, popular_max_pages),
+            fetchMoviesFromEndpoint(`https://api.themoviedb.org/3/trending/movie/week`, trending_max_pages)
+        ]);
+
+        const movieMap = new Map();
+        nowPlayingMovies.forEach((movie) => movieMap.set(movie.id, { ...movie, isNowPlaying: true }));
+
+        [...popularMovies, ...trendingMovies].forEach((movie) => {
+            if (!movieMap.has(movie.id)) {
+                movieMap.set(movie.id, { ...movie, isNowPlaying: false });
+            }
+        });
+
+        const combinedMovies = Array.from(movieMap.values());
+        combinedMovies.sort((a, b) => {
+            if (a.isNowPlaying && !b.isNowPlaying) return -1;
+            if (!a.isNowPlaying && b.isNowPlaying) return 1;
+            return b.popularity - a.popularity;
+        });
+
+        const finalMovies = combinedMovies.slice(0, 220);
 
         const movies = await Promise.all(
-            allMovies.map(async (movie) => {
+            finalMovies.map(async (movie) => {
                 try {
                     const [detailsResponse, castResponse] = await Promise.all([
                         axios.get(`https://api.themoviedb.org/3/movie/${movie.id}`, {
@@ -70,16 +104,11 @@ router.get("/fetch-movies", async (req, res) => {
                         year: movie.release_date ? movie.release_date.split("-")[0] : "Unknown",
                     };
                 } catch (error) {
-                    hasError = true;
                     console.error("Error fetching movie details:", error.message);
                     return null;
                 }
             })
         );
-
-        if (hasError) {
-            return res.status(500).json({ error: "Failed to fetch movies" });
-        }
 
         const filteredMovies = movies.filter((movie) => movie !== null);
         res.json(filteredMovies);
@@ -298,7 +327,7 @@ router.get("/movies-by-year", async (req, res) => {
 
 router.get("/featured-movie", async (req, res) => {
     try {
-        const movieResponse = await axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=${tmdb_api_key}`,
+        const movieResponse = await axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=${tmdb_api_key}&region=FI`,
         {
             headers: {
                 Authorization: `Bearer ${tmdb_api_key}`
@@ -351,39 +380,35 @@ router.get("/featured-movie", async (req, res) => {
 
 router.get("/trending-movies", async (req, res) => {
     try {
-        const response = await axios.get(`https://api.themoviedb.org/3/trending/movie/week?api_key=${tmdb_api_key}`,
-        {
-            headers: {
-                Authorization: `Bearer ${tmdb_api_key}`
+        const fetchMoviesFromPage = async (page) => {
+            const response = await axios.get(`https://api.themoviedb.org/3/trending/movie/week`, {
+                params: {
+                    api_key: tmdb_api_key,
+                    page: page,
+                },
+                headers: {
+                    Authorization: `Bearer ${tmdb_api_key}`,
+                },
+            });
+            return response.data.results;
+        };
+
+        const pages = Array.from({ length: 10 }, (_, index) => index + 1);
+        const allMovies = await Promise.all(pages.map(fetchMoviesFromPage));
+
+        const movieMap = new Map();
+        allMovies.flat().forEach((movie) => {
+            if (!movieMap.has(movie.id)) {
+                movieMap.set(movie.id, movie);
             }
         });
 
-        const movies = response.data.results;
+        const sortedMovies = Array.from(movieMap.values()).sort((a, b) => b.popularity - a.popularity);
 
-        if (!movies || movies.length === 0) {
-            return res.status(404).json({ error: "Trending movies not found" });
-        }
+        const topMovies = sortedMovies.slice(0, 50);
 
         const formattedMovies = await Promise.all(
-            movies.map(async (movie) => {
-                const detailsResponse = await axios.get(`https://api.themoviedb.org/3/movie/${movie.id}?api_key=${tmdb_api_key}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${tmdb_api_key}`
-                    }
-                });
-
-                const castResponse = await axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${tmdb_api_key}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${tmdb_api_key}`
-                    }
-                });
-
-                const genres = detailsResponse.data.genres.map((genre) => genre.name).join(", ");
-                const duration = detailsResponse.data.runtime;
-                const cast = castResponse.data.cast.slice(0,10).map((actor) => actor.name).join(", ");
-
+            topMovies.map(async (movie) => {
                 return {
                     id: movie.id,
                     title: movie.title,
