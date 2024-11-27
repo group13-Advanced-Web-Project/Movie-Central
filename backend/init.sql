@@ -45,9 +45,7 @@ CREATE TABLE review (
 CREATE TABLE groups (
     group_id SERIAL PRIMARY KEY,
     group_name VARCHAR(255) NOT NULL UNIQUE,
-    description TEXT,
-    -- admin VARCHAR(255) NOT NULL,
-    -- FOREIGN KEY (admin) REFERENCES users (user_id) ON DELETE CASCADE
+    description TEXT
 );
 
 -- Create group members table
@@ -59,9 +57,11 @@ CREATE TABLE group_members (
     status VARCHAR(255) DEFAULT 'pending',
     FOREIGN KEY (group_id) REFERENCES groups (group_id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE,
-    CONSTRAINT unique_member UNIQUE (group_id, user_id),
-    CONSTRAINT one_admin_per_group UNIQUE (group_id, is_admin) WHERE is_admin = TRUE
+    UNIQUE (group_id, user_id)
 );
+
+CREATE UNIQUE INDEX one_admin_per_group ON group_members (group_id)
+WHERE is_admin = TRUE;
 
 -- Handle user deletion for review table
 CREATE OR REPLACE FUNCTION delete_user()
@@ -107,7 +107,7 @@ VALUES ('Group 1', 'This is a group description');
 -- Insert dummy data into group_members table
 INSERT INTO group_members (group_id, user_id, is_admin, status)
 VALUES (1, 'auth0_sub1', TRUE, 'accepted');
-INSERT INTO group_members (group_id, user_id, is_admin, status)
+INSERT INTO group_members (group_id, user_id, is_admin)
 VALUES (1, 'auth0_sub2', FALSE);
 
 -- Accept group members
