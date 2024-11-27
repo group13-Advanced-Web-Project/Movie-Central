@@ -16,7 +16,14 @@ CREATE TABLE users (
     role VARCHAR(255) NOT NULL
 );
 
--- Create favorites table
+
+CREATE TABLE favorites (
+    id SERIAL PRIMARY KEY,
+    user_id VARCHAR(255) NOT NULL,
+    movie_id VARCHAR(255) NOT NULL,
+    UNIQUE(user_id, movie_id)
+);
+-- i am using the above one     Create favorites table
 CREATE TABLE favorites (
     id SERIAL PRIMARY KEY,
     user_id VARCHAR(255) NOT NULL,

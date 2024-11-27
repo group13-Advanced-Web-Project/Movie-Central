@@ -22,7 +22,7 @@ app.use("/users/", userRouter);
 app.use("/admin/", adminRouter);
 app.use("/movies/", movieRouter);
 app.use("/reviews/", reviewsRouter);
-app.use("/favorites/", favoriteRouter);
+app.use("/favorites", favoriteRouter);
 
 
 app.get("/", (req, res) => {
