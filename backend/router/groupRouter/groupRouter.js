@@ -46,7 +46,10 @@ router.get('/users/:user_id', async (req, res) => {
 
     try {
         const result = await pool.query(
-            `SELECT * FROM group_members WHERE user_id = $1;`,
+            `SELECT groups.group_id, groups.group_name 
+            FROM group_members JOIN groups 
+            ON group_members.group_id = groups.group_id 
+            WHERE group_members.user_id = $1;`,
             [user_id]
         );
         res.json(result.rows);
@@ -147,6 +150,29 @@ router.get('/:group_id/members', async (req, res) => {
         res.json(result.rows);
     } catch (error) {
         res.status(500).json({ error: "Failed to fetch group members", details: error.message });
+    }
+});
+
+// Get groups by group id
+router.get('/:group_id', async (req, res) => {
+    const {group_id} = req.params;
+
+    try {
+        const result = await pool.query(
+            `SELECT groups.group_id, groups.group_name, groups.description, group_members.user_id, group_members.is_admin 
+            FROM groups JOIN group_members 
+            ON groups.group_id = group_members.group_id 
+            WHERE groups.group_id = $1 AND group_members.status = 'accepted';`,
+            [group_id]
+        );
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: "Group not found" });
+        }
+
+        res.json(result.rows);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch group", details: error.message });
     }
 });
 
