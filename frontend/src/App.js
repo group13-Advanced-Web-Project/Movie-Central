@@ -12,6 +12,7 @@ import useMovies from './pages/Showtimes/UseMovies';
 import Profile from './pages/Profile';
 import AdminPage from './pages/admin/AdminPage.js';
 import ReviewPage from './pages/ReviewPage.js';
+import PublicProfile from './pages/PublicProfile.js';
 
 const serverUrl = process.env.REACT_APP_API_URL
 
@@ -89,6 +90,7 @@ function App() {
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/reviews" element={<ReviewPage />} />
         <Route path="/movies/:movie_id" element={<MoviePage />} />
+        <Route path="/publicProfile/:dbId" element={<PublicProfile />} />       
       </Routes>
     </Router>
   );

@@ -174,7 +174,7 @@ function MoviePage() {
             const response = await fetch(`${serverUrl}/favorites/`, {
                 method,
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user_id: user.sub, movieId: movie.id }),
+                body: JSON.stringify({ user_id: user.sub, movie_id: movie.id }),
             });
 
             if (response.ok) {
