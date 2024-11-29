@@ -113,8 +113,7 @@ function GroupsPage() {
                                 <li className="groups-li" key={group.id}>
                                     <Link to={`/group/${group.group_id}`}>
                                         <h3>{group.group_name}</h3>
-                                    </Link>
-                                    <p>{group.description}</p>
+                                    </Link>                                    
                                 </li>
                             ))}
                         </ul>
