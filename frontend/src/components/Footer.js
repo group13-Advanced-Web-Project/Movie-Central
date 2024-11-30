@@ -9,18 +9,7 @@ function Footer() {
         <a href="#about">About Us</a>
         <a href="#contact">Contact</a>
         <a href="#privacy">Privacy Policy</a>
-      </div>
-      <div className="social-media">
-        <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
-          <img src="/assets/facebook.png" alt="Facebook" className="social-icon" />
-        </a>
-        <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">
-          <img src="/assets/twitter.png" alt="Twitter" className="social-icon" />
-        </a>
-        <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
-          <img src="/assets/instagram.png" alt="Instagram" className="social-icon" />
-        </a>
-      </div>
+      </div>      
     </div>
   );
 }
