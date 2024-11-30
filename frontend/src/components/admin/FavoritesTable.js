@@ -43,7 +43,7 @@ const getFavoritesTable = async () => {
         <div   className='table-container'>
             <table className='tables-table'>
                 <thead>
-                    <tr c>
+                    <tr>
                         <th>id</th>
                         <th>user_id</th>
                         <th>movie_id</th>
