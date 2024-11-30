@@ -47,10 +47,10 @@
 
 ![Main Image](docs/assets/readme-main_img.png)
 
-# Full-Stack Movie Database
+# Movie-Central
 
 ## Description
-The **Full-Stack Movie Database** is a modern web application designed to allow users to search, explore, and manage movie reviews and showtimes. This platform combines the power of React for a responsive frontend with Node.js and PostgreSQL for backend functionality, offering an intuitive user experience.
+**Movie-Central** is a modern web application designed to allow users to search, explore, and manage movie reviews and showtimes. This platform combines the power of React for a responsive frontend with Node.js and PostgreSQL for backend functionality, offering an intuitive user experience.
 
 ## Team
 
@@ -80,7 +80,7 @@ The **Full-Stack Movie Database** is a modern web application designed to allow 
 
 
 
-The **Full-Stack Movie Database** allows users to explore movies, view their showtimes, and leave reviews. Users can browse movies without creating an account, or register to gain full access to personalized features. Registered users can:
+**Movie-Central** allows users to explore movies, view their showtimes, and leave reviews. Users can browse movies without creating an account, or register to gain full access to personalized features. Registered users can:
 
 - **Browse Movies**: Access detailed movie information, ratings, and showtimes.
 - **Create and Share Favorite Lists**: Users can curate and share their favorite movies with a unique link.
@@ -122,7 +122,7 @@ This project integrates **React**, **Node.js**, **Express**, and **MySQL**, crea
 | Technology | Description |
 |------------|-------------|
 | **Frontend** | Hosted on **Netlify** for fast, reliable, and continuous deployment. |
-| **Backend**  | Deployed on **Heroku** (or your preferred hosting platform) for API and database services. |
+| **Backend**  | Deployed on **Render** for API and database services. |
 
 
 
@@ -131,7 +131,7 @@ This project integrates **React**, **Node.js**, **Express**, and **MySQL**, crea
 
 
 
-The **Full-Stack Movie Database** operates using a client-server architecture:
+The **Movie-Central** operates using a client-server architecture:
 
 1. **Frontend**: Built with **React**, it handles all user interactions like browsing movies, viewing reviews, and managing user accounts. It communicates with the backend via API calls.
 2. **Backend**: Powered by **Node.js** and **Express**, the backend processes requests from the frontend, handling movie data, user authentication, and more.
