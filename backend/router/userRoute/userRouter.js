@@ -163,5 +163,36 @@ router.post("/remove-account", (req, res) => {
   }
 });
 
+// Update user nickname
+router.put("/update-nickname", (req, res) => {
+  try {
+    const { auth0_user_id, nickname } = req.body;
+
+    if (!auth0_user_id || !nickname) {
+      return res.status(400).json({ error: "auth0_user_id and nickname are required." });
+    }
+
+    pool.query(
+      "UPDATE users SET nickname = $1 WHERE user_id = $2 RETURNING *;",
+      [nickname, auth0_user_id],
+      (error, result) => {
+        if (error) {
+          console.error("Query error:", error);
+          return res.status(500).json({ error: error.message });
+        }
+
+        if (result.rows.length > 0) {
+          return res.status(200).json(result.rows);
+        } else {
+          return res.status(404).json({ message: "User not found" });
+        }
+      }
+    );
+  } catch (error) {
+    console.error("Catch error:", error);
+    return res.status(500).json({ error: error.message });
+  }
+});
+
 
 export default router;

@@ -13,9 +13,27 @@ CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     user_id VARCHAR(255) UNIQUE NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
+    nickname VARCHAR(255),
     role VARCHAR(255) NOT NULL
 );
 
+-- Auto generate nickname
+CREATE OR REPLACE FUNCTION set_nickname()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF POSITION('@' IN NEW.email) > 1 THEN
+        NEW.nickname := SUBSTRING(NEW.email FROM 1 FOR POSITION('@' IN NEW.email) - 1);
+    ELSE
+        NEW.nickname := NULL;  -- No valid email, set nickname as NULL
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER set_nickname
+BEFORE INSERT ON users
+FOR EACH ROW
+EXECUTE FUNCTION set_nickname();
 
 CREATE TABLE favorites (
     id SERIAL PRIMARY KEY,

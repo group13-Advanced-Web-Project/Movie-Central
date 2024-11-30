@@ -22,26 +22,36 @@ const Profile = () => {
     const [ratings, setRatings] = useState({});
     const [shareableLink, setShareableLink] = useState("");
     const [showPublicProfile, setShowPublicProfile] = useState(false); // State to toggle PublicProfile
+    const [nickname, setNickname] = useState(""); // State to store new nickname
 
 
     const getAccountInfo = async () => {
         const postData = { auth0_user_id: user.sub };
         // console.log("Sending POST data:", postData);
 
+        try {
+            const response = await fetch(serverUrl+"/users/user-info", {
 
-        const response = await fetch(serverUrl+"/users/user-info", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("auth0:id_token")}`,
+                },
+                body: JSON.stringify(postData),
+            });
 
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("auth0:id_token")}`,
-            },
-            body: JSON.stringify(postData),
-        });
-        setUserDatabaseInfo(await response.json());
-
-        
-
+            if (response.ok) {
+                const data = await response.json();
+                setUserDatabaseInfo(data);
+                if (data[0]?.nickname) {
+                    setNickname(data[0].nickname);
+                }
+            } else {
+                console.error("Failed to fetch user info");
+            }
+        } catch (error) {
+            console.error("Error fetching user info:", error.message);
+        }
     };
 
     const fetchMovieDetails = async (movieId) => {
@@ -214,7 +224,7 @@ const Profile = () => {
                                 <strong>Email:</strong> {user.email || "N/A"}
                             </p>
                             <p>
-                                <strong>Nickname:</strong> {user.nickname || "N/A"}
+                                <strong>Nickname:</strong> {nickname || user.nickname || "N/A"}
                             </p>
                             <p>
                                 <strong>Sub (User ID):</strong> {user.sub || "N/A"}
