@@ -94,8 +94,8 @@ function GroupsPage() {
                         <p>Loading...</p>
                     ) : (
                         <ul>
-                            {allGroups.map((group) => (
-                                <li key={group.id}>
+                            {allGroups.map((group, index) => (
+                                <li key={group.id || index}>
                                     <h3>{group.group_name}</h3>
                                     <p>{group.description}</p>
                                 </li>
@@ -109,14 +109,15 @@ function GroupsPage() {
                         <p>You have not joined or created any groups yet.</p>
                     ) : (
                         <ul>
-                            {myGroups.map((group) => (
-                                <li className="groups-li" key={group.id}>
+                            {myGroups.map((group, index) => (
+                                <li className="groups-li" key={group.group_id || index}>
                                     <Link to={`/group/${group.group_id}`}>
                                         <h3>{group.group_name}</h3>
-                                    </Link>                                    
+                                    </Link>
                                 </li>
                             ))}
                         </ul>
+
                     )}
                     <button onClick={handleCreateGroupClick} className="create-group-button">
                         Create Group
