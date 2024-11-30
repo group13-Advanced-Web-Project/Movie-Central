@@ -1,6 +1,6 @@
 .feed2-container {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     align-items: center;
     gap: 10px;
     margin-top: 0px;
@@ -23,26 +23,30 @@
 .feed-heading {
     font-size: 1.5em;
     color: #333;
-    margin: 0; 
+    margin: 0;
 }
 
 .carousel-wrapper {
-    position: relative; 
+    position: relative;
     display: flex;
-    justify-content: center; 
+    justify-content: center;
     align-items: center;
     gap: 15px;
     width: 100%;
     height: 220px;
-    overflow: hidden; 
+    overflow: hidden;
+}
+
+.carousel-wrapper.paused .carousel {
+    animation-play-state: paused; 
 }
 
 .carousel {
     display: flex;
     gap: 15px;
-    justify-content: center; 
-    animation: scroll-left 800s linear infinite; 
-    height: 100%; 
+    justify-content: center;
+    animation: scroll-left 800s linear infinite;
+    height: 100%;
 }
 
 .carousel-item {
@@ -54,7 +58,7 @@
     padding: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 140px;
-    height: 200px; 
+    height: 200px;
     overflow: hidden;
 }
 
@@ -73,8 +77,8 @@
 }
 
 .movie-name-link {
-    text-decoration: none; 
-    color: #ffffff; 
+    text-decoration: none;
+    color: #ffffff;
 }
 
 .carousel-btn:hover {
@@ -85,16 +89,16 @@
 /* Animation for smooth scrolling */
 @keyframes scroll-left {
     0% {
-        transform: translateX(0); /* Start at the initial position */
+        transform: translateX(0); 
     }
     100% {
-        transform: translateX(-100%); /* Move to the left until the last item is out */
+        transform: translateX(-100%); 
     }
 }
 
 @media (max-width: 480px) {
     .carousel-item {
-        width: 120px; /* Adjust for smaller screens */
+        width: 120px; 
         height: 220px;
     }
 
