@@ -39,31 +39,25 @@ const getGroupsTable = async () => {
         <div>
             <h2>Groups Table</h2>
         </div>
-        <div>
+        <div className='table-container'>
             <table className='tables-table'>
                 <thead>
                     <tr>
-                        <th>id</th>
+             
                         <th>group_id</th>
-                        <th>member_1</th>
-                        <th>member_2</th>
-                        <th>member_3</th>
-                        <th>member_4</th>
-
-
-                      
-
+                        <th>group_name</th>
+                        <th>description</th>
+                
                     </tr>
                 </thead>
                 <tbody>
                     {groupsData.map((user, index) => (
                         <tr key={index}>
-                            <td>{user.id}</td>
+                       
                             <td>{user.group_id}</td>
-                            <td>{user.member_1}</td>
-                            <td>{user.member_2}</td>
-                            <td>{user.member_3}</td>
-                            <td>{user.member_4}</td>
+                            <td>{user.group_name}</td>
+                            <td>{user.description}</td>
+                        
                         
                           
                         </tr>

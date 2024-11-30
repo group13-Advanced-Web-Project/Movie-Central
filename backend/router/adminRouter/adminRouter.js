@@ -137,5 +137,18 @@ router.get("/groups", async (req, res) => {
     }
 });
 
+router.get("/group_members", async (req, res) => {
+    try {
+        pool.query("SELECT * FROM group_members", (error, results) => {
+            if (error) {
+                return res.status(500).json({ error: "Database query failed", details: error.message });
+            }
+            res.status(200).json(results.rows);
+        });
+    } catch (error) {
+        return res.status(500).json({ error: "Server error", details: error.message });
+    }
+});
+
 export default router;
 

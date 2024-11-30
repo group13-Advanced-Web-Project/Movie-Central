@@ -3,50 +3,52 @@ import { useEffect } from "react";
 
 const serverUrl = process.env.REACT_APP_API_URL;
 
-function UsersTable() {
-  const [userData, setUserData] = useState([]);
+function GroupMembersTable() {
+  const [groupMembersData, setGroupMembersData] = useState([]);
 
-  const getUsersTable = async () => {
-    const response = await fetch(serverUrl + "/admin/users", {
+  const getGroupsTable = async () => {
+    const response = await fetch(serverUrl + "/admin/Group_members", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("auth0:id_token")}`,
       },
     });
-    setUserData(await response.json());
+    setGroupMembersData(await response.json());
 
     // console.log(response);
-    // console.log(userData);
+    // console.log(groupsData);
   };
 
   useEffect(() => {
-    getUsersTable();
+    getGroupsTable();
   }, []);
 
   return (
     <>
       <div>
-        <h2>User Table</h2>
+        <h2>Groups_Members Table</h2>
       </div>
-      <div   className='table-container'>
-
+      <div className="table-container">
         <table className="tables-table">
           <thead>
             <tr>
               <th>id</th>
-              <th>user_id</th>
-              <th>email</th>
-              <th>role</th>
+              <th>group_id</th>
+              <th>group_id</th>
+              <th>is_admin</th>
+              <th>status</th>
             </tr>
           </thead>
           <tbody>
-            {userData.map((user, index) => (
+            {groupMembersData.map((user, index) => (
               <tr key={index}>
                 <td>{user.id}</td>
+
+                <td>{user.group_id}</td>
                 <td>{user.user_id}</td>
-                <td>{user.email}</td>
-                <td>{user.role}</td>
+                <td>{user.is_admin}</td>
+                <td>{user.status}</td>
               </tr>
             ))}
           </tbody>
@@ -56,4 +58,4 @@ function UsersTable() {
   );
 }
 
-export default UsersTable;
+export default GroupMembersTable;

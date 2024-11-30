@@ -38,7 +38,8 @@ const getReviewTable = async () => {
         <div>
             <h2>Review Table</h2>
         </div>
-        <div>
+        <div   className='table-container'>
+     
             <table className='tables-table'>
                 <thead>
                     <tr>

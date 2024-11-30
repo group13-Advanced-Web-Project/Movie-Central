@@ -10,6 +10,7 @@ import GroupsTable from "../../components/admin/GroupsTable";
 
 import "../../components/admin/styles/Tables.css";
 import QueryBox from "../../components/admin/QueryBox";
+import GroupMembersTable from "../../components/admin/GroupMembersTable";
 
 const serverUrl = process.env.REACT_APP_API_URL;
 
@@ -53,7 +54,7 @@ function AdminPage() {
   return (
     <div className="home-container">
       <Navbar />
-      <div className="home-main-content">
+      <div className="home-main-content" style={{ backgroundColor: "#F9F9F9" }}>
         {adminAuthenticated ? (
           <p>Admin authenticated</p>
         ) : (
@@ -70,8 +71,6 @@ function AdminPage() {
           <div className="tables-container-div">
             <FavoritesTable />
           </div>
-     
-     
 
           <div className="tables-container-div">
             <ReviewTable />
@@ -79,6 +78,10 @@ function AdminPage() {
           <div className="tables-container-div">
             <GroupsTable />
           </div>
+          <div className="tables-container-div">
+            <GroupMembersTable />
+          </div>
+
           <div>
             <QueryBox />
           </div>
