@@ -135,6 +135,7 @@ function Navbar() {
                 </div>
                 <button className="navbar-link" onClick={() => navigate('/showtimes')}>SHOWTIME</button>
                 <button className="navbar-link" onClick={() => navigate('/reviews')}>REVIEWS</button>
+                <button className="navbar-link" onClick={() => navigate('/groups')}>GROUPS</button>
             </div>
             <div className="search-container" ref={searchContainerRef}>
                 <input type="text" placeholder="Search Movie" value={searchTerm} onChange={handleInputChange} />

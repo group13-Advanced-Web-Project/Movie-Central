@@ -13,6 +13,8 @@ import Profile from './pages/Profile';
 import AdminPage from './pages/admin/AdminPage.js';
 import ReviewPage from './pages/ReviewPage.js';
 import PublicProfile from './pages/PublicProfile.js';
+import GroupsPage from './pages/GroupsPage.js';
+import GroupPage from './pages/GroupPage.js';
 
 const serverUrl = process.env.REACT_APP_API_URL
 
@@ -91,6 +93,8 @@ function App() {
         <Route path="/reviews" element={<ReviewPage />} />
         <Route path="/movies/:movie_id" element={<MoviePage />} />
         <Route path="/publicProfile/:dbId" element={<PublicProfile />} />       
+        <Route path="/groups" element={<GroupsPage />} />
+        <Route path="/group/:group_id" element={<GroupPage />} />
       </Routes>
     </Router>
   );
