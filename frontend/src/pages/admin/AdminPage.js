@@ -21,7 +21,7 @@ function AdminPage() {
 
   const handleAuthenticateAdmin = async () => {
     const userId = user.sub;
-    console.log("Authenticating user with ID:", userId);
+    // console.log("Authenticating user with ID:", userId);
 
     const response = await fetch(serverUrl + "/admin/authenticate", {
       method: "POST",
@@ -32,7 +32,7 @@ function AdminPage() {
       body: JSON.stringify({ auth0_user_id: userId }),
     });
 
-    console.log(response);
+    // console.log(response);
 
     if (response.ok) {
       setAdminAuthenticated(true);
@@ -46,7 +46,7 @@ function AdminPage() {
   useEffect(() => {
     if (isAuthenticated && !adminAuthenticated) {
       handleAuthenticateAdmin().then((response) => {
-        console.log("Admin authentication response:", response);
+        // console.log("Admin authentication response:", response);
       });
     }
   }, [isAuthenticated, adminAuthenticated]);
