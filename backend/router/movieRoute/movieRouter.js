@@ -81,22 +81,34 @@ router.get("/fetch-movies", async (req, res) => {
         const finalMovies = combinedMovies.slice(0, 220);
 
         console.time("fetch-movie-details");
+
+        console.log("Starting to fetch movie details...");
         const movies = await Promise.all(
             finalMovies.map(async (movie) => {
                 try {
+                    console.log(`Fetching details for movie: ${movie.title} (ID: ${movie.id})`);
+        
+                    // Fetch movie details and cast simultaneously
                     const [detailsResponse, castResponse] = await Promise.all([
                         axios.get(`https://api.themoviedb.org/3/movie/${movie.id}`, {
                             headers: { Authorization: `Bearer ${tmdb_api_key}` },
                         }),
                         axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/credits`, {
                             headers: { Authorization: `Bearer ${tmdb_api_key}` },
-                        })
+                        }),
                     ]);
-
+        
+                    console.log(`Fetched details for movie: ${movie.title} (ID: ${movie.id})`);
+        
+                    // Extract data from responses
                     const genres = detailsResponse.data.genres.map((genre) => genre.name).join(", ");
                     const duration = detailsResponse.data.runtime || "Unknown";
                     const cast = castResponse.data.cast.slice(0, 10).map((actor) => actor.name).join(", ");
-
+        
+                    console.log(`Parsed data for movie: ${movie.title}`);
+                  
+        
+                    // Return the structured movie data
                     return {
                         id: movie.id,
                         title: movie.title,
@@ -112,12 +124,22 @@ router.get("/fetch-movies", async (req, res) => {
                         year: movie.release_date ? movie.release_date.split("-")[0] : "Unknown",
                     };
                 } catch (error) {
-                    console.error("Error fetching movie details:", error.message);
+                    console.error(`Error fetching details for movie: ${movie.title} (ID: ${movie.id})`);
+                    console.error("Error message:", error.message);
+                    console.error("Error details:", {
+                        config: error.config,
+                        response: error.response ? error.response.data : "No response",
+                    });
                     return null;
                 }
             })
         );
+        
         console.timeEnd("fetch-movie-details");
+        
+        console.log("Completed fetching movie details.");
+       
+        
 
         const filteredMovies = movies.filter((movie) => movie !== null);
         res.json(filteredMovies);
