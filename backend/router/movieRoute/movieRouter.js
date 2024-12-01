@@ -89,7 +89,7 @@ router.get("/fetch-movies", async (req, res) => {
                     console.log(`Fetching details for movie: ${movie.title} (ID: ${movie.id})`);
         
                     // Fetch movie details and cast simultaneously
-                    const [detailsResponse, castResponse] = await Promise.all([
+                    const [detailsResponse, castResponse] = await Promise.allSettled([
                         axios.get(`https://api.themoviedb.org/3/movie/${movie.id}`, {
                             headers: { Authorization: `Bearer ${tmdb_api_key}` },
                         }),
@@ -98,15 +98,33 @@ router.get("/fetch-movies", async (req, res) => {
                         }),
                     ]);
         
-                    console.log(`Fetched details for movie: ${movie.title} (ID: ${movie.id})`);
+                    // Check if detailsResponse succeeded
+                    if (detailsResponse.status === "rejected") {
+                        console.warn(
+                            `Details request failed for movie: ${movie.title} (ID: ${movie.id}).`,
+                            detailsResponse.reason
+                        );
+                    }
+        
+                    // Check if castResponse succeeded
+                    if (castResponse.status === "rejected") {
+                        console.warn(
+                            `Cast request failed for movie: ${movie.title} (ID: ${movie.id}).`,
+                            castResponse.reason
+                        );
+                    }
+        
+                    const details = detailsResponse.status === "fulfilled" ? detailsResponse.value.data : {};
+                    const castData = castResponse.status === "fulfilled" ? castResponse.value.data : {};
         
                     // Extract data from responses
-                    const genres = detailsResponse.data.genres.map((genre) => genre.name).join(", ");
-                    const duration = detailsResponse.data.runtime || "Unknown";
-                    const cast = castResponse.data.cast.slice(0, 10).map((actor) => actor.name).join(", ");
+                    const genres = details.genres ? details.genres.map((genre) => genre.name).join(", ") : "Unknown";
+                    const duration = details.runtime || "Unknown";
+                    const cast = castData.cast
+                        ? castData.cast.slice(0, 10).map((actor) => actor.name).join(", ")
+                        : "Unknown";
         
                     console.log(`Parsed data for movie: ${movie.title}`);
-                  
         
                     // Return the structured movie data
                     return {
@@ -117,10 +135,10 @@ router.get("/fetch-movies", async (req, res) => {
                             ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
                             : null,
                         release_date: movie.release_date || "Unknown",
-                        genres: genres || "Unknown",
+                        genres: genres,
                         rating: movie.vote_average || "N/A",
                         duration: duration,
-                        cast: cast || "Unknown",
+                        cast: cast,
                         year: movie.release_date ? movie.release_date.split("-")[0] : "Unknown",
                     };
                 } catch (error) {
@@ -138,6 +156,7 @@ router.get("/fetch-movies", async (req, res) => {
         console.timeEnd("fetch-movie-details");
         
         console.log("Completed fetching movie details.");
+        
        
         
 
@@ -457,4 +476,3 @@ router.get("/trending-movies", async (req, res) => {
 })
 
 export default router;
-
