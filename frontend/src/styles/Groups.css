@@ -113,6 +113,32 @@ li p {
     font-size: 1em;
 }
 
+.groupspage-item {
+    position: relative;
+}
+
+.groups-hover-message {
+    visibility: hidden;
+    position: absolute;
+    background-color: #000;
+    color: #fff;
+    padding: 5px;
+    border-radius: 3px;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.group-item:hover .hover-message {
+    visibility: visible;
+    opacity: 1;
+}
+
+
 .create-group-button:hover {
     background-color: #0056b3;
 }
@@ -227,14 +253,14 @@ li p {
     }
 
     .create-group-popup form {
-        width: 100%;
+        width: 95%;
         max-width: 300px; 
         padding: 15px;
     }
 
     .create-group-popup input,
     .create-group-popup textarea {
-        width: 100%; 
+        width: 93%; 
         font-size: 0.9em;
     }
 }

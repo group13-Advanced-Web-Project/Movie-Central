@@ -115,19 +115,18 @@ export const createGroup = async (groupData) => {
     }
 };
 
-// Fetch group by group_id
+// Fetch group by group_id and include nicknames
 export const fetchGroupById = async (group_id) => {
     try {
-        const response = await fetch(`${serverUrl}/groups/${group_id}`, {
+        const response = await fetch(`${serverUrl}/groups/${group_id}/members`, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         });
 
         if (!response.ok) {
-            throw new Error('Failed to fetch group by ID');
+            throw new Error('Failed to fetch group members by ID');
         }
 
-        // Backend returns multiple rows; process them here
         const rows = await response.json();
         if (rows.length === 0) return null;
 
@@ -137,16 +136,119 @@ export const fetchGroupById = async (group_id) => {
             description: rows[0].description,
             members: rows.map((row) => ({
                 user_id: row.user_id,
+                nickname: row.nickname,
                 is_admin: row.is_admin,
             })),
         };
 
-        // Sort members to ensure the admin is listed first
         groupDetails.members.sort((a, b) => b.is_admin - a.is_admin);
 
         return groupDetails;
     } catch (error) {
         console.error('Error fetching group by ID:', error.message);
+        throw error;
+    }
+};
+
+// Send join request to a group
+export const sendJoinRequest = async (group_id, user_id) => {
+    console.log('Sending payload:', { group_id, user_id }); // Debugging log
+    try {
+        const response = await fetch(`${serverUrl}/groups/join`, {
+            method: 'POST',
+            body: JSON.stringify({ group_id, user_id }),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (!response.ok) {
+            const errorDetails = await response.json();
+            console.error('Server returned an error:', errorDetails);
+            throw new Error(errorDetails.message || 'Failed to send join request');
+        }
+        console.log('Join request successful');
+    } catch (error) {
+        console.error('Error in sendJoinRequest:', error.message);
+        throw new Error(error.message);
+    }
+};
+
+// Fetch pending requests for a group
+export const fetchPendingRequests = async (group_id) => {
+    try {
+        const response = await fetch(`${serverUrl}/groups/${group_id}/requests`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (!response.ok) {
+            throw new Error('Failed to fetch pending requests');
+        }
+        return await response.json();
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
+// Respond to a join request
+export const respondToRequest = async (group_id, user_id, action) => {
+    const response = await fetch(`${serverUrl}/groups/respond`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ group_id, user_id, action }),
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to respond to request');
+    }
+
+    return response.json();
+};
+
+// Endpoint to fetch the join request status for a specific user and group
+export const checkJoinRequestStatus = async (group_id, user_id) => {
+    try {
+        const response = await fetch(`${serverUrl}/groups/status/${group_id}/${user_id}`);
+        
+        if (!response.ok) {
+            throw new Error('Failed to fetch join request status');
+        }
+
+        const data = await response.json();
+        return data.status || 'not-a-member'; // If no status, default to 'not-a-member'
+    } catch (error) {
+        console.error('Error fetching join request status:', error);
+        throw error;
+    }
+};
+
+
+export const fetchGroupInfo = async (group_id) => {
+    try {
+        const response = await fetch(`${serverUrl}/groups/${group_id}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch group information');
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching group information:', error.message);
+        throw error;
+    }
+};
+
+export const fetchGroupMembers = async (group_id) => {
+    try {
+        const response = await fetch(`${serverUrl}/groups/${group_id}/members`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch group members');
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching group members:', error.message);
         throw error;
     }
 };
