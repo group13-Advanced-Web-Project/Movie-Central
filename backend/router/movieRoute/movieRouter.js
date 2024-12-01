@@ -6,8 +6,8 @@ import { pool } from "../../helpers/db.js";
 import EventEmitter from "events";
 import pLimit from "p-limit";
 
-EventEmitter.defaultMaxListeners = 20;
-const limit = pLimit(50);
+EventEmitter.defaultMaxListeners = 35;
+const limit = pLimit(100);
 
 dotenv.config();
 
@@ -19,10 +19,10 @@ router.get("/", (req, res) => {
 });
 
 const now_playing_max_pages = 2;
-const popular_max_pages = 50;
-const trending_max_pages = 10;
+const popular_max_pages = 15;
+const trending_max_pages = 5;
 
-async function fetchMoviesFromEndpoint(endpoint, maxPages=50) {
+async function fetchMoviesFromEndpoint(endpoint, maxPages=15) {
     const allMovies = [];
     let currentPage = 1;
 
@@ -48,12 +48,19 @@ async function fetchMoviesFromEndpoint(endpoint, maxPages=50) {
 }
 
 router.get("/fetch-movies", async (req, res) => {
+    console.time("fetch-movies-total");
     try {
-        const [nowPlayingMovies, popularMovies, trendingMovies] = await Promise.all([
-            fetchMoviesFromEndpoint(`https://api.themoviedb.org/3/movie/now_playing?region=fi`, now_playing_max_pages),
-            fetchMoviesFromEndpoint(`https://api.themoviedb.org/3/movie/popular?region=fi`, popular_max_pages),
-            fetchMoviesFromEndpoint(`https://api.themoviedb.org/3/trending/movie/week`, trending_max_pages)
-        ]);
+        console.time("fetch-now-playing");
+        const nowPlayingMovies = await fetchMoviesFromEndpoint(`https://api.themoviedb.org/3/movie/now_playing?region=fi`, now_playing_max_pages);
+        console.timeEnd("fetch-now-playing");
+
+        console.time("fetch-popular");
+        const popularMovies = await fetchMoviesFromEndpoint(`https://api.themoviedb.org/3/movie/popular?region=fi`, popular_max_pages);
+        console.timeEnd("fetch-popular");
+
+        console.time("fetch-trending");
+        const trendingMovies = await fetchMoviesFromEndpoint(`https://api.themoviedb.org/3/trending/movie/week`, trending_max_pages);
+        console.timeEnd("fetch-trending");
 
         const movieMap = new Map();
         nowPlayingMovies.forEach((movie) => movieMap.set(movie.id, { ...movie, isNowPlaying: true }));
@@ -73,6 +80,7 @@ router.get("/fetch-movies", async (req, res) => {
 
         const finalMovies = combinedMovies.slice(0, 220);
 
+        console.time("fetch-movie-details");
         const movies = await Promise.all(
             finalMovies.map(async (movie) => {
                 try {
@@ -109,6 +117,7 @@ router.get("/fetch-movies", async (req, res) => {
                 }
             })
         );
+        console.timeEnd("fetch-movie-details");
 
         const filteredMovies = movies.filter((movie) => movie !== null);
         res.json(filteredMovies);
@@ -116,6 +125,7 @@ router.get("/fetch-movies", async (req, res) => {
         console.error("Error fetching movies:", error.message);
         res.status(500).json({ error: error.message || "Failed to fetch movies" });
     }
+    console.timeEnd("fetch-movies-total");
 });
 
 router.get("/search-movies", async (req, res) => {

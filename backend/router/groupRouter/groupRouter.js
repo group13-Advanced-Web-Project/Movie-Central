@@ -3,6 +3,20 @@ import { pool } from "../../helpers/db.js";
 
 const router = Router();
 
+const fetchGroupMembers = async (group_id) => {
+    const query = `SELECT gm.*, u.nickname
+        FROM group_members gm
+        JOIN users u ON gm.user_id = u.user_id
+        WHERE gm.group_id = $1;`;
+    try {
+        const result = await pool.query(query, [group_id]);
+        return result.rows;
+    } catch (error) {
+        console.error("Failed to fetch group members", error);
+        throw new Error("Failed to fetch group members");
+    }
+};
+
 router.get('/', async (req, res) => {
     try {
         const result = await pool.query(
@@ -73,35 +87,6 @@ router.post('/join', async (req, res) => {
     }
 });
 
-// Accept or reject a request to join a group
-router.post('/:group_id/members/:user_id', async (req, res) => {
-    const {group_id, user_id} = req.params;
-    const {status, admin_id} = req.body;
-
-    if (status !== "accepted" && status !== "rejected") {
-        return res.status(400).json({ error: "Invalid status" });
-    }
-
-    try {
-        const adminCheck = await pool.query(
-            `SELECT is_admin FROM group_members WHERE group_id = $1 AND user_id = $2;`,
-            [group_id, admin_id]
-        );
-
-        if (!adminCheck.rows[0]?.is_admin) {
-            return res.status(403).json({ error: "Only group admins can manage member requests" });
-        }
-
-        const result = await pool.query(
-            `UPDATE group_members SET status = $1 WHERE group_id = $2 AND user_id = $3 RETURNING *;`,
-            [status, group_id, user_id]
-        );
-        res.json(result.rows[0]);
-    } catch (error) {
-        res.status(500).json({ error: "Failed to accept/reject request", details: error.message });
-    }
-});
-
 // Leave a group
 router.delete('/:group_id/members/:user_id', async (req, res) => {
     const {group_id, user_id} = req.params;
@@ -143,11 +128,8 @@ router.get('/:group_id/members', async (req, res) => {
     const {group_id} = req.params;
 
     try {
-        const result = await pool.query(
-            `SELECT * FROM group_members WHERE group_id = $1;`,
-            [group_id]
-        );
-        res.json(result.rows);
+        const result = await fetchGroupMembers(group_id);
+        res.json(result);
     } catch (error) {
         res.status(500).json({ error: "Failed to fetch group members", details: error.message });
     }
@@ -173,6 +155,78 @@ router.get('/:group_id', async (req, res) => {
         res.json(result.rows);
     } catch (error) {
         res.status(500).json({ error: "Failed to fetch group", details: error.message });
+    }
+});
+
+// Get pending member requests by group id
+router.get('/:group_id/requests', async (req, res) => {
+    const {group_id} = req.params;
+
+    try {
+        const result = await pool.query(
+            `SELECT group_members.user_id, users.nickname 
+            FROM group_members JOIN users 
+            ON group_members.user_id = users.user_id 
+            WHERE group_id = $1 AND status = 'pending';`,
+            [group_id]
+        );
+
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: "No pending requests found" });
+        }
+
+        res.json(result.rows);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch requests", details: error.message });
+    }
+});
+
+// Accept or reject a request to join a group
+router.post('/:group_id/update-request', async (req, res) => {
+    const {group_id} = req.params;
+    const {admin_id, user_id, status} = req.body;
+
+    if (!['accepted', 'rejected'].includes(status)) {
+        return res.status(400).json({ error: "Invalid status. Use 'accepted' or 'rejected'." });
+    }
+
+    try {
+        const adminCheck = await pool.query(
+            `SELECT is_admin FROM group_members WHERE group_id = $1 AND user_id = $2;`,
+            [group_id, admin_id]
+        );
+
+        if (!adminCheck.rows[0]?.is_admin) {
+            return res.status(403).json({ error: "Only group admins can manage member requests" });
+        }
+
+        const result = await pool.query(
+            `UPDATE group_members SET status = $1 WHERE group_id = $2 AND user_id = $3 RETURNING *;`,
+            [status, group_id, user_id]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: "Request not found" });
+        }
+
+        res.json(result.rows[0]);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to update request", details: error.message });
+    }
+});
+
+// Check request status for members
+router.get('/:group_id/members/:user_id', async (req, res) => {
+    const {group_id, user_id} = req.params;
+
+    try {
+        const result = await pool.query(
+            `SELECT status FROM group_members WHERE group_id = $1 AND user_id = $2;`,
+            [group_id, user_id]
+        );
+        res.json(result.rows[0]);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch request status", details: error.message });
     }
 });
 
