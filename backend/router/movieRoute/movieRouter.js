@@ -86,7 +86,7 @@ router.get("/fetch-movies", async (req, res) => {
         const movies = await Promise.all(
             finalMovies.map(async (movie) => {
                 try {
-                    console.log(`Fetching details for movie: ${movie.title} (ID: ${movie.id})`);
+                    // console.log(`Fetching details for movie: ${movie.title} (ID: ${movie.id})`);
         
                     // Fetch movie details and cast simultaneously
                     const [detailsResponse, castResponse] = await Promise.all([
@@ -98,7 +98,7 @@ router.get("/fetch-movies", async (req, res) => {
                         }),
                     ]);
         
-                    console.log(`Fetched details for movie: ${movie.title} (ID: ${movie.id})`);
+                    // console.log(`Fetched details for movie: ${movie.title} (ID: ${movie.id})`);
         
                     // Extract and validate data from responses
                     const genres =
@@ -113,7 +113,7 @@ router.get("/fetch-movies", async (req, res) => {
                             ? castResponse.data.cast.slice(0, 10).map((actor) => actor.name).join(", ")
                             : "Unknown";
         
-                    console.log(`Parsed data for movie: ${movie.title}`);
+                    // console.log(`Parsed data for movie: ${movie.title}`);
         
                     // Return the structured movie data
                     return {
