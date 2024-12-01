@@ -89,7 +89,7 @@ router.get("/fetch-movies", async (req, res) => {
                     console.log(`Fetching details for movie: ${movie.title} (ID: ${movie.id})`);
         
                     // Fetch movie details and cast simultaneously
-                    const [detailsResponse, castResponse] = await Promise.allSettled([
+                    const [detailsResponse, castResponse] = await Promise.all([
                         axios.get(`https://api.themoviedb.org/3/movie/${movie.id}`, {
                             headers: { Authorization: `Bearer ${tmdb_api_key}` },
                         }),
@@ -98,31 +98,20 @@ router.get("/fetch-movies", async (req, res) => {
                         }),
                     ]);
         
-                    // Check if detailsResponse succeeded
-                    if (detailsResponse.status === "rejected") {
-                        console.warn(
-                            `Details request failed for movie: ${movie.title} (ID: ${movie.id}).`,
-                            detailsResponse.reason
-                        );
-                    }
+                    console.log(`Fetched details for movie: ${movie.title} (ID: ${movie.id})`);
         
-                    // Check if castResponse succeeded
-                    if (castResponse.status === "rejected") {
-                        console.warn(
-                            `Cast request failed for movie: ${movie.title} (ID: ${movie.id}).`,
-                            castResponse.reason
-                        );
-                    }
-        
-                    const details = detailsResponse.status === "fulfilled" ? detailsResponse.value.data : {};
-                    const castData = castResponse.status === "fulfilled" ? castResponse.value.data : {};
-        
-                    // Extract data from responses
-                    const genres = details.genres ? details.genres.map((genre) => genre.name).join(", ") : "Unknown";
-                    const duration = details.runtime || "Unknown";
-                    const cast = castData.cast
-                        ? castData.cast.slice(0, 10).map((actor) => actor.name).join(", ")
+                    // Extract and validate data from responses
+                    const genres =
+                        Array.isArray(detailsResponse.data.genres) && detailsResponse.data.genres.length
+                            ? detailsResponse.data.genres.map((genre) => genre.name).join(", ")
+                            : "Unknown";
+                    const duration = typeof detailsResponse.data.runtime === "number"
+                        ? `${detailsResponse.data.runtime} min`
                         : "Unknown";
+                    const cast =
+                        Array.isArray(castResponse.data.cast) && castResponse.data.cast.length
+                            ? castResponse.data.cast.slice(0, 10).map((actor) => actor.name).join(", ")
+                            : "Unknown";
         
                     console.log(`Parsed data for movie: ${movie.title}`);
         
@@ -130,13 +119,13 @@ router.get("/fetch-movies", async (req, res) => {
                     return {
                         id: movie.id,
                         title: movie.title,
-                        overview: movie.overview,
+                        overview: movie.overview || "No overview available.",
                         poster_path: movie.poster_path
                             ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
                             : null,
                         release_date: movie.release_date || "Unknown",
                         genres: genres,
-                        rating: movie.vote_average || "N/A",
+                        rating: typeof movie.vote_average === "number" ? movie.vote_average.toFixed(1) : "N/A",
                         duration: duration,
                         cast: cast,
                         year: movie.release_date ? movie.release_date.split("-")[0] : "Unknown",
