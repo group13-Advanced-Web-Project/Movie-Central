@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import PublicProfile from "../pages/PublicProfile";
@@ -9,7 +10,6 @@ import { FaStar } from 'react-icons/fa';
 import "../styles/Profile.css";
 
 const serverUrl = process.env.REACT_APP_API_URL
-
 
 const Profile = () => {
     const { user, isAuthenticated, logout } = useAuth0();
@@ -21,37 +21,18 @@ const Profile = () => {
     const [watchedMovies, setWatchedMovies] = useState([]);
     const [ratings, setRatings] = useState({});
     const [shareableLink, setShareableLink] = useState("");
-    const [showPublicProfile, setShowPublicProfile] = useState(false); // State to toggle PublicProfile
-    const [nickname, setNickname] = useState(""); // State to store new nickname
-
 
     const getAccountInfo = async () => {
         const postData = { auth0_user_id: user.sub };
-        // console.log("Sending POST data:", postData);
-
-        try {
-            const response = await fetch(serverUrl+"/users/user-info", {
-
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("auth0:id_token")}`,
-                },
-                body: JSON.stringify(postData),
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                setUserDatabaseInfo(data);
-                if (data[0]?.nickname) {
-                    setNickname(data[0].nickname);
-                }
-            } else {
-                console.error("Failed to fetch user info");
-            }
-        } catch (error) {
-            console.error("Error fetching user info:", error.message);
-        }
+        const response = await fetch(`${serverUrl}/users/user-info`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("auth0:id_token")}`,
+            },
+            body: JSON.stringify(postData),
+        });
+        setUserDatabaseInfo(await response.json());
     };
 
     const fetchMovieDetails = async (movieId) => {
@@ -167,9 +148,10 @@ const Profile = () => {
         }
     
         const baseUrl = window.location.origin;
-        const link = `${baseUrl}/publicProfile/${encodeURIComponent(userDatabaseInfo[0].id)}`;
+        const link = `${baseUrl}/public/${encodeURIComponent(userDatabaseInfo[0].id)}`;
         setShareableLink(link);
     
+        // Store public profile data in localStorage
         const storedProfiles = JSON.parse(localStorage.getItem("publicProfiles")) || {};
         storedProfiles[userDatabaseInfo[0].id] = {
             nickname: user.nickname,
@@ -224,7 +206,7 @@ const Profile = () => {
                                 <strong>Email:</strong> {user.email || "N/A"}
                             </p>
                             <p>
-                                <strong>Nickname:</strong> {nickname || user.nickname || "N/A"}
+                                <strong>Nickname:</strong> {user.nickname || "N/A"}
                             </p>
                             <p>
                                 <strong>Sub (User ID):</strong> {user.sub || "N/A"}
@@ -289,7 +271,7 @@ const Profile = () => {
                             <h2>My Favorites</h2>
                             <div className="movie-grid">
                                 {favoriteMovies.length === 0 ? (
-                                    <p>Loading favorite movies...</p>
+                                    <p>Loading...</p>
                                 ) : (
                                     favoriteMovies.map((movie, index) => (
                                         <div
@@ -311,8 +293,8 @@ const Profile = () => {
                                                 <span
                                                     style={{
                                                         color: "red",
-                                                        fontSize: "2rem",
-                                                        marginRight: "6px",
+                                                        fontSize: "1.5rem",
+                                                        marginRight: "5px",
                                                         cursor: "pointer",
                                                     }}
                                                     onClick={(e) => {
@@ -335,7 +317,7 @@ const Profile = () => {
                                                 <span>
                                                     {ratings[movie.id]
                                                         ? `(${ratings[movie.id]}/5)`
-                                                        : ""}
+                                                        : "(No Rating)"}
                                                 </span>
                                             </div>
                                         </div>
