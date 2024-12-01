@@ -90,7 +90,12 @@ function App() {
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/reviews" element={<ReviewPage />} />
         <Route path="/movies/:movie_id" element={<MoviePage />} />
-        <Route path="/publicProfile/:dbId" element={<PublicProfile />} />       
+        <Route path="/public/:id" element={<PublicProfile />} />
+
+
+
+
+        
       </Routes>
     </Router>
   );

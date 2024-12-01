@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+
+
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import PublicProfile from "../pages/PublicProfile";
@@ -21,16 +23,14 @@ const Profile = () => {
     const [watchedMovies, setWatchedMovies] = useState([]);
     const [ratings, setRatings] = useState({});
     const [shareableLink, setShareableLink] = useState("");
-    const [showPublicProfile, setShowPublicProfile] = useState(false); // State to toggle PublicProfile
-
 
     const getAccountInfo = async () => {
         const postData = { auth0_user_id: user.sub };
         console.log("Sending POST data:", postData);
 
-
-        const response = await fetch(serverUrl+"/users/user-info", {
-
+        
+        const response = await fetch(`${serverUrl}/users/user-info`, {
+            
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -40,7 +40,7 @@ const Profile = () => {
         });
         setUserDatabaseInfo(await response.json());
 
-        
+
 
     };
 
@@ -157,9 +157,10 @@ const Profile = () => {
         }
     
         const baseUrl = window.location.origin;
-        const link = `${baseUrl}/publicProfile/${encodeURIComponent(userDatabaseInfo[0].id)}`;
+        const link = `${baseUrl}/public/${encodeURIComponent(userDatabaseInfo[0].id)}`;
         setShareableLink(link);
     
+        // Store public profile data in localStorage
         const storedProfiles = JSON.parse(localStorage.getItem("publicProfiles")) || {};
         storedProfiles[userDatabaseInfo[0].id] = {
             nickname: user.nickname,
