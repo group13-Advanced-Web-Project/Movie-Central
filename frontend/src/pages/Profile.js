@@ -26,7 +26,7 @@ const Profile = () => {
 
     const getAccountInfo = async () => {
         const postData = { auth0_user_id: user.sub };
-        console.log("Sending POST data:", postData);
+        // console.log("Sending POST data:", postData);
 
         
         const response = await fetch(`${serverUrl}/users/user-info`, {

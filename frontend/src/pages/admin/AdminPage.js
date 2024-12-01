@@ -10,6 +10,7 @@ import GroupsTable from "../../components/admin/GroupsTable";
 
 import "../../components/admin/styles/Tables.css";
 import QueryBox from "../../components/admin/QueryBox";
+import GroupMembersTable from "../../components/admin/GroupMembersTable";
 
 const serverUrl = process.env.REACT_APP_API_URL;
 
@@ -20,7 +21,7 @@ function AdminPage() {
 
   const handleAuthenticateAdmin = async () => {
     const userId = user.sub;
-    console.log("Authenticating user with ID:", userId);
+    // console.log("Authenticating user with ID:", userId);
 
     const response = await fetch(serverUrl + "/admin/authenticate", {
       method: "POST",
@@ -31,7 +32,7 @@ function AdminPage() {
       body: JSON.stringify({ auth0_user_id: userId }),
     });
 
-    console.log(response);
+    // console.log(response);
 
     if (response.ok) {
       setAdminAuthenticated(true);
@@ -45,7 +46,7 @@ function AdminPage() {
   useEffect(() => {
     if (isAuthenticated && !adminAuthenticated) {
       handleAuthenticateAdmin().then((response) => {
-        console.log("Admin authentication response:", response);
+        // console.log("Admin authentication response:", response);
       });
     }
   }, [isAuthenticated, adminAuthenticated]);
@@ -53,7 +54,7 @@ function AdminPage() {
   return (
     <div className="home-container">
       <Navbar />
-      <div className="home-main-content">
+      <div className="home-main-content" style={{ backgroundColor: "#F9F9F9" }}>
         {adminAuthenticated ? (
           <p>Admin authenticated</p>
         ) : (
@@ -70,8 +71,6 @@ function AdminPage() {
           <div className="tables-container-div">
             <FavoritesTable />
           </div>
-     
-     
 
           <div className="tables-container-div">
             <ReviewTable />
@@ -79,6 +78,10 @@ function AdminPage() {
           <div className="tables-container-div">
             <GroupsTable />
           </div>
+          <div className="tables-container-div">
+            <GroupMembersTable />
+          </div>
+
           <div>
             <QueryBox />
           </div>

@@ -13,6 +13,8 @@ import Profile from './pages/Profile';
 import AdminPage from './pages/admin/AdminPage.js';
 import ReviewPage from './pages/ReviewPage.js';
 import PublicProfile from './pages/PublicProfile.js';
+import GroupsPage from './pages/GroupsPage.js';
+import GroupPage from './pages/GroupPage.js';
 
 const serverUrl = process.env.REACT_APP_API_URL
 
@@ -24,7 +26,7 @@ function App() {
   
   const handleCheckAccount = async () => {
     const userId = user.sub;
-    console.log("Sending user ID to server:", userId);
+    // console.log("Sending user ID to server:", userId);
 
     const response = await fetch(serverUrl+"/users/check-account", {
       method: 'POST',
@@ -35,7 +37,7 @@ function App() {
       body: JSON.stringify({ auth0_user_id: userId, email: user.email })
     });
 
-    console.log(response);
+    // console.log(response);
 
     if (response.ok) {
       setAccountRegistered(true);
@@ -48,7 +50,7 @@ function App() {
 
   const handleCreateAccount = async () => {
     const postData = { auth0_user_id: user.sub, email: user.email };
-    console.log("Sending POST data:", postData);
+    // console.log("Sending POST data:", postData);
 
     const response = await fetch(serverUrl+"/users/add", {
       method: 'POST',
@@ -59,7 +61,7 @@ function App() {
       body: JSON.stringify(postData)
     });
 
-    console.log(response);
+    // console.log(response);
 
     if (response.ok) {
       setAccountRegistered(true);
@@ -96,6 +98,8 @@ function App() {
 
 
         
+        <Route path="/groups" element={<GroupsPage />} />
+        <Route path="/group/:group_id" element={<GroupPage />} />
       </Routes>
     </Router>
   );

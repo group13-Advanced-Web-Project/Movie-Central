@@ -29,7 +29,8 @@ function UsersTable() {
       <div>
         <h2>User Table</h2>
       </div>
-      <div>
+      <div   className='table-container'>
+
         <table className="tables-table">
           <thead>
             <tr>

@@ -8,8 +8,8 @@
     padding: 20px;
     border-radius: 8px;
     width: 100%;
-    max-width: 1000px; /* Increased max-width to accommodate larger tables */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added subtle shadow for better visibility */
+    max-width: 100%; /* Increased max-width to accommodate larger tables */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.466); /* Added subtle shadow for better visibility */
     overflow: hidden;
 }
 
@@ -22,6 +22,7 @@
     color: #333;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Added shadow to the table for depth */
 }
+
 
 .tables-table th {
     background-color: #e9ecef;
@@ -38,6 +39,12 @@
     text-align: left; /* Ensuring all table data aligns to the left */
 }
 
+.tables-table th {
+    position: sticky;
+    top: 0;
+
+    z-index: 10; /* Ensure it stays on top of other rows */
+}
 .tables-table tr:nth-child(even) {
     background-color: #f8f9fa;
 }
@@ -62,4 +69,11 @@
     font-size: 2em;
     color: #212529;
     margin-bottom: 15px; /* Better spacing between heading and table */
+}
+
+
+.table-container {
+    height:50vh;
+    overflow: auto;
+
 }
