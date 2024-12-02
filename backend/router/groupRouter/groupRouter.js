@@ -63,7 +63,8 @@ router.get('/users/:user_id', async (req, res) => {
             `SELECT groups.group_id, groups.group_name 
             FROM group_members JOIN groups 
             ON group_members.group_id = groups.group_id 
-            WHERE group_members.user_id = $1;`,
+            WHERE group_members.user_id = $1 
+            AND group_members.status = 'accepted';`,
             [user_id]
         );
         res.json(result.rows);
@@ -172,7 +173,7 @@ router.get('/:group_id/requests', async (req, res) => {
         );
 
         if (result.rowCount === 0) {
-            return res.status(404).json({ error: "No pending requests found" });
+            return res.status(202).json({ error: "No pending requests" });
         }
 
         res.json(result.rows);
@@ -227,6 +228,59 @@ router.get('/:group_id/members/:user_id', async (req, res) => {
         res.json(result.rows[0]);
     } catch (error) {
         res.status(500).json({ error: "Failed to fetch request status", details: error.message });
+    }
+});
+
+// Handle responding to a join request (accept or reject)
+router.post('/respond', async (req, res) => {
+    const { group_id, user_id, action } = req.body;
+
+    try {
+        // Update the group_members table based on the action
+        const query = `
+            UPDATE group_members
+            SET status = $1
+            WHERE group_id = $2 AND user_id = $3 AND status = 'pending'
+            RETURNING *;
+        `;
+        const values = [action, group_id, user_id];
+
+        const result = await pool.query(query, values);
+
+        // Check if the request was found and updated
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'Join request not found or already processed.' });
+        }
+
+        // Respond with success
+        return res.status(200).json({ message: `Request ${action}` });
+
+    } catch (error) {
+        console.error('Error updating join request:', error);
+        return res.status(500).json({ message: 'Server error. Please try again later.' });
+    }
+});
+
+// Backend: Check if the user has a pending/rejected/accepted join request
+router.get('/status/:group_id/:user_id', async (req, res) => {
+    const { group_id, user_id } = req.params;
+
+    try {
+        const result = await pool.query(
+            `SELECT status 
+            FROM group_members 
+            WHERE group_id = $1 AND user_id = $2`,
+            [group_id, user_id]
+        );
+
+        if (result.rows.length === 0) {
+            return res.json({ status: 'not-a-member' }); // User has not requested to join
+        }
+
+        const { status } = result.rows[0];
+        res.json({ status });  // Send back the join request status (pending, accepted, rejected)
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch join request status', details: error.message });
     }
 });
 

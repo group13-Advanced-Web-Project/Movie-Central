@@ -8,7 +8,8 @@
     display: flex;
     flex: 1;
     padding: 20px;
-    gap: 20px; 
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
 .group-left-section, .group-right-section {
@@ -29,27 +30,30 @@
 }
 
 .group-name {
-    font-size: 2.5rem; 
+    font-size: 2.5rem;
     font-weight: bold;
     margin-bottom: 10px;
+    color: #4e143a;
 }
 
 .group-description {
-    font-size: 1rem; 
+    font-size: 1rem;
     margin-bottom: 20px;
-    color: #555; }
+    color: #555;
+}
 
 .group-members {
     margin-top: 20px;
 }
 
-.group-members h3 {
-    font-size: 1.5rem;
+.group-members h2 {
+    font-size: 1.8rem;
     margin-bottom: 10px;
+    color: #2c3e50;
 }
 
 .group-members ul {
-    list-style-type: none; 
+    list-style-type: none;
     padding: 0;
     margin: 0;
 }
@@ -58,15 +62,88 @@
     font-size: 1rem;
     margin-bottom: 10px;
     padding: 5px;
-    border-bottom: 1px solid #ddd;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.group-members li.member {
+    background-color: #b9b9b9;
+    font-weight: bold;
+    font-size: larger;    
+    color: #502c3d;
+    
+}
+
+.group-members li.admin {
+    background-color: #7e7e7e;
+    font-weight: bold;
+    font-size: x-large;    
+    color: #502c3d;
+    }
+
+.group-members li:hover {
+    background-color: #eaeaea;
 }
 
 .group-members li:first-child {
     font-weight: bold;
-    color: #2c3e50; 
+    color: #2c3e50;
+}
+
+.pending-requests {
+    margin-top: 50px;
+}
+
+.pending-requests li {
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.pending-requests button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #28a745;
+    color: white;
+    font-size: 0.9rem;
+}
+
+.pending-requests button:hover {
+    background-color: #218838;
+}
+
+.pending-requests button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
 }
 
 .error-message {
     color: red;
     font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .group-page-content {
+        flex-direction: column;
+    }
+
+    .group-left-section,
+    .group-right-section {
+        flex: 1 100%;
+        margin-bottom: 20px;
+    }
+
+    .group-name {
+        font-size: 2rem;
+    }
+
+    .group-members li {
+        font-size: 0.9rem;
+    }
+
+    .pending-requests button {
+        font-size: 0.8rem;
+    }
 }
