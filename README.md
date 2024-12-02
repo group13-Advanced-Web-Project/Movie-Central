@@ -146,7 +146,7 @@ The app should now be running locally at `http://localhost:3000`.
 
 
 ## Diagrams
-# [--------------------!!  FIGMA FLOWCHART DIAGRAM - LINK !!--------------------](https://www.figma.com/board/GEDwmSbW4mDdORlsn0Op3P/Untitled?node-id=25-457&t=9W4VubSLSSegfJfW-1)
+# [---------------!!  FIGMA FLOWCHART DIAGRAM - LINK !!---------------](https://www.figma.com/board/GEDwmSbW4mDdORlsn0Op3P/Untitled?node-id=25-457&t=9W4VubSLSSegfJfW-1)
 
 
 
