@@ -24,7 +24,7 @@ function GroupMembersTable() {
     return (
         <>
             <div>
-                <h2>Groups_Members Table</h2>
+                <h2>Group_Members Table</h2>
             </div>
             <div className="table-container">
                 <table className="tables-table">
@@ -43,7 +43,7 @@ function GroupMembersTable() {
                                 <td>{user.id}</td>
                                 <td>{user.group_id}</td>
                                 <td>{user.user_id}</td>
-                                <td>{user.is_admin ? "Yes" : "No"}</td>
+                                <td>{user.is_admin ? "true" : "false"}</td>
                                 <td>{user.status}</td>
                             </tr>
                         ))}

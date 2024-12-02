@@ -46,9 +46,9 @@ const getReviewTable = async () => {
                      
                         <th>review_id</th>
                         <th>movie_id</th>
-                        <th>name</th>
+                        <th>movie_name</th>
                         <th>user_id</th>
-                        <th>email</th>
+                        <th>user_email</th>
                         <th>description</th>
                         <th>rating</th>
                         <th>timestamp</th>
