@@ -7,8 +7,8 @@
 
 - [Architecture Diagram](#architecture-diagram)
 - [Frontend Diagram](#frontend-diagram)
-- [Server Diagram](#server-diagram)
 - [Database Diagram](#database-diagram)
+- [Server Diagram](#server-diagram)
 - [Account Delete Diagram](#account-delete)
 
 
@@ -20,13 +20,13 @@
 
 ![Frontend Diagram](docs/diagrams/frontend/frontend-flow.png)
 
-## Server Diagram
-
-![Server Diagram](docs/diagrams/server/server-flow.png)
-
 ## Database Diagram
 
 ![Database Diagram](docs/diagrams/database/database-structure.png)
+
+## Server Diagram
+
+![Server Diagram](docs/diagrams/server/server-flow.png)
 
 ## Account Delete Diagram
 
