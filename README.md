@@ -1,36 +1,3 @@
-## [!!  Figma Flowchart diagram - Link !!](https://www.figma.com/board/GEDwmSbW4mDdORlsn0Op3P/Untitled?node-id=25-457&t=9W4VubSLSSegfJfW-1)
-
-
-
-
-## Table of Contents
-
-- [Architecture Diagram](#architecture-diagram)
-- [Frontend Diagram](#frontend-diagram)
-- [Server Diagram](#server-diagram)
-- [Database Diagram](#database-diagram)
-- [Account Delete Diagram](#account-delete)
-
-
-
-## Architecture Diagram
-![Architecture Diagram](docs/diagrams/architecture.jpg)
-
-## Frontend Diagram
-
-![Frontend Diagram](docs/diagrams/frontend/frontend-flow.png)
-
-## Server Diagram
-
-![Server Diagram](docs/diagrams/server/server-flow.png)
-
-## Database Diagram
-
-![Database Diagram](docs/diagrams/database/database-structure.png)
-
-## Account Delete Diagram
-
-![Account Delete Diagram](docs/diagrams/database/account-delete-diagram.png)
 
 
 
@@ -50,29 +17,35 @@
 # Movie-Central
 
 ## Description
-**Movie-Central** is a modern web application designed to allow users to search, explore, and manage movie reviews and showtimes. This platform combines the power of React for a responsive frontend with Node.js and PostgreSQL for backend functionality, offering an intuitive user experience.
+**Movie-Central** is an advanced web application designed to let users search, explore, and manage movie reviews and showtimes. This platform combines the power of React for a responsive frontend with Node.js and PostgreSQL for backend functionality, offering an intuitive user experience.
 
 ## Team
 
-| Name      | Role        |
-|-----------|-------------|
-| Curtis    | Git         |
-| Sujeewa   | Frontend    |
-| Mahesh    | Frontend    |
-| Steffi    | Backend     |
-| Sanjaya   | Backend     |
-| Riku      | CI/CD       |
+| Name    | Role      |
+|---------|-----------|
+| Curtis  | Git       |
+| Sujeewa | Frontend  |
+| Mahesh  | Frontend  |
+| Steffi  | Backend   |
+| Sanjaya | Backend   |
+| Riku    | CI/CD     |
 
+## Table of Contents
 - [About](#about)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Architecture](#architecture)
 - [How It Works](#how-it-works)
 - [Installation and Setup](#installation-and-setup)
+- [Diagrams](#diagrams)
 - [API Endpoints](#api-endpoints)
 - [Screenshots](#screenshots)
 - [Links](#links)
 - [Deployment](#deployment)
+
+
+
+
 
 
 
@@ -155,12 +128,12 @@ To run the project locally, follow these steps:
      `cd backend && npm install`
 
 3. **Set up environment variables**:  
-   Create a `.env` file in both the frontend and backend folders and add the required environment variables.
+   Create a `.env` file in both the frontend and backend folders and add the required environment variables (hardcoded for now with the local and remote details included).
 
 4. **Set up PostgreSQL**:  
    - Create a local or cloud PostgreSQL database.
-   - Run the database schema script to set up tables and relationships.
-     > **Add schema script here**.
+   - Refer to \movie-app\backend\index.js for database initialization.
+   
 
 5. **Start the application**:
    - Run the backend server:  
@@ -172,21 +145,108 @@ The app should now be running locally at `http://localhost:3000`.
 
 
 
-## API Endpoints
+## Diagrams
+# [---------------!!  FIGMA FLOWCHART DIAGRAM - LINK !!---------------](https://www.figma.com/board/GEDwmSbW4mDdORlsn0Op3P/Untitled?node-id=25-457&t=9W4VubSLSSegfJfW-1)
 
-> Add details and explanation for each API endpoint.
+
+
+
+
+## Architecture Diagram
+![Architecture Diagram](docs/diagrams/architecture.jpg)
+
+## Frontend Diagram
+
+![Frontend Diagram](docs/diagrams/frontend/frontend-flow.png)
+
+## Database Diagram
+
+![Database Diagram](docs/diagrams/database/database-structure.png)
+
+## Server Diagram
+
+![Server Diagram](docs/diagrams/server/server-flow.png)
+
+## Account Delete Diagram
+
+![Account Delete Diagram](docs/diagrams/database/account-delete-diagram.png)
+
+
+
+
 
 ## Screenshots
 
-> Add screenshots of pages.
+- [Home](#home-page)
+- [Movie](#movie-page)
+- [Year](#year-page)
+- [Genres](#genres-page)
+- [Showtime](#showtime-page)
+- [Reviews](#reviews-page)
+- [Groups](#groups-page)
+- [Profile](#profile-page)
+- [Admin](#admin-page)
+- [Public Profile](#public-profile-page)
 
-## Links
+## Home Page
 
-- **Live Project**: [URL to live site]
-- **Documentation**: [URL to full documentation]
-- **Demo**: [URL to demo or video walkthrough]
+![Home Page](docs/assets/screenshots/home.png)
+
+## Movie Page
+
+![Movie Page](docs/assets/screenshots/movie.png)
+
+## Year Page
+
+![Year Page](docs/assets/screenshots/year.png)
+
+## Genres Page
+
+![Genres Page](docs/assets/screenshots/genres.png)
+
+## Showtime Page
+
+![Showtime Page](docs/assets/screenshots/showtimes.png)
+
+## Reviews Page
+
+![Reviews Page](docs/assets/screenshots/reviews.png)
+
+## Groups Page
+
+![Groups Page](docs/assets/screenshots/groups.png)
+
+## Profile Page
+
+![Profile Page](docs/assets/screenshots/profile.png)
+
+## Admin Page
+
+![Admin Page](docs/assets/screenshots/admin.png)
+
+## Public Profile Page
+
+![Public Profile Page](docs/assets/screenshots/public.png)
+
+
+
+
+
 
 ## Deployment
-- Frontend deployed using Netlify to insure fast, reliable, and continuous deployment: https://awamovieapp.netlify.app/
--
+- Frontend deployed using Netlify to insure fast, reliable, and continuous deployment: https://movie-app-group13.netlify.app/
+
+**Netlify Build Settings** 
+
 ![Build Settings](docs/assets/buildsettings.png)
+
+- Server uses render 
+
+**Server Build settings**
+![Build Settings](docs/assets/server-build.png)
+
+- Database uses render
+
+**Database connection**
+![Build Settings](docs/assets/database-connection.png)
+

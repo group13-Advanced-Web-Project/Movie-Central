@@ -27,7 +27,7 @@ function UsersTable() {
   return (
     <>
       <div>
-        <h2>User Table</h2>
+        <h2>Users Table</h2>
       </div>
       <div   className='table-container'>
 
@@ -38,6 +38,7 @@ function UsersTable() {
               <th>user_id</th>
               <th>email</th>
               <th>role</th>
+              <th>nickname</th>
             </tr>
           </thead>
           <tbody>
@@ -47,6 +48,7 @@ function UsersTable() {
                 <td>{user.user_id}</td>
                 <td>{user.email}</td>
                 <td>{user.role}</td>
+                <td>{user.nickname}</td>
               </tr>
             ))}
           </tbody>
