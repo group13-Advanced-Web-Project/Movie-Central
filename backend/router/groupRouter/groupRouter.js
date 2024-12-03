@@ -60,7 +60,7 @@ router.get('/users/:user_id', async (req, res) => {
 
     try {
         const result = await pool.query(
-            `SELECT groups.group_id, groups.group_name 
+            `SELECT groups.group_id, groups.group_name, group_members.is_admin
             FROM group_members JOIN groups 
             ON group_members.group_id = groups.group_id 
             WHERE group_members.user_id = $1 

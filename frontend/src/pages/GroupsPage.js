@@ -143,6 +143,9 @@ function GroupsPage() {
         return myGroups.some(group => group.group_id === group_id); 
     };
 
+    const myOwnGroups = myGroups.filter(group => group.is_admin === true); 
+    const memberGroups = myGroups.filter(group => group.is_admin === false); 
+
     return (
         <div className="groups-container">
             <Navbar />
@@ -191,11 +194,28 @@ function GroupsPage() {
                 </div>
                 <div className="groups-right-section">
                     <h2>My Groups</h2>
-                    {myGroups.length === 0 ? (
-                        <p>You have not joined or created any groups yet.</p>
+                    {/* My Own Groups */}
+                    <h3>My Own Groups</h3>
+                    {myOwnGroups.length === 0 ? (
+                        <p>You have not created any groups yet.</p>
                     ) : (
                         <ul>
-                            {myGroups.map((group, index) => (
+                            {myOwnGroups.map((group, index) => (
+                                <li className="groups-li" key={group.group_id || index}>
+                                    <Link to={`/group/${group.group_id}`}>
+                                        <h3>{group.group_name}</h3>
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                    {/* Member Groups */}
+                    <h3>Member Groups</h3>
+                    {memberGroups.length === 0 ? (
+                        <p>You are not a member of any groups yet.</p>
+                    ) : (
+                        <ul>
+                            {memberGroups.map((group, index) => (
                                 <li className="groups-li" key={group.group_id || index}>
                                     <Link to={`/group/${group.group_id}`}>
                                         <h3>{group.group_name}</h3>
