@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import '../../styles/Showtimes.css';
 
 const ShowtimeCard = ({ movie }) => {
@@ -12,7 +13,9 @@ const ShowtimeCard = ({ movie }) => {
       {/* Movie Poster */}
       <div className="image-container">
         {movie.imageUrl ? (
-          <img src={movie.imageUrl} alt={movie.title} className="image-card" />
+          <Link to={`/movie/${encodeURIComponent(movie.title)}`}>
+            <img src={movie.imageUrl} alt={movie.title} className="image-card" />
+          </Link>
         ) : (
           <div className="image-placeholder">Image Not Available</div>
         )}
