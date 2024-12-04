@@ -18,7 +18,7 @@ function GroupsPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [notifications, setNotifications] = useState([]);
     const [deleteGroupId, setDeleteGroupId] = useState(null);  
-    const [isDeleteModalOpen, setDeleteModalOpen] = useState(false); 
+    const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
 
     const { user, isAuthenticated, loginWithRedirect } = useAuth0();
 
@@ -89,26 +89,28 @@ function GroupsPage() {
             setError('Please fill in all fields.');
             return;
         }
-
+    
         try {
             const newGroup = {
                 group_name: newGroupName,
                 description: newGroupDescription,
                 admin: user.sub,
             };
-
+    
             const createdGroup = await createGroup(newGroup);
-
-            setMyGroups((prev) => [...prev, createdGroup]);
-            setAllGroups((prev) => [...prev, createdGroup]);
-
+    
+            // Refetch the user’s groups after creating the new one
+            const userGroupsData = await fetchUserGroups(user.sub);
+            setMyGroups(userGroupsData); 
+            setAllGroups((prev) => [...prev, createdGroup]); 
+    
             const groupId = createdGroup.group_id;
             const status = await checkJoinRequestStatus(groupId, user.sub);
             setJoinRequestStatus((prevStatus) => ({
                 ...prevStatus,
                 [groupId]: status,
             }));
-
+    
             setCreateGroupOpen(false);
             setNewGroupName('');
             setNewGroupDescription('');
@@ -118,10 +120,10 @@ function GroupsPage() {
             console.error('Error creating group:', error);
         }
     };
-
+    
     const handleJoinGroupClick = async (group_id) => {
         if (!isAuthenticated) {
-            loginWithRedirect();
+            loginWithRedirect(); 
             return;
         }
         try {
@@ -129,7 +131,7 @@ function GroupsPage() {
 
             setJoinRequestStatus((prevStatus) => ({
                 ...prevStatus,
-                [group_id]: 'pending',
+                [group_id]: 'pending', 
             }));
         } catch (error) {
             setError('Failed to send join request. Please try again later.');
@@ -174,12 +176,12 @@ function GroupsPage() {
                 { type: 'error', message: 'Failed to delete group. Please try again later.' }
             ]);
         } finally {
-            setDeleteModalOpen(false); 
+            setDeleteModalOpen(false);
         }
     };
 
     const handleCancelDelete = () => {
-        setDeleteModalOpen(false); 
+        setDeleteModalOpen(false);
     };
 
     return (
@@ -211,12 +213,12 @@ function GroupsPage() {
                                         <>
                                             {joinRequestStatus[group.group_id] === 'not-a-member' &&
                                                 !isUserInGroup(group.group_id) && (
-                                                    <button onClick={() => handleJoinGroupClick(group.group_id)}>
-                                                        Join this Group
-                                                    </button>
-                                                )}
+                                                <button onClick={() => handleJoinGroupClick(group.group_id)} className="join-button">
+                                                    Join this Group
+                                                </button>
+                                            )}
                                             {joinRequestStatus[group.group_id] === 'pending' && (
-                                                <button disabled>Your Joining Request is Pending</button>
+                                                <button className="pending-button"  disabled>Your Joining Request is Pending</button>
                                             )}
                                             {joinRequestStatus[group.group_id] === 'rejected' && (
                                                 <button disabled>Your Joining Request is Rejected</button>
@@ -241,14 +243,14 @@ function GroupsPage() {
                                 <li className="group-item" key={group.group_id || index}>
                                     <div className="group-content">
                                         <Link to={`/group/${group.group_id}`} className="group-link">
-                                            <h3>{group.group_name}</h3>
-                                        </Link>
-                                        <button
-                                            onClick={() => handleDeleteGroupClick(group.group_id)}
-                                            className="delete-group-button"
-                                        >
-                                            Delete
-                                        </button>
+                                        <h3>{group.group_name}</h3>
+                                    </Link>
+                                    <button
+                                        onClick={() => handleDeleteGroupClick(group.group_id)}
+                                        className="delete-group-button"
+                                    >
+                                        Delete
+                                    </button>
                                     </div>
                                 </li>
                             ))}
@@ -269,26 +271,52 @@ function GroupsPage() {
                             ))}
                         </ul>
                     )}
-    
+                    
                     <button onClick={handleCreateGroupClick} className="create-group-button">
                         Create a New Group
                     </button>
                 </div>
             </div>
-    
+
+            {isCreateGroupOpen && (
+                <div className="create-group-popup">
+                    <form onSubmit={handleCreateGroupSubmit}>
+                        <h3>Create a New Group</h3>
+                        <input
+                            type="text"
+                            placeholder="Group Name"
+                            value={newGroupName}
+                            onChange={(e) => setNewGroupName(e.target.value)}
+                            required
+                        />
+                        <textarea
+                            placeholder="Group Description"
+                            value={newGroupDescription}
+                            onChange={(e) => setNewGroupDescription(e.target.value)}
+                            required
+                        ></textarea>
+                        <button type="submit">Create Group</button>
+                        <button type="button" onClick={() => setCreateGroupOpen(false)}>
+                            Cancel
+                        </button>
+                    </form>
+                    {error && <div className="error-message">{error}</div>}
+                </div>
+            )}
+
             {isDeleteModalOpen && (
-                <div className="delete-modal">
+                <div className="delete-modal"> 
                     <div className="modal-content">
-                        <h3>Are you sure you want to delete this group?</h3>
-                        <button onClick={handleDeleteGroup} className="confirm-delete-button">Yes, Delete</button>
+                    <h3>Are you sure you want to delete this group?</h3>
+                    <button onClick={handleDeleteGroup} className="confirm-delete-button">Yes, Delete</button>
                         <button onClick={handleCancelDelete} className="cancel-delete-button">Cancel</button>
                     </div>
                 </div>
             )}
-    
+
             <Footer />
         </div>
-    );   
+    );
 }
 
 export default GroupsPage;
