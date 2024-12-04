@@ -276,7 +276,6 @@ function GroupsPage() {
                 </div>
             </div>
     
-            {/* Modal for deleting a group - Move it outside of the groups-content div */}
             {isDeleteModalOpen && (
                 <div className="delete-modal">
                     <div className="modal-content">
