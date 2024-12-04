@@ -105,6 +105,12 @@ router.delete('/:group_id/members/:user_id', async (req, res) => {
             );
 
             if (newAdmin.rowCount > 0) {
+
+                await pool.query(
+                    `UPDATE group_members SET is_admin = FALSE WHERE group_id = $1 AND user_id = $2;`,
+                    [group_id, user_id]
+                );
+
                 await pool.query(
                     `UPDATE group_members SET is_admin = TRUE WHERE group_id = $1 AND user_id = $2;`,
                     [group_id, newAdmin.rows[0].user_id]

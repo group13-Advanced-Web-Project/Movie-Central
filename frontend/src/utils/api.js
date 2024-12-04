@@ -226,7 +226,7 @@ export const checkJoinRequestStatus = async (group_id, user_id) => {
     }
 };
 
-
+// Fetch group information
 export const fetchGroupInfo = async (group_id) => {
     try {
         const response = await fetch(`${serverUrl}/groups/${group_id}`);
@@ -240,6 +240,7 @@ export const fetchGroupInfo = async (group_id) => {
     }
 };
 
+// fetch group members
 export const fetchGroupMembers = async (group_id) => {
     try {
         const response = await fetch(`${serverUrl}/groups/${group_id}/members`);
@@ -252,3 +253,24 @@ export const fetchGroupMembers = async (group_id) => {
         throw error;
     }
 };
+
+
+//Remove member from group
+export const removeMember= async (group_id, user_id) => {
+    try {
+        const response = await fetch(`${serverUrl}/groups/${group_id}/members/${user_id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to remove member');
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error removing member:', error);
+        throw error;
+    }
+}
