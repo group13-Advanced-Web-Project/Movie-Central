@@ -334,6 +334,50 @@ router.post('/:group_id/admin', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: 'Failed to assign a new admin.', details: error.message });
     }
-})
+});
+
+// Delete group
+router.delete('/:group_id', async (req, res) => {
+    const { group_id } = req.params;
+    const { admin_id } = req.body;
+
+    try {
+        const groupCheck = await pool.query(
+            `SELECT * FROM groups WHERE group_id = $1;`,
+            [group_id]
+        );
+
+        if (groupCheck.rowCount === 0) {
+            return res.status(404).json({ error: 'Group not found.' });
+        }
+
+        const adminCheck = await pool.query(
+            `SELECT * FROM group_members WHERE group_id = $1 AND user_id = $2 AND is_admin = TRUE;`,
+            [group_id, admin_id]
+        );
+
+        if (adminCheck.rowCount === 0) {
+            return res.status(403).json({ error: 'Only group admins can delete the group.' });
+        }
+
+        await pool.query('BEGIN');
+
+        await pool.query(
+            `DELETE FROM group_members WHERE group_id = $1;`,
+            [group_id]
+        );
+
+        await pool.query(
+            `DELETE FROM groups WHERE group_id = $1;`,
+            [group_id]
+        );
+
+        await pool.query('COMMIT');
+
+        res.json({ message: 'Group deleted successfully.' });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to delete group.', details: error.message });
+    }
+});
 
 export default router;
