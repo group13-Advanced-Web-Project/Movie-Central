@@ -60,7 +60,7 @@ router.get('/users/:user_id', async (req, res) => {
 
     try {
         const result = await pool.query(
-            `SELECT groups.group_id, groups.group_name 
+            `SELECT groups.group_id, groups.group_name, group_members.is_admin
             FROM group_members JOIN groups 
             ON group_members.group_id = groups.group_id 
             WHERE group_members.user_id = $1 
@@ -105,6 +105,12 @@ router.delete('/:group_id/members/:user_id', async (req, res) => {
             );
 
             if (newAdmin.rowCount > 0) {
+
+                await pool.query(
+                    `UPDATE group_members SET is_admin = FALSE WHERE group_id = $1 AND user_id = $2;`,
+                    [group_id, user_id]
+                );
+
                 await pool.query(
                     `UPDATE group_members SET is_admin = TRUE WHERE group_id = $1 AND user_id = $2;`,
                     [group_id, newAdmin.rows[0].user_id]
