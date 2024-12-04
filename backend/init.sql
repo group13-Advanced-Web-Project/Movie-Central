@@ -14,7 +14,8 @@ CREATE TABLE users (
     user_id VARCHAR(255) UNIQUE NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     nickname VARCHAR(255),
-    role VARCHAR(255) NOT NULL
+    role VARCHAR(255) NOT NULL,
+    shareable_url VARCHAR(255)
 );
 
 -- Auto generate nickname
@@ -35,21 +36,36 @@ BEFORE INSERT ON users
 FOR EACH ROW
 EXECUTE FUNCTION set_nickname();
 
+-- Auto generate shareable URL
+CREATE OR REPLACE FUNCTION set_shareable_url()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.shareable_url := CONCAT('https://movie-app-group13.netlify.app/public/', NEW.id);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER set_shareable_url
+BEFORE INSERT ON users
+FOR EACH ROW
+EXECUTE FUNCTION set_shareable_url();
+
 CREATE TABLE favorites (
     id SERIAL PRIMARY KEY,
     user_id VARCHAR(255) NOT NULL,
     movie_id VARCHAR(255) NOT NULL,
     UNIQUE(user_id, movie_id)
 );
+
 -- i am using the above one     Create favorites table
-CREATE TABLE favorites (
-    id SERIAL PRIMARY KEY,
-    user_id VARCHAR(255) NOT NULL,
-    fave_1 VARCHAR(255),
-    fave_2 VARCHAR(255),
-    fave_3 VARCHAR(255),
-    fave_4 VARCHAR(255)
-);
+-- CREATE TABLE favorites (
+--     id SERIAL PRIMARY KEY,
+--     user_id VARCHAR(255) NOT NULL,
+--     fave_1 VARCHAR(255),
+--     fave_2 VARCHAR(255),
+--     fave_3 VARCHAR(255),
+--     fave_4 VARCHAR(255)
+-- );
 
 -- Create review table
 CREATE TABLE review (
