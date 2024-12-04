@@ -112,6 +112,11 @@ router.delete('/:group_id/members/:user_id', async (req, res) => {
                 );
 
                 await pool.query(
+                    `UPDATE group_members SET is_admin = FALSE WHERE group_id = $1 AND user_id = $2;`,
+                    [group_id, user_id]
+                );
+
+                await pool.query(
                     `UPDATE group_members SET is_admin = TRUE WHERE group_id = $1 AND user_id = $2;`,
                     [group_id, newAdmin.rows[0].user_id]
                 );
@@ -289,5 +294,46 @@ router.get('/status/:group_id/:user_id', async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch join request status', details: error.message });
     }
 });
+
+// Assigning a new admin to a group
+router.post('/:group_id/admin', async (req, res) => {
+    const { group_id } = req.params;
+    const { user_id, admin_id } = req.body;
+
+    try {
+        // Check if the user is an admin
+        const adminCheck = await pool.query(
+            `SELECT * FROM group_members WHERE group_id = $1 AND user_id = $2 AND is_admin = TRUE;`,
+            [group_id, admin_id]
+        );
+
+        if (adminCheck.rowCount === 0) {
+            return res.status(403).json({ error: 'Only group admins can assign a new admin.' });
+        }
+
+        const existingMemberCheck = await pool.query(
+            `SELECT * FROM group_members WHERE group_id = $1 AND user_id = $2 AND status = 'accepted';`,
+            [group_id, user_id]
+        );
+
+        if (existingMemberCheck.rowCount === 0) {
+            return res.status(404).json({ error: 'User is not a member of the group.' });
+        }
+
+        await pool.query(
+            `UPDATE group_members SET is_admin = FALSE WHERE group_id = $1 AND is_admin = TRUE;`,
+            [group_id]
+        );
+
+        await pool.query(
+            `UPDATE group_members SET is_admin = TRUE WHERE group_id = $1 AND user_id = $2;`,
+            [group_id, user_id]
+        );
+
+        res.json({ message: `New admin is now ${user_id}.` });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to assign a new admin.', details: error.message });
+    }
+})
 
 export default router;

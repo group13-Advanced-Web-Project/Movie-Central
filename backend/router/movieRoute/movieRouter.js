@@ -7,7 +7,7 @@ import EventEmitter from "events";
 import pLimit from "p-limit";
 
 EventEmitter.defaultMaxListeners = 35;
-const limit = pLimit(100);
+const limit = pLimit(20);
 
 dotenv.config();
 
@@ -19,31 +19,27 @@ router.get("/", (req, res) => {
 });
 
 const now_playing_max_pages = 2;
-const popular_max_pages = 15;
+const popular_max_pages = 10;
 const trending_max_pages = 5;
 
-async function fetchMoviesFromEndpoint(endpoint, maxPages=15) {
+async function fetchMoviesFromEndpoint(endpoint, maxPages = 15) {
     const allMovies = [];
-    let currentPage = 1;
+    const promises = [];
 
-    while (currentPage <= maxPages) {
-        try {
-            const response = await limit(() => 
-            axios.get(
-                `${endpoint}?api_key=${tmdb_api_key}&page=${currentPage}&region=fi`, {
-                    headers: {
-                        Authorization: `Bearer ${tmdb_api_key}`
-                    }
+    for (let page = 1; page <= maxPages; page++) {
+        promises.push(
+            limit(() =>
+                axios.get(`${endpoint}?api_key=${tmdb_api_key}&page=${page}&region=fi`,
+                {
+                    headers: {Authorization: `Bearer ${tmdb_api_key}`}
+                }).then((response) => {
+                    allMovies.push(...response.data.results);
                 })
-            );
-
-            allMovies.push(...response.data.results);
-            currentPage++;
-        } catch (error) {
-            console.error("Error fetching movies from endpoint:", error.message);
-            break;
-        }
+            )
+        );
     }
+
+    await Promise.all(promises);
     return allMovies;
 }
 
@@ -72,13 +68,12 @@ router.get("/fetch-movies", async (req, res) => {
         });
 
         const combinedMovies = Array.from(movieMap.values());
-        combinedMovies.sort((a, b) => {
-            if (a.isNowPlaying && !b.isNowPlaying) return -1;
-            if (!a.isNowPlaying && b.isNowPlaying) return 1;
-            return b.popularity - a.popularity;
-        });
 
-        const finalMovies = combinedMovies.slice(0, 220);
+        const finalMovies = combinedMovies
+        .sort((a, b) => b.popularity - a.popularity)
+        .filter((movie) => movie.isNowPlaying)
+        .concat(combinedMovies.filter((movie) => !movie.isNowPlaying))
+        .slice(0, 150);
 
         console.time("fetch-movie-details");
 
@@ -145,9 +140,6 @@ router.get("/fetch-movies", async (req, res) => {
         console.timeEnd("fetch-movie-details");
         
         console.log("Completed fetching movie details.");
-        
-       
-        
 
         const filteredMovies = movies.filter((movie) => movie !== null);
         res.json(filteredMovies);
