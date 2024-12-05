@@ -382,23 +382,61 @@ router.delete('/:group_id', async (req, res) => {
     }
 });
 
-// Get movies for group page
-router.get('/:group_id/movies', async (req, res) => {
-    const { group_id, movie_id } = req.query;
+// Add movie to group
+router.post('/:group_id/movies', async (req, res) => {
+    const { group_id } = req.params;
+    const { movie_id } = req.body;
 
     try {
-        const response = await axios.get(`https://api.themoviedb.org/3/movie/${movie_id}?api_key=${TMDB_API_KEY}`,
+        const movieResponse = await axios.get(`https://api.themoviedb.org/3/movie/${movie_id}?api_key=${TMDB_API_KEY}`,
         {
             headers: {'Authorization': `Bearer ${TMDB_API_KEY}`}
         });
 
-        const movie = {
+        if (movieResponse.status !== 200) {
+            return res.status(404).json({ error: 'Invalid movie id. Movie not found.' });
+        }
+
+        await pool.query(
+            `INSERT INTO group_movies (group_id, movie_id) VALUES ($1, $2);`,
+            [group_id, movie_id]
+        );
+
+        res.json({ message: 'Movie added to group.' });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to add movie to group.', details: error.message });
+    }
+});
+
+// Get movies for group page
+router.get('/:group_id/movies', async (req, res) => {
+    const { group_id } = req.params;
+
+    try {
+        const groupMovies = await pool.query(
+            `SELECT movie_id FROM group_movies WHERE group_id = $1;`,
+            [group_id]
+        );
+
+        if (groupMovies.rows.length === 0) {
+            return res.status(404).json({ error: 'No movies found for this group.' });
+        }
+
+        const response = groupMovies.rows.map(({ movie_id }) => 
+            axios.get(`https://api.themoviedb.org/3/movie/${movie_id}?api_key=${TMDB_API_KEY}`,
+            {
+                headers: {'Authorization': `Bearer ${TMDB_API_KEY}`}
+            })
+        );
+
+        const movieResponses = await Promise.all(response);
+        const movieDetails = movieResponses.map(response => ({
             movie_id: response.data.id,
             movie_name: response.data.title,
             poster_path: response.data.poster_path? `https://image.tmdb.org/t/p/w500${response.data.poster_path}` : null, 
-        };
+        }));
 
-        res.json(movie);
+        res.json(movieDetails);
     } catch (error) {
         res.status(500).json({ error: 'Failed to fetch movie details.', details: error.message });
     }
