@@ -194,5 +194,56 @@ router.put("/update-nickname", (req, res) => {
   }
 });
 
+// Fetch all shareable_urls from the users table
+router.get("/shareable-urls", (req, res) => {
+  try {
+    pool.query(
+      "SELECT user_id, nickname, shareable_url FROM users WHERE user_id != 'Deleted User';",
+      (error, result) => {
+        if (error) {
+          console.error("Query error:", error);
+          return res.status(500).json({ error: error.message });
+        }
+
+        if (result.rows.length > 0) {
+          return res.status(200).json(result.rows);
+        } else {
+          return res.status(404).json({ message: "No shareable URLs found" });
+        }
+      }
+    );
+  } catch (error) {
+    console.error("Catch error:", error);
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// Fetch shareable_url for a specific user
+router.get("/:user_id/shareable-url", (req, res) => {
+  try {
+    const { user_id } = req.params;
+
+    pool.query(
+      "SELECT user_id, nickname, shareable_url FROM users WHERE user_id = $1;",
+      [user_id],
+      (error, result) => {
+        if (error) {
+          console.error("Query error:", error);
+          return res.status(500).json({ error: error.message });
+        }
+
+        if (result.rows.length > 0) {
+          return res.status(200).json(result.rows);
+        } else {
+          return res.status(404).json({ message: "User not found" });
+        }
+      }
+    );
+  } catch (error) {
+    console.error("Catch error:", error);
+    return res.status(500).json({ error: error.message });
+  }
+});
+
 
 export default router;

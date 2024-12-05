@@ -1,7 +1,9 @@
 import { Router } from "express";
 import { pool } from "../../helpers/db.js";
+import axios from "axios";
 
 const router = Router();
+const TMDB_API_KEY = process.env.TMDB_API_KEY;
 
 const fetchGroupMembers = async (group_id) => {
     const query = `SELECT gm.*, u.nickname
@@ -377,6 +379,28 @@ router.delete('/:group_id', async (req, res) => {
         res.json({ message: 'Group deleted successfully.' });
     } catch (error) {
         res.status(500).json({ error: 'Failed to delete group.', details: error.message });
+    }
+});
+
+// Get movies for group page
+router.get('/:group_id/movies', async (req, res) => {
+    const { group_id, movie_id } = req.query;
+
+    try {
+        const response = await axios.get(`https://api.themoviedb.org/3/movie/${movie_id}?api_key=${TMDB_API_KEY}`,
+        {
+            headers: {'Authorization': `Bearer ${TMDB_API_KEY}`}
+        });
+
+        const movie = {
+            movie_id: response.data.id,
+            movie_name: response.data.title,
+            poster_path: response.data.poster_path? `https://image.tmdb.org/t/p/w500${response.data.poster_path}` : null, 
+        };
+
+        res.json(movie);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch movie details.', details: error.message });
     }
 });
 
