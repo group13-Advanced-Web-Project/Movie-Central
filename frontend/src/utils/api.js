@@ -1,3 +1,4 @@
+import axios from 'axios';
 const serverUrl = process.env.REACT_APP_API_URL;
 //const serverUrl = 'http://localhost:3001';
 
@@ -274,3 +275,11 @@ export const removeMember= async (group_id, user_id) => {
         throw error;
     }
 }
+
+// Delete group
+export const deleteGroup = async (group_id, admin_id) => {
+    const response = await axios.delete(`${serverUrl}/groups/${group_id}`, {
+        data: { admin_id },
+    });
+    return response.data;
+};
