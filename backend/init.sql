@@ -121,6 +121,15 @@ AFTER DELETE ON users
 FOR EACH ROW
 EXECUTE FUNCTION delete_user();
 
+-- Create group movies table
+CREATE TABLE group_movies (
+    id SERIAL PRIMARY KEY,
+    group_id INT NOT NULL,
+    movie_id INT NOT NULL,
+    FOREIGN KEY (group_id) REFERENCES groups (group_id) ON DELETE CASCADE,
+    UNIQUE (group_id, movie_id)
+);
+
 --------------------------------------------CREATE DUMMY DATA--------------------------------------------
 --------------------------------------------CREATE DUMMY DATA--------------------------------------------
 --------------------------------------------CREATE DUMMY DATA--------------------------------------------

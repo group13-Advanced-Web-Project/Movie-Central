@@ -425,7 +425,7 @@ router.get("/trending-movies", async (req, res) => {
             return response.data.results;
         };
 
-        const pages = Array.from({ length: 10 }, (_, index) => index + 1);
+        const pages = Array.from({ length: 5 }, (_, index) => index + 1);
         const allMovies = await Promise.all(pages.map(fetchMoviesFromPage));
 
         const movieMap = new Map();
