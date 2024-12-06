@@ -1,6 +1,3 @@
-
-
-
 ![React](https://img.shields.io/badge/Frontend-React-61DAFB)
 ![HTML](https://img.shields.io/badge/Markup-HTML-E34F26)
 ![CSS](https://img.shields.io/badge/Styles-CSS-1572B6)
@@ -17,92 +14,48 @@
 # Movie-Central
 
 ## Description
+
 **Movie-Central** is an advanced web application designed to let users search, explore, and manage movie reviews and showtimes. This platform combines the power of React for a responsive frontend with Node.js and PostgreSQL for backend functionality, offering an intuitive user experience.
 
 ## Team
 
-| Name    | Role      |
-|---------|-----------|
-| Curtis  | Git       |
-| Sujeewa | Frontend  |
-| Mahesh  | Frontend  |
-| Steffi  | Backend   |
-| Sanjaya | Backend   |
-| Riku    | CI/CD     |
+| Name               | GitHub Name      | Role                      |
+| ------------------ | ---------------- | ------------------------- |
+| Curtis             | Curtis-Thomas    | Project Management/Github |
+| Sujeewa            | SampathHM        | Frontend                  |
+| Mahesh             | t3idma00         | Frontend                  |
+| Eaint Mon (Steffi) | SteffiEaint      | Backend                   |
+| Sanjaya            | sanjayabhattarai | Backend                   |
+| Riku               | RikuRautio       | CI/CD                     |
 
 ## Table of Contents
-- [About](#about)
-- [Features](#features)
+
 - [Tech Stack](#tech-stack)
-- [Architecture](#architecture)
-- [How It Works](#how-it-works)
-- [Installation and Setup](#installation-and-setup)
-- [Diagrams](#diagrams)
-- [API Endpoints](#api-endpoints)
-- [Screenshots](#screenshots)
-- [Links](#links)
-- [Deployment](#deployment)
+- [Installation and Setup](#Installation-and-Setup)
+------------------ 
 
-
-
-
-
-
-
-## About
-
-
-
-**Movie-Central** allows users to explore movies, view their showtimes, and leave reviews. Users can browse movies without creating an account, or register to gain full access to personalized features. Registered users can:
-
-- **Browse Movies**: Access detailed movie information, ratings, and showtimes.
-- **Create and Share Favorite Lists**: Users can curate and share their favorite movies with a unique link.
-- **Join or Create Movie Groups**: Connect with friends by forming or joining customizable movie groups.
-- **Review Movies**: Share thoughts on movies they've watched with ratings and reviews.
-
-This project integrates **React**, **Node.js**, **Express**, and **MySQL**, creating an interactive and scalable movie browsing experience.
-
-## Features
-
-- **Movie Browsing**: Discover a wide selection of movies, complete with essential details such as ratings, reviews, and showtimes.
-- **Favorite Movie List**: Build a personal collection of favorite movies for easy access and sharing.
-- **Movie Reviews and Ratings**: Add reviews and ratings to help others in their movie selection process.
-- **User Authentication**: Secure sign-up and login system for accessing personalized features.
-- **Create and Join Movie Groups**: Engage with friends by forming or joining movie groups to discuss and share recommendations.
-- **Responsive Design**: Optimized for a smooth experience on desktops, tablets, and smartphones.
+- [GREEN TABLE](#green-table)
+- [BLUE TABLE](#blue-table)
+- [PINK TABLE](#pink-table)
 
 ## Tech Stack
 
 ### Frontend
 
-| Technology | Description |
-|------------|-------------|
-| **HTML**   | Provides the basic structure for the website. |
-| **CSS**    | Ensures responsive design for all devices. |
-| **JavaScript** | Powers dynamic interactions on the frontend. |
-| **React**  | JavaScript library for building the user interface. |
+| **HTML** | **CSS** | **JavaScript** | **React** |
 
 ### Backend
 
-| Technology | Description |
-|------------|-------------|
-| **Node.js** | A JavaScript runtime for backend logic. |
+| **Node.js** |
 | **Express** | A lightweight framework for building web applications in Node.js. |
 | **PostgreSQL** | A relational database for managing movie data, reviews, and user information. |
 
 ### Deployment
 
-| Technology | Description |
-|------------|-------------|
+| Technology   | Description                                                          |
+| ------------ | -------------------------------------------------------------------- |
 | **Frontend** | Hosted on **Netlify** for fast, reliable, and continuous deployment. |
-| **Backend**  | Deployed on **Render** for API and database services. |
-
-
-
-
-## How It Works
-
-
+| **Backend**  | Deployed on **Render** for API and database services.                |
 
 The **Movie-Central** operates using a client-server architecture:
 
@@ -122,6 +75,7 @@ To run the project locally, follow these steps:
 
 2. **Install dependencies**:  
    Navigate to the frontend and backend directories and install the required packages:
+
    - Frontend:  
      `cd frontend && npm install`
    - Backend:  
@@ -130,10 +84,10 @@ To run the project locally, follow these steps:
 3. **Set up environment variables**:  
    Create a `.env` file in both the frontend and backend folders and add the required environment variables (hardcoded for now with the local and remote details included).
 
-4. **Set up PostgreSQL**:  
+4. **Set up PostgreSQL**:
+
    - Create a local or cloud PostgreSQL database.
    - Refer to \movie-app\backend\index.js for database initialization.
-   
 
 5. **Start the application**:
    - Run the backend server:  
@@ -143,104 +97,51 @@ To run the project locally, follow these steps:
 
 The app should now be running locally at `http://localhost:3000`.
 
+## Green Table
 
+- [Responsiveness](#responsiveness)
+- [Sign up](#sign-up)
+- [Sign in](#sign-in)
+- [Removing account](#removing-account)
+- [Search](#search)
+- [Showtimes](#showtimes)
+- [Group page](#group-page)
+- [Adding a member](#adding-a-member)
+- [Removing a member](#removing-a-member)
+- [Customizing group page](#customizing-group-page)
+- [Review a movie](#review-a-movie)
+- [Browsing reviews](#browsing-reviews)
+- [Favorites](#favorites)
+- [Sharing favorites](#sharing-favorites)
+- [Optional feature](#optional-feature)
+- [Deployment](#deployment)
 
-## Diagrams
-# [---------------!!  FIGMA FLOWCHART DIAGRAM - LINK !!---------------](https://www.figma.com/board/GEDwmSbW4mDdORlsn0Op3P/Untitled?node-id=25-457&t=9W4VubSLSSegfJfW-1)
-
-
-
-
-
-## Architecture Diagram
-![Architecture Diagram](docs/diagrams/architecture.jpg)
-
-## Frontend Diagram
-
-![Frontend Diagram](docs/diagrams/frontend/frontend-flow.png)
-
-## Database Diagram
-
-![Database Diagram](docs/diagrams/database/database-structure.png)
-
-## Server Diagram
-
-![Server Diagram](docs/diagrams/server/server-flow.png)
-
-## Account Delete Diagram
-
-![Account Delete Diagram](docs/diagrams/database/account-delete-diagram.png)
-
-
-
-
-
-## Screenshots
-
-- [Home](#home-page)
-- [Movie](#movie-page)
-- [Year](#year-page)
-- [Genres](#genres-page)
-- [Showtime](#showtime-page)
-- [Reviews](#reviews-page)
-- [Groups](#groups-page)
-- [Profile](#profile-page)
-- [Admin](#admin-page)
-- [Public Profile](#public-profile-page)
-
-## Home Page
-
-![Home Page](docs/assets/screenshots/home.png)
-
-## Movie Page
-
-![Movie Page](docs/assets/screenshots/movie.png)
-
-## Year Page
-
-![Year Page](docs/assets/screenshots/year.png)
-
-## Genres Page
-
-![Genres Page](docs/assets/screenshots/genres.png)
-
-## Showtime Page
-
-![Showtime Page](docs/assets/screenshots/showtimes.png)
-
-## Reviews Page
-
-![Reviews Page](docs/assets/screenshots/reviews.png)
-
-## Groups Page
-
-![Groups Page](docs/assets/screenshots/groups.png)
-
-## Profile Page
-
-![Profile Page](docs/assets/screenshots/profile.png)
-
-## Admin Page
-
-![Admin Page](docs/assets/screenshots/admin.png)
-
-## Public Profile Page
-
-![Public Profile Page](docs/assets/screenshots/public.png)
-
-
-
-
-
-
+## Responsiveness
+## Sign up
+## Sign in
+## Removing account
+## Search
+## Showtimes
+## Group page
+## Adding a member
+## Removing a member
+## Customizing group page
+## Review a movie
+## Browsing reviews
+## Favorites
+## Sharing favorites
+## Optional feature
 ## Deployment
-- Frontend deployed using Netlify to insure fast, reliable, and continuous deployment: https://movie-app-group13.netlify.app/
 
-**Netlify Build Settings** 
+For deployment we used free tiers from Netlify (frontend) and render (server and database).
+
+- Frontend deployed using Netlify:
+
+**Netlify Build Settings**
 
 ![Build Settings](docs/assets/buildsettings.png)
 
-- Server uses render 
+- Server uses render:
 
 **Server Build settings**
 ![Build Settings](docs/assets/server-build.png)
@@ -249,4 +150,76 @@ The app should now be running locally at `http://localhost:3000`.
 
 **Database connection**
 ![Build Settings](docs/assets/database-connection.png)
+
+
+## Blue Table
+
+[!! FIGMA FLOWCHART DIAGRAM - LINK !!](https://www.figma.com/board/GEDwmSbW4mDdORlsn0Op3P/Untitled?node-id=25-457&t=9W4VubSLSSegfJfW-1)
+
+
+- [Class diagram describing database structure](#class-diagram-describing-database-structure)
+- [UI design (wireframe)](#ui-design-wireframe)
+- [Documenting REST API](#documenting-rest-api)
+- [Managing product backlog](#managing-product-backlog)
+- [Version control](#version-control)
+- [Overall project management and progress](#overall-project-management-and-progress)
+
+## Class diagram describing database structure
+![Class Diagram](docs/diagrams/database/movieapp_database.png)
+
+## UI design (wireframe)
+
+![Architecture Diagram](docs/diagrams/architecture.jpg)
+![Frontend Diagram](docs/diagrams/frontend/frontend-flow.png)
+
+## Documenting REST API
+
+## Managing product backlog
+
+The product was tracked using a Github project board:
+
+https://github.com/orgs/group13-Advanced-Web-Project/projects/2
+
+![Project Board](docs/assets/project-board.png)
+
+The board is separated into two main tags, Backlog and Bug tracker.
+
+Backlog was populated with all the required tasks to be completed over the whole project, and then additional filtered kanban board were created for team members to easily find their assigned tasks. Teh priority system was used to identify which tasks were to be worked on next.
+
+Bug tracker was used to keep track of any bugs and assigned to the relevant team member, the priority system was also used in the same way.
+
+The timeline tab is used to see a  all of the issues that have been worked on and completed throughout the project, this is filtered by start date to end date.
+## Version control
+
+For version control, we decided to use a open source methodology of forking and having 1 person manage all of the pull requests to minimize merge conflicts.
+![Project Board](docs/assets/network-graph.png)
+
+This allowed us to deploy from one branch, and use team members forks and pull request branches for feature development and bug fixes.
+
+## Overall project management and progress
+
+
+
+
+
+## Pink Table
+
+- [Sign in](#sign-in)
+- [Sign out](#sign-out)
+- [Sign up](#sign-up)
+- [Deleting account](#deleting-account)
+- [Browsing reviews](#browsing-reviews)
+
+## Sign in
+## Sign out
+## Sign up
+## Deleting account
+## Browsing reviews
+
+
+
+
+
+
+
 
