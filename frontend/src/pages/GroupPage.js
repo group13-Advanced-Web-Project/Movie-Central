@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import {
-    fetchGroupInfo,
-    fetchGroupMembers,
-    fetchPendingRequests,
-    respondToRequest,
-    removeMember
-} from '../utils/api';
+import { fetchGroupInfo, fetchGroupMembers, fetchPendingRequests, respondToRequest, removeMember, searchMovies } from '../utils/api';
 import { useAuth0 } from '@auth0/auth0-react';
 import '../styles/GroupPage.css';
+import axios from 'axios';
+
+const serverUrl = process.env.REACT_APP_API_URL;
 
 function GroupPage() {
     const { group_id } = useParams();
@@ -24,6 +21,21 @@ function GroupPage() {
     const [showRemoveModal, setShowRemoveModal] = useState(false);
     const [selectedMember, setSelectedMember] = useState(null);
     const [refresh, setRefresh] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+    const [groupMovies, setGroupMovies] = useState([]);
+    const dropdownRef = useRef(null);
+
+
+    const loadGroupMovies = async () => {
+        try {
+            const response = await axios.get(`${serverUrl}/groups/${group_id}/movies`);
+            setGroupMovies(response.data || []);
+        } catch (error) {
+            console.error('Failed to fetch group movies:', error);
+            setError('Failed to fetch movies for the group.');
+        }
+    };
 
     useEffect(() => {
         const loadGroupDetails = async () => {
@@ -50,13 +62,10 @@ function GroupPage() {
                 const admins = acceptedMembers.filter((member) => member.is_admin);
                 const members = acceptedMembers.filter((member) => !member.is_admin);
 
-                // Check if the logged-in user is an admin
                 const loggedInMember = acceptedMembers.find((member) => member.user_id === user?.sub);
                 setIsAdmin(loggedInMember?.is_admin || false);
-
                 setGroupMembers([...admins, ...members]);
             } catch (error) {
-                console.error('Failed to fetch group members:', error);
                 setError('Failed to load group members. Please try again later.');
             }
         };
@@ -68,12 +77,13 @@ function GroupPage() {
             } catch (error) {
                 console.error('Failed to fetch pending requests:', error);
             }
-        };
+        };        
 
         if (group_id) {
             loadGroupDetails();
             loadGroupMembers();
             loadPendingRequests();
+            loadGroupMovies();
         }
     }, [group_id, user?.sub, refresh]);
 
@@ -104,7 +114,6 @@ function GroupPage() {
             const result = await removeMember(group_id, selectedMember.user_id);
             console.log('Member removed:', result);
 
-            // Refetch group members to reflect the updated list
             const updatedMembers = await fetchGroupMembers(group_id);
             const acceptedMembers = updatedMembers.filter((member) => member.status === 'accepted');
             const admins = acceptedMembers.filter((member) => member.is_admin);
@@ -112,7 +121,6 @@ function GroupPage() {
 
             setGroupMembers([...admins, ...members]);
 
-            // Trigger re-fetch by updating refresh state
             setRefresh((prev) => !prev);
         } catch (error) {
             console.error('Failed to remove member:', error);
@@ -132,6 +140,49 @@ function GroupPage() {
         setShowRemoveModal(false);
         setSelectedMember(null);
     };
+
+    const handleSearch = async (query) => {
+        setSearchQuery(query);
+        if (query.length >= 1) {
+            try {
+                const results = await searchMovies(query);
+                setSearchResults(results);
+            } catch (error) {
+                console.error('Failed to fetch search results:', error);
+            }
+        } else {
+            setSearchResults([]);
+        }
+    };
+
+    const handleSelectMovie = async (movie) => {
+        try {
+            const response = await axios.post(`${serverUrl}/groups/${group_id}/movies`, {
+                movie_id: movie.id,
+            });
+            await loadGroupMovies();            
+        } catch (error) {
+            alert(error.response?.data?.error || 'Failed to add movie to group.');
+        } finally {
+            setSearchQuery('');
+            setSearchResults([]);
+        }
+    };
+
+    const handleClickOutside = (event) => {
+        console.log("Click detected outside:", event.target);
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            setSearchResults([]);
+        }
+    };
+    
+
+    useEffect(() => {
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     return (
         <div className="group-page-container">
@@ -178,14 +229,14 @@ function GroupPage() {
                                                 {isAdmin && (
                                                     <div className="button-container">
                                                         <button
-                                                            onClick={() => handleRequestResponse(request.user_id, 'accepted')}
                                                             className="accept-button"
+                                                            onClick={() => handleRequestResponse(request.user_id, 'accepted')}
                                                         >
                                                             Accept
                                                         </button>
                                                         <button
+                                                            className="reject-button"
                                                             onClick={() => handleRequestResponse(request.user_id, 'rejected')}
-                                                            className="deny-button"
                                                         >
                                                             Reject
                                                         </button>
@@ -201,30 +252,66 @@ function GroupPage() {
                         )
                     )}
                 </div>
+
                 <div className="group-right-section">
-                    <h2>Additional Options</h2>
-                    <p>
-                        This place for adding Customizing group page contents like information about a movie (ID 5) or a
-                        showtime (ID 6).
-                    </p>
+                    <div className="movie-information">
+                        <h2>Movie Information</h2>
+                        <input
+                            type="text"
+                            value={searchQuery}
+                            onChange={(e) => handleSearch(e.target.value)}
+                            placeholder="Search for a movie..."
+                            className="group-search-bar"
+                        />
+
+                        {searchResults.length > 0 && (
+                            <div ref={dropdownRef} className="group-dropdown">
+                                <ul>
+                                    {searchResults.map((movie) => (
+                                        <li key={movie.id} onClick={() => handleSelectMovie(movie)}>
+                                            {movie.title}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>                        
+                        )}
+                    </div>
+
+                    <div className="group-movies">
+                        <h2>Movies in Group</h2>
+                        {groupMovies.length > 0 ? (
+                            <div className="group-movie-list">
+                                {groupMovies.map((movie) => (
+                                    <div className="movie-item" key={movie.movie_id}>
+                                        <img
+                                            src={movie.poster_path || '/assets/sample_image.jpg'}
+                                            alt={movie.movie_name}
+                                            className="movie-poster"
+                                        />
+                                        <div className="movie-info">
+                                            <h3 className="movie-name">{movie.movie_name}</h3>
+                                            <p className="movie-overview">{movie.movie_overview}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p>No movies in the group yet.</p>
+                        )}
+                    </div>
                 </div>
             </div>
-            <Footer />
 
-            {/* Modal for confirming member removal */}
             {showRemoveModal && (
                 <div className="remove-member-modal">
                     <div className="modal-content">
                         <h3>Are you sure you want to remove {selectedMember?.nickname}?</h3>
-                        <button onClick={handleRemoveMember} className="confirm-remove-button">
-                            Yes, Remove
-                        </button>
-                        <button onClick={closeRemoveModal} className="cancel-remove-button">
-                            Cancel
-                        </button>
+                        <button onClick={handleRemoveMember}>Yes, Remove</button>
+                        <button onClick={closeRemoveModal}>Cancel</button>
                     </div>
                 </div>
             )}
+            <Footer />
         </div>
     );
 }

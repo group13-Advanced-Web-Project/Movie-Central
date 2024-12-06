@@ -283,3 +283,42 @@ export const deleteGroup = async (group_id, admin_id) => {
     });
     return response.data;
 };
+
+//search movies
+export const searchMovies = async (query) => {
+    try {
+        const response = await axios.get(`${serverUrl}/movies/search-movies`, {
+            params: {
+                query: query, 
+            },
+        });
+        return response.data; 
+    } catch (error) {
+        console.error('Error searching for movies:', error);
+        throw new Error('Failed to search movies');
+    }
+};
+
+//add movie to group
+export const addMovieToGroup = async (group_id, movie_id) => {
+    try {
+        const response = await axios.post(`${serverUrl}/groups/${group_id}/movies`, {
+            movie_id,
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error adding movie to group:', error);
+        throw error;
+    }
+};
+
+// Get movie information
+export const fetchMovieInfo = async (groupId) => {
+    try {
+        const response = await axios.get(`${serverUrl}/groups/${groupId}/movies`);
+        return response.data.movies || [];
+    } catch (error) {
+        console.error('Error fetching movie information:', error);
+        throw new Error(error.response?.data?.error || 'Failed to fetch movie information.');
+    }
+};
