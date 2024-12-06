@@ -419,7 +419,7 @@ router.get('/:group_id/movies', async (req, res) => {
         );
 
         if (groupMovies.rows.length === 0) {
-            return res.status(404).json({ error: 'No movies found for this group.' });
+            return res.status(202).json({ error: 'No movies found for this group.' });
         }
 
         const response = groupMovies.rows.map(({ movie_id }) => 
@@ -433,6 +433,7 @@ router.get('/:group_id/movies', async (req, res) => {
         const movieDetails = movieResponses.map(response => ({
             movie_id: response.data.id,
             movie_name: response.data.title,
+            movie_overview: response.data.overview,
             poster_path: response.data.poster_path? `https://image.tmdb.org/t/p/w500${response.data.poster_path}` : null, 
         }));
 
