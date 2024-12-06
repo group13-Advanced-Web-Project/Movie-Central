@@ -108,14 +108,16 @@ export const checkIfAdmin = async (groupId, adminId) => {
     );
 };
 
-export const updateMemberRequest = async (groupId, userId, status) => {
-    return pool.query(
-        `UPDATE group_members 
-         SET status = $1 
-         WHERE group_id = $2 AND user_id = $3 
-         RETURNING *;`,
-        [status, groupId, userId]
-    );
+export const respondToRequest = async (groupId, userId, action) => {
+    const query = `
+        UPDATE group_members
+        SET status = $1
+        WHERE group_id = $2 AND user_id = $3 AND status = 'pending'
+        RETURNING *;
+    `;
+    const values = [action, groupId, userId];
+    const result = await pool.query(query, values);
+    return result.rows;
 };
 
 export const getJoinRequestStatus = async (groupId, userId) => {
