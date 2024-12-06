@@ -18,17 +18,40 @@
     flex: 1;
     margin: 10px;
     padding: 20px;
-    border: 1px solid #ccc;
+    border: 2px solid #85044d;
     border-radius: 8px;
-    background-color: #f9f9f9;
-}
-
-.group-left-section {
-    flex: 2;
+    background-color: #ece384;
 }
 
 .group-right-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.group-right-section > div {
     flex: 1;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #9ae5ec;
+}
+
+.movie-Information {
+    background-color: #e6f7ff;
+    border: 1px solid #99d3e5;
+    position: relative;
+}
+
+.group-showtimes {
+    background-color: #ffe6f7;
+    border: 1px solid #e599c9;
+}
+
+h2 {
+    margin-top: 0;
+    font-size: auto;
+    color: #333;
 }
 
 /* Group Details */
@@ -43,6 +66,123 @@
     font-size: 1rem;
     margin-bottom: 20px;
     color: #555;
+}
+
+/* Search Bar */
+.group-search-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.group-search-bar {
+    width: 70%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    color: #333;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.search-button {
+    padding: 10px 15px;
+    background-color: #4e143a;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-left: 10px;
+}
+
+.search-button:hover {
+    background-color: #7e3c5e;
+}
+
+/* Dropdown Menu */
+.group-dropdown-container {
+    margin-bottom: 20px;
+}
+
+.search-bar:focus {
+    border-color: #4e143a;
+    outline: none;
+    box-shadow: 0 0 5px rgba(78, 20, 58, 0.5);
+}
+
+.group-dropdown ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.group-dropdown li {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 10px 0;
+}
+
+.group-dropdown li:hover {
+    background-color: #498ce3;
+}
+
+.selected-movie {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #e0f7fa;
+    border-radius: 6px;
+    border: 1px solid #00acc1;
+    font-size: 1.2rem;
+}
+
+/* Group Showtimes */
+.group-showtimes {
+    background-color: #ffe6f7;
+    border: 1px solid #e599c9;
+}
+
+.group-dropdown {
+    position: absolute;
+    width: 100%;
+    max-width: 400px;
+    background-color: #fff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 8px;
+    z-index: 999;
+}
+
+.movie-item {
+    display: flex; 
+    align-items: flex-start; 
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    gap: 15px; 
+    cursor: pointer;
+    margin: 20px 0;
+}
+
+.movie-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Movie Poster */
+.movie-poster {  
+    
+     /* Limit the height to keep the image smaller */
+    border-radius: 6px;
+    object-fit: cover;
 }
 
 /* Group Members */
@@ -180,25 +320,25 @@
 
 .request-item {
     display: flex;
-    justify-content: space-between; 
-    align-items: center; 
-    margin-bottom: 10px; 
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
 .request-item span {
-    font-weight: normal; 
-    font-size: 20px; 
-    color: #000000; 
+    font-weight: normal;
+    font-size: 20px;
+    color: #000000;
 }
 
 .button-container {
     display: flex;
-    justify-content: flex-end; 
-    gap: 10px; 
+    justify-content: flex-end;
+    gap: 10px;
 }
 
 .accept-button, .deny-button {
-    padding: 5px 10px; 
+    padding: 5px 10px;
 }
 
 .pending-requests li {
@@ -253,16 +393,97 @@
     background-color: #c82333;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
+/* Movies */
+.group-movies {
+    margin-top: 20px;
+}
+
+.movies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+
+.movie-item {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    transition: transform 0.3s ease;
+    
+}
+
+.movie-item:hover {
+    transform: scale(1.05);
+}
+
+.movie-poster {
+    height: 100px;
+    border-radius: 4px;
+    align-items:left;
+}
+
+.movie-name {
+    font-size: 1.2rem;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.movie-overview {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.5;
+}
+
+/* Movie Button */
+.movie-button {
+    margin-top: 10px;
+    padding: 8px 15px;
+    border: none;
+    background-color: #4e143a;
+    color: white;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.movie-button:hover {
+    background-color: #7e3c5e;
+}
+
+/* Media Queries for Responsiveness */
+@media screen and (max-width: 768px) {
     .group-page-content {
         flex-direction: column;
-        gap: 10px;
+        padding: 10px;
     }
 
     .group-left-section, .group-right-section {
         flex: 1;
-        margin: 5px;
+        margin: 0;
+        padding: 10px;
+    }
+
+    .group-search-container {
+        flex-direction: column;
+    }
+
+    .group-search-bar {
+        width: 50%;
+        margin-bottom: 10px;
+    }
+
+    .search-button {
+        width: 100%;
+        padding: 12px;
+    }
+
+    .movies-grid {
+        grid-template-columns: 1fr 1fr;
     }
 
     .group-name {
@@ -304,24 +525,16 @@
     }
 }
 
-@media (max-width: 480px) {
-    .group-page-content {
-        padding: 10px;
-    }
-
+@media screen and (max-width: 480px) {
     .group-name {
-        font-size: 1.8rem;
+        font-size: 1.5rem;
     }
 
     .group-description {
         font-size: 0.8rem;
     }
 
-    .group-members h2 {
-        font-size: 1.3rem;
-    }
-
-    .group-members li {
+    .movie-name {
         font-size: 0.9rem;
         padding: 4px;
     }
