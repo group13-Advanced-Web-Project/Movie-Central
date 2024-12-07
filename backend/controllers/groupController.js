@@ -113,30 +113,31 @@ export const getPendingRequests = async (req, res) => {
     }
 };
 
-// Accept or reject a request to join a group
-export const updateRequestStatus = async (req, res) => {
-    const { group_id } = req.params;
-    const { admin_id, user_id, status } = req.body;
+export const respondToRequest = async (req, res) => {
+    const { group_id, user_id, action } = req.body;
 
-    if (!['accepted', 'rejected'].includes(status)) {
+    // Validate the 'action' parameter
+    if (!['accepted', 'rejected'].includes(action)) {
         return res.status(400).json({ error: "Invalid status. Use 'accepted' or 'rejected'." });
     }
 
     try {
-        const adminCheck = await GroupModel.checkIfAdmin(group_id, admin_id);
-        if (!adminCheck.rows[0]?.is_admin) {
-            return res.status(403).json({ error: "Only group admins can manage member requests." });
+        // Call the model to update the join request status
+        const updatedRows = await GroupModel.respondToRequest(group_id, user_id, action);
+
+        // If no rows were updated, the request wasn't found or already processed
+        if (updatedRows.length === 0) {
+            return res.status(404).json({ message: 'Join request not found or already processed.' });
         }
 
-        const result = await GroupModel.updateMemberRequest(group_id, user_id, status);
-        if (result.rowCount === 0) {
-            return res.status(404).json({ error: "Request not found" });
-        }
-        res.json(result.rows[0]);
+        // Respond with a success message
+        return res.status(200).json({ message: `Request ${action}` });
     } catch (error) {
-        res.status(500).json({ error: "Failed to update request", details: error.message });
+        console.error('Error updating join request:', error);
+        return res.status(500).json({ message: 'Server error. Please try again later.' });
     }
 };
+
 
 // Check if the user has a pending/rejected/accepted join request
 export const getJoinRequestStatus = async (req, res) => {

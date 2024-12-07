@@ -11,7 +11,7 @@ router.get('/users/:user_id', GroupController.getAllUserGroups);
 router.delete('/:group_id/members/:user_id', GroupController.leaveGroup);
 router.get('/:group_id/members', GroupController.getGroupMembers);
 router.get('/:group_id/requests', GroupController.getPendingRequests);
-router.post('/:group_id/update-request', GroupController.updateRequestStatus);
+router.post('/respond', GroupController.respondToRequest);
 router.get('/status/:group_id/:user_id', GroupController.getJoinRequestStatus);
 router.post('/:group_id/admin', GroupController.assignNewAdmin);
 router.delete('/:group_id', GroupController.deleteGroup);
