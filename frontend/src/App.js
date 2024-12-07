@@ -15,6 +15,7 @@ import ReviewPage from './pages/ReviewPage.js';
 import PublicProfile from './pages/PublicProfile.js';
 import GroupsPage from './pages/GroupsPage.js';
 import GroupPage from './pages/GroupPage.js';
+import NotFound from './pages/NotFound.js';
 
 const serverUrl = process.env.REACT_APP_API_URL
 
@@ -95,6 +96,7 @@ function App() {
         <Route path="/public/:id" element={<PublicProfile />} />
         <Route path="/groups" element={<GroupsPage />} />
         <Route path="/group/:group_id" element={<GroupPage />} />
+        <Route path="*" element={<NotFound />} />
 
 
 
