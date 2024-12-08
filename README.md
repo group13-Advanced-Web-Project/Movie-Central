@@ -365,17 +365,17 @@ For deployment we used free tiers from Netlify (frontend) and render (server and
 
 **Netlify Build Settings**
 
-![Build Settings](docs/assets/buildsettings.png)
+![Build Settings](docs/assets/deployment/buildsettings.png)
 
 - Server uses render:
 
 **Server Build settings**
-![Build Settings](docs/assets/server-build.png)
+![Build Settings](docs/assets/deployment/server-build.png)
 
 - Database uses render
 
 **Database connection**
-![Build Settings](docs/assets/database-connection.png)
+![Build Settings](docs/assets/deployment/database-connection.png)
 
 
 ## Blue Table
