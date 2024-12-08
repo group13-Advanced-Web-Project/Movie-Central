@@ -221,14 +221,15 @@ router.get("/shareable-urls", (req, res) => {
 // Generate a shareable URL for a user
 router.post("/generate-shareable-url", (req, res) => {
   try {
-    const { user_id } = req.body;
+    const { shareable_url, user_id } = req.body;
+
+    if (!shareable_url || !user_id) {
+      return res.status(400).json({ error: "shareable_url and user_id are required." });
+    }
 
     pool.query(
-      `UPDATE users 
-      SET shareable_url = CONCAT('https://movie-app-group13.netlify.app/public/', id)
-      WHERE user_id = $1 
-      RETURNING shareable_url;`,
-      [user_id],
+      `UPDATE users SET shareable_url = $1 WHERE user_id = $2 RETURNING shareable_url;`,
+      [shareable_url, user_id],
       (error, result) => {
         if (error) {
           console.error("Query error:", error);
