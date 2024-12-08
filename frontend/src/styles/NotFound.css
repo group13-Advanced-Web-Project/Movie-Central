@@ -1,0 +1,69 @@
+.not-found-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    margin: 0;
+  }
+  
+  .not-found-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+  }
+  
+  .not-found-title,
+  .not-found-description,
+  .btn-home {
+    position: relative;
+    z-index: 2;
+    color: rgb(234, 61, 205);
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+  }
+  
+  .not-found-title {
+    font-size: 3em;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .not-found-description {
+    font-size: 1.2em;
+    margin: 10px 0;
+  }
+  
+  .btn-home {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1em;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-home:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Centering content */
+  .not-found-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  
