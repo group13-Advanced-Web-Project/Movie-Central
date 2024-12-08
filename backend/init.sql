@@ -36,20 +36,6 @@ BEFORE INSERT ON users
 FOR EACH ROW
 EXECUTE FUNCTION set_nickname();
 
--- Auto generate shareable URL
-CREATE OR REPLACE FUNCTION set_shareable_url()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.shareable_url := CONCAT('https://movie-app-group13.netlify.app/public/', NEW.id);
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER set_shareable_url
-BEFORE INSERT ON users
-FOR EACH ROW
-EXECUTE FUNCTION set_shareable_url();
-
 CREATE TABLE favorites (
     id SERIAL PRIMARY KEY,
     user_id VARCHAR(255) NOT NULL,
