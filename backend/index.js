@@ -30,6 +30,7 @@ app.use("/reviews/", reviewsRouter);
 app.use("/favorites/", favoriteRouter);
 app.use("/public/", publicProfileRouter); 
 app.use("/groups/", groupRouter);
+app.use("/shared-url", userRouter);
 
 
 app.get("/", (req, res) => {

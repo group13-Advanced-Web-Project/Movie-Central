@@ -108,35 +108,36 @@ function Navbar() {
                 <img src="/assets/Movie_App_Logo.png" alt="Movie App Logo" className="logo" />
             </div>
             <div className="navbar-links">
-                <button className="navbar-link" onClick={handleHomeClick}>HOME</button>
-                <div className="navbar-item">
-                    <button className="navbar-link" ref={yearButtonRef} onClick={handleYearDropdownToggle}>YEAR</button>
-                    {yearDropdownOpen && (
-                        <div ref={yearDropdownRef} className="navbar-year-dropdown open">
-                            {years.map((year) => (
-                                <div key={year} className="navbar-year-dropdown-item" onClick={() => handleYearSelect(year)}>
-                                    {year}
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
-                <div className="navbar-item">
-                    <button className="navbar-link" ref={genreButtonRef} onClick={handleGenreDropdownToggle}>GENRES</button>
-                    {genreDropdownOpen && (
-                        <div ref={genreDropdownRef} className="navbar-dropdown open">
-                            {genres.map((genre, index) => (
-                                <div key={index} className="navbar-dropdown-item" onClick={() => handleGenreSelect(genre)}>
-                                    {genre}
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
-                <button className="navbar-link" onClick={() => navigate('/showtimes')}>SHOWTIME</button>
-                <button className="navbar-link" onClick={() => navigate('/reviews')}>REVIEWS</button>
-                <button className="navbar-link" onClick={() => navigate('/groups')}>GROUPS</button>
+    <button className="navbar-link" onClick={handleHomeClick}>HOME</button>
+    <div className="navbar-item">
+        <button className="navbar-link" ref={yearButtonRef} onClick={handleYearDropdownToggle}>YEAR</button>
+        {yearDropdownOpen && (
+            <div ref={yearDropdownRef} className="navbar-year-dropdown open">
+                {years.map((year) => (
+                    <div key={year} className="navbar-year-dropdown-item" onClick={() => handleYearSelect(year)}>
+                        {year}
+                    </div>
+                ))}
             </div>
+        )}
+    </div>
+    <div className="navbar-item">
+        <button className="navbar-link" ref={genreButtonRef} onClick={handleGenreDropdownToggle}>GENRES</button>
+        {genreDropdownOpen && (
+            <div ref={genreDropdownRef} className="navbar-dropdown open">
+                {genres.map((genre, index) => (
+                    <div key={index} className="navbar-dropdown-item" onClick={() => handleGenreSelect(genre)}>
+                        {genre}
+                    </div>
+                ))}
+            </div>
+        )}
+    </div>
+    <button className="navbar-link" onClick={() => navigate('/showtimes')}>SHOWTIME</button>
+    <button className="navbar-link" onClick={() => navigate('/reviews')}>REVIEWS</button>
+    <button className="navbar-link" onClick={() => navigate('/groups')}>GROUPS</button>
+    <button className="navbar-link" onClick={() => navigate('/shared_URL')}>SHARED URLs</button> {/* Added Button */}
+</div>
             <div className="search-container" ref={searchContainerRef}>
                 <input type="text" placeholder="Search Movie" value={searchTerm} onChange={handleInputChange} />
                 <ul className="suggestions-list">

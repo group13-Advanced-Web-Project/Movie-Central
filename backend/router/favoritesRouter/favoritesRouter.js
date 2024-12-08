@@ -87,7 +87,7 @@ router.get('/:user_id/:movie_id', async (req, res) => {
         const result = await pool.query(query, [user_id, movie_id]);
 
         if (result.rows.length === 0) {
-            return res.status(404).json({ message: "Movie not found in favorite list" });
+            return res.status(200).json({ message: "Movie not found in favorite list" });
         }
 
         res.status(200).json({ isFavorite: true });

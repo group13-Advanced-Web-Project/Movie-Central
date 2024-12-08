@@ -19,18 +19,21 @@ function MoviePage() {
     const [isFavorite, setFavorite] = useState(false);
     const [favoriteMovies, setFavoriteMovies] = useState("");
     const [reviews, setReviews] = useState([]);
-    const [notification, alert] = useState(""); 
+    const [notification, alert] = useState("");
     const { user, isAuthenticated, loginWithRedirect } = useAuth0();
     const { movie_id } = useParams();
 
+
     useEffect(() => {
         const fetchMovie = async () => {
-            setLoading(true);
-            try {
+        setLoading(true);
+                    try {
+                setLoading(true);
+    
                 const response = await fetch(
                     `${serverUrl}/movies/search-movies?query=${encodeURIComponent(movieName)}`
                 );
-
+    
                 if (!response.ok) {
                     throw new Error("Movie not found");
                 }
@@ -49,62 +52,33 @@ function MoviePage() {
                 setLoading(false);
             }
         };
-
+    
         const checkIfFavorite = async (movieId) => {
             if (!isAuthenticated || !user?.sub) return;
-
+    
             try {
                 const response = await fetch(
-                    `${serverUrl}/favorites/all`, {
-                        method: 'POST',
+                    `${serverUrl}/favorites/${user.sub}/${movieId}`,
+                    {
+                        method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({ user_id: user.sub })
                     }
                 );
-
+    
                 if (response.ok) {
-                    const favoriteMovies = await response.json();
-                    // console.log('Favorite movies:', favoriteMovies[0], "current movie id:", movieId);
-        
-                    // Directly check if movieId exists in the favoriteMovies array
-                    if (favoriteMovies[0] == movieId) {
-                        setFavorite(true);
-                        console.log('Movie is a favorite');
-                    } else {
-                        setFavorite(false);
-                        console.log('Movie is not a favorite');
-                    }
-
+                    const { isFavorite } = await response.json();
+                    setFavorite(isFavorite);
                 } else {
-                    throw new Error('Failed to fetch favorite status.');
+                    setFavorite(false);
                 }
-            } catch (error) {
-                console.error('Error fetching favorite status:', error);
-                setFavorite(false); // Default to false if there's an error
+            } catch (err) {
+                console.error("Error fetching favorite status:", err);
+                setFavorite(false);
             }
         };
-        
-        
-
-        // const fetchFavoriteMovies = async () => {
-        //     if (!isAuthenticated || !user?.sub) return;
-
-        //     try {
-        //         const response = await fetch(`${serverUrl}/favorites?userId=${encodeURIComponent(user.sub)}`);
-
-        //         if (!response.ok) {
-        //             throw new Error('Failed to fetch favorite movies.');
-        //         }
-
-        //         const data = await response.json();
-        //         setFavoriteMovies(data);
-        //     } catch (error) {
-        //         console.error('Error fetching favorite movies:', error);
-        //     }
-        // };        
-
+    
         const fetchReviews = async (movieId) => {
             try {
                 const response = await fetch(`${serverUrl}/reviews/movie/${movieId}`);
@@ -119,16 +93,15 @@ function MoviePage() {
                 console.error('Error fetching reviews:', error);
             }
         };
-
-        checkIfFavorite();
+    
         fetchMovie();
-
-    }, [movieName, serverUrl]);
-
+    }, [movieName, serverUrl, isAuthenticated, user]);
+        
+        
     const handleAddReviewClick = () => {
         if (isAuthenticated) {
             const userReview = reviews.find((review) => review.user_id === user.sub);
-            if (userReview) {                
+            if (userReview) {
                 alert("You have already submitted a review for this movie.");
             } else {
                 setPopupOpen(true);
@@ -137,13 +110,13 @@ function MoviePage() {
             loginWithRedirect();
         }
     };
-
+    
     const handleReviewSubmit = async (review) => {
         if (!user?.sub) {
             alert('Failed to get user ID. Please try again.');
             return;
         }
-
+    
         try {
             const newReview = await submitReview({
                 ...review,
@@ -156,32 +129,32 @@ function MoviePage() {
             alert('Failed to submit review. Please try again.');
         }
     };
-
+    
     const toggleFavorite = async () => {
         if (!isAuthenticated) {
             loginWithRedirect();
             return;
         }
-
+    
         if (!user?.sub) {
             alert('Failed to identify user. Please log in and try again.');
             return;
         }
-
+    
         try {
             const method = isFavorite ? 'DELETE' : 'POST';
-
+    
             const response = await fetch(`${serverUrl}/favorites/`, {
                 method,
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ user_id: user.sub, movie_id: movie.id }),
             });
-
+    
             if (response.ok) {
                 const successMessage = isFavorite
-                    ? 'Movie removed from favorites.'
-                    : 'Movie added to favorites.';
-                setFavorite(!isFavorite);
+                ? 'Movie removed from favorites.'
+                : 'Movie added to favorites.';
+            setFavorite(!isFavorite);
                 alert(successMessage);
             } else {
                 const { error } = await response.json();
@@ -192,15 +165,15 @@ function MoviePage() {
             alert('An error occurred. Please try again later.');
         }
     };
-
+    
     const maskEmail = (email) => {
         const [localPart, domain] = email.split('@');
         const maskedLocalPart = localPart.charAt(0) + '****';
         return `${maskedLocalPart}@${domain}`;
     };
-
-
-
+    
+    
+    
     return (
         <div className="home-container">
             <Navbar />
