@@ -117,20 +117,246 @@ The app should now be running locally at `http://localhost:3000`.
 - [Deployment](#deployment)
 
 ## Responsiveness
+
+CSS is used to provide suitable layout views for different screen sizes:
+
+ Desktop view:
+
+![Responsiveness ](docs/assets/responsiveness/responsiveness-desktop.png)
+
+
+ Tablet view:
+
+![Responsiveness ](docs/assets/responsiveness/responsiveness-tablet.png)
+ 
+
+ Phone view:
+
+![Responsiveness ](docs/assets/responsiveness/responsiveness-phone.png)
+
 ## Sign up
+
+auth0 is used for our user creation and management.
+
+After clicking the login button (top right of screen), the user is shown the sign up screen.
+
+![Sign up ](docs/assets/sign-up/sign-up.png)
+
+The user has the option to create an account using their google account, or provide a username and password.
+
+If the user provides a username and password, the password must meet the strong requirements.
+
+![Sign up password](docs/assets/sign-up/sign-up-password.png)
+
+
 ## Sign in
+
+After the user has created an account, they can log in using the same screen on the Log in tab.
+
+![Sign In ](docs/assets/sign-in/sign-in.png)
+
+After the user signs in, the users details are checked against our database. 
+If they do not have any information in our database, then they are added using their auth0 user.sub (making use of the @auth0/auth0-react package).
+
 ## Removing account
+
+To remove account:
+
+1. Navigate to the profile page by clicking the user profile link (top right next to Log Out).
+
+![Profile page ](docs/assets/remove-account/remove-account-profile.png)
+
+2. On the left of the screen in the profile details section,at the bottom the remove account button can be found.
+
+![Remove account button ](docs/assets/remove-account/remove-account-profile-remove-btn.png)
+
+3. After clicking the remove account button, the profile details will be removed from our database. Any data that used the profile information that has been deleted (such as reviews) will now be replaced with a indicator the account that written the review has been deleted.
+
+4. If the account was part of, or owner of a group. The ownership will automatically be transferred.
+
 ## Search
+
+The search results have been limited to **200 results per return**, this is intentional to avoid rate-limiting from the external API.
+As a result, some movies may not show in results.
+
+Search features can be found on the header bar and are usable for both logged in and logged out users.
+
+![Search Header ](docs/assets/search/search-header.png)
+
+The search is split into 3 filters.
+
+1. Search bar: Filtered by - free input
+
+![Search Bar ](docs/assets/search/search-bar.png)
+
+2. Year: Filtered by - Pre-defined year.
+
+![Search year ](docs/assets/search/search-year.png)
+
+3. Genres: Filtered by - Pre-defined genres.
+
+![Search genres](docs/assets/search/search-genres.png)
+
+
+
 ## Showtimes
+
+The showtimes page can be accessed by using the header bar link for both logged in and logged out users.
+
+![Showtimes](docs/assets/showtimes/showtimes.png)
+
+Filters can be applied for the specific date or theatre, free text search can also be used to find a specific movie.
+
 ## Group page
+
+The groups page can be accessed by using the header bar link for both logged in and logged out users, with some functionalities reserved for logged in.
+
+**Groups - Logged out**
+
+![Groups page - Logged out](docs/assets/groups/groups.png)
+
+When a logged out user visits the groups page, they are able to see all the current groups title and description and search through.
+To access the further group features they are prompted to log in.
+
+**Groups - Logged in**
+
+![Groups page - Logged in](docs/assets/groups/groups-logged-in.png)
+
+After logging in, the user can make full use of the groups page
+- Create a new group
+- Manage own groups
+- Request to join group
+- View join group requests
+- View joined group pages
+
+
+
+**Groups - Logged in - Group Page**
+
+**Admin View**
+
+![Groups page - Logged in - Group Page - Admin](docs/assets/groups/groups-logged-in-group-page-admin.png)
+
+After selecting the group, the user is shown the group page. Admin has the ability to:
+- Leave group
 ## Adding a member
+- Accept/Reject join requests
+
 ## Removing a member
+- Remove member
 ## Customizing group page
+- Add movie to groups page view
+
+After a movie has been added to the page using search box, it can be seen by all group members.
+
+![Groups page - Logged in - Group Page Customized ](docs/assets/groups/groups-logged-in-customized.png)
+
+
+
 ## Review a movie
+
+Only logged in users can review a movie, if a logged out user attempts to Add a review they will be prompted to log in.
+Users can only add 1 review per movie.
+
+To review a movie:
+
+1. Navigate to any movie page.
+2. Click 'Add Review' Button
+
+![Review - movie page](docs/assets/review/review-movie-page.png)
+
+3. Add review text
+4. Add review star rating
+5. Click submit
+
+![Review - submit](docs/assets/review/review-submit.png)
+
+
+
 ## Browsing reviews
+
+Reviews can be browsed by both logged in and logged out users.
+User reviewer emails are censored by default.
+There are two ways to brows reviews.
+
+1. Movie Page
+
+If a movie has reviews, they will all be shown on the movie page, if not the placeholder text 'No reviews yet. Be the first to add one!' will be shown. 
+The movie rating is populated from their user review rating stored in our database.
+
+![Browsing Reviews - movie page](docs/assets/browsing-reviews/browsing-reviews-movie-page.png)
+
+
+2. Reviews page
+
+The reviews page can be accessed by using the header bar link for both logged in and logged out users.
+
+![Browsing Reviews - reviews page](docs/assets/browsing-reviews/browsing-reviews-reviews-page.png)
+
+The reviews page shows all submitted reviews in chronological order, newest to oldest.
+The movie page can be accessed by clicking the movie title.
+
 ## Favorites
+
+Favorites functionality is only usable by logged in users, if a logged out user attempts to Add to Favorite, they will be prompted to log in.
+
+A logged in user can Add a movie to their favorites and then view by:
+
+1. Adding the movie to their favorites list through the movie page 'ADD TO FAVORITE' button (user will be prompted to log in if needed).
+
+![Add to Favorites - movie page](docs/assets/favorites/favorites-movie-page.png)
+
+2. After adding, a notification will show to confirm. The Add to Favorite button will now change to remove.
+
+![Add to Favorites - movie page add button](docs/assets/favorites/favorites-movie-page-add.png)
+
+3. View favorites by visiting the profile page which displays all added favorites.
+
+![Favorites - Profile](docs/assets/favorites/favorites-profile.png)
+
+
+
 ## Sharing favorites
-## Optional feature
+
+The user must be logged in and visit their profile page to generate a share link by using the 'Generate Sharable Profile' button.
+
+![Sharing Favorites - Generate](docs/assets/sharing-favorites/sharing-favorites-generate.png)
+
+After generating the link, your sharable url will be shown.
+
+![Sharing Favorites - Generated](docs/assets/sharing-favorites/sharing-favorites-generated.png)
+
+Any person with this link can see your public favorites (logged in or out).
+
+![Sharing Favorites - Public](docs/assets/sharing-favorites/sharing-favorites-public.png)
+
+Public Profiles page:
+
+To view all public profiles list, visit the public profiles page.
+
+## Optional feature - Admin page
+
+The admin page allows authenticated admin role accounts to view all database tables and make directly queries.
+
+To access the admin page:
+1. Create a user role account by logging in through auth0.
+2. Connect to the database (suggest through pgAdmin 4)
+3. Through the users table identify your account using email, then update the role to admin.
+4. Access the admin page through the profile page 'Admin Dash' button.
+
+![Admin Dash - Profile](docs/assets/admin/profile-page-admin.png)
+
+5. After your account passes the authentication check, the database tables will be viewable.
+
+![Admin Page - Page](docs/assets/admin/admin-page.png)
+
+
+6. Database querying can be achieved from the query box towards the bottom of the page.
+
+![Admin Page - Query](docs/assets/admin/admin-page-query.png)
+
+
+
 ## Deployment
 
 For deployment we used free tiers from Netlify (frontend) and render (server and database).
