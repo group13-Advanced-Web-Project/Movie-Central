@@ -218,6 +218,37 @@ router.get("/shareable-urls", (req, res) => {
   }
 });
 
+// Generate a shareable URL for a user
+router.post("/generate-shareable-url", (req, res) => {
+  try {
+    const { shareable_url, user_id } = req.body;
+
+    if (!shareable_url || !user_id) {
+      return res.status(400).json({ error: "shareable_url and user_id are required." });
+    }
+
+    pool.query(
+      `UPDATE users SET shareable_url = $1 WHERE user_id = $2 RETURNING shareable_url;`,
+      [shareable_url, user_id],
+      (error, result) => {
+        if (error) {
+          console.error("Query error:", error);
+          return res.status(500).json({ error: error.message });
+        }
+
+        if (result.rows.length > 0) {
+          return res.status(200).json(result.rows);
+        } else {
+          return res.status(404).json({ message: "User not found" });
+        }
+      }
+    );
+  } catch (error) {
+    console.error("Catch error:", error);
+    return res.status(500).json({ error: error.message });
+  }
+});
+
 // Fetch shareable_url for a specific user
 router.get("/:user_id/shareable-url", (req, res) => {
   try {
