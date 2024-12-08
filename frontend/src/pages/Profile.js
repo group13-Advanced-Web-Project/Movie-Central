@@ -161,6 +161,26 @@ const Profile = () => {
         localStorage.setItem("publicProfiles", JSON.stringify(storedProfiles));
     };
         
+    const saveShareableLinkToBackend = async () => {
+        const { user_id } = userDatabaseInfo[0] || {};
+        if (!shareableLink || !user_id) return alert("Unable to save shared URL.");
+    
+        try {
+            const response = await fetch(`${serverUrl}/shared-url/update-shared-url`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ user_id, shared_url: shareableLink }),
+            });
+    
+            const message = response.ok ? "URL was shared successfully." : "Failed to save shared URL.";
+            alert(message);
+        } catch (error) {
+            console.error("Error saving shared URL:", error.message);
+            alert("An error occurred while saving the shared URL.");
+        }
+    };
+    
+
     const handleRemoveAccountClick = async () => {
         const postData = { auth0_user_id: user.sub };
         const response = await fetch(`${serverUrl}/users/remove-account`, {
@@ -242,25 +262,30 @@ const Profile = () => {
                                 <button onClick={handleRemoveAccountClick}>Remove account</button>
                             </div>
                             <div>
-                                <button onClick={generateShareableLink}>Generate Shareable Profile</button>
-                                {shareableLink && (
-                                    <div className="share-link-container">
-                                        <p>Your shareable profile link:</p>
-                                        <a
-                                            href={shareableLink}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            {shareableLink}
-                                        </a>
-                                        <button
-                                            onClick={() => navigator.clipboard.writeText(shareableLink)}
-                                        >
-                                            Copy to Clipboard
-                                        </button>
-                                    </div>
-                                )}
-                            </div>
+    <button onClick={generateShareableLink}>Generate Shareable Profile</button>
+    {shareableLink && (
+        <div className="share-link-container">
+            <p>Your shareable profile link:</p>
+            <a
+                href={shareableLink}
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                {shareableLink}
+            </a>
+            <button
+                onClick={() => navigator.clipboard.writeText(shareableLink)}
+            >
+                Copy to Clipboard
+            </button>
+            <button
+                onClick={saveShareableLinkToBackend}
+            >
+                Share
+            </button>
+        </div>
+    )}
+</div>
                             <div>
                                 <button onClick={() => navigate('/admin')}>Admin Dash</button>
                             </div>
@@ -271,7 +296,7 @@ const Profile = () => {
                             <h2>My Favorites</h2>
                             <div className="movie-grid">
                                 {favoriteMovies.length === 0 ? (
-                                    <p>Loading...</p>
+                                    <p>No favorite movies...</p>
                                 ) : (
                                     favoriteMovies.map((movie, index) => (
                                         <div
