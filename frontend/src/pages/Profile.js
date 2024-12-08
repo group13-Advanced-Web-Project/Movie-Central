@@ -166,10 +166,10 @@ const Profile = () => {
         if (!shareableLink || !user_id) return alert("Unable to save shared URL.");
     
         try {
-            const response = await fetch(`${serverUrl}/shared-url/update-shared-url`, {
+            const response = await fetch(`${serverUrl}/shared-url/generate-shareable-url`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ user_id, shared_url: shareableLink }),
+                body: JSON.stringify({ user_id, shareable_url: shareableLink }),
             });
     
             const message = response.ok ? "URL was shared successfully." : "Failed to save shared URL.";
