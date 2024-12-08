@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from '../../components/Navbar'; 
-import Footer from '../../components/Footer'; 
+import Navbar from '../../components/Navbar';
+import Footer from '../../components/Footer';
 import ShowtimeCard from './ShowtimeCard';
 import Pagination from './Pagination';
 import { groupByMovieTheaterAuditorium } from './groupedMovies';
@@ -33,47 +33,60 @@ const theaterAreas = [
   { id: 1046, name: 'Raisio: LUXE MYLLY' },
 ];
 
-const Showtimes = ({ movies, fetchShowSchedule }) => {
+const Showtimes = ({ movies, fetchShowSchedule, showHeaderFooter = true }) => {
   const [theatreArea, setTheatreArea] = useState(1029);
   const [movieTitle, setMovieTitle] = useState('');
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [flatMovieList, setFlatMovieList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [lastFetched, setLastFetched] = useState({ date: '', area: null }); 
 
   const moviesPerPage = 24;
 
   useEffect(() => {
     const selectedDate = new Date(date).toLocaleDateString('fi-FI');
-    fetchShowSchedule(selectedDate, theatreArea); // Fetch showtimes based on date and area
-  }, [date, theatreArea, fetchShowSchedule]);
+
+    // Avoid fetching if the date and area have not changed
+    if (lastFetched.date === selectedDate && lastFetched.area === theatreArea) {
+      return;
+    }
+
+    fetchShowSchedule(selectedDate, theatreArea) 
+      .then(() => {
+        setLastFetched({ date: selectedDate, area: theatreArea });
+      })
+      .catch((error) => {
+        console.error('Error fetching schedule:', error);
+      });
+  }, [date, theatreArea, fetchShowSchedule, lastFetched]);
 
   useEffect(() => {
     const filteredMovies = movies.filter((movie) =>
       movieTitle ? movie.title.toLowerCase().includes(movieTitle.toLowerCase()) : true
     );
-  
+
     const groupedMovies = groupByMovieTheaterAuditorium(filteredMovies);
-  
+
     const movieList = [];
-  
+
     for (let theaterName in groupedMovies) {
       const moviesInTheater = groupedMovies[theaterName];
-  
+
       for (let movieTitle in moviesInTheater) {
         const auditoriums = moviesInTheater[movieTitle];
-  
+
         movieList.push({
-          theater: theaterName, // Pass theater name here
+          theater: theaterName,
           title: movieTitle,
           imageUrl: movies.find((m) => m.title === movieTitle)?.imageUrl || null,
           auditoriums,
         });
       }
     }
-  
-    setFlatMovieList(movieList); // Update the movie list
+
+    setFlatMovieList(movieList);
   }, [movies, movieTitle]);
-  
+
 
   useEffect(() => {
     setCurrentPage(1); // Reset to the first page when filters change
@@ -91,58 +104,58 @@ const Showtimes = ({ movies, fetchShowSchedule }) => {
   );
 
   return (
-  <div>
-    <Navbar/>
-    <div className="showtimes-container">
-      <h1 className="now-playing-heading">Now Playing...</h1>
+    <div>
+      <Navbar/>
+      <div className="showtimes-container">
+        <h1 className="now-playing-heading">Now Playing...</h1>
 
-      <div className="showtimes-filter">
-        <input
-          type="date"
-          className="filter-item"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-        />
-        <select
-          className="filter-item"
-          value={theatreArea}
-          onChange={(e) => setTheatreArea(Number(e.target.value))}
-        >
-          {theaterAreas.map((area) => (
-            <option key={area.id} value={area.id}>
-              {area.name}
-            </option>
-          ))}
-        </select>
-        <input
-          type="text"
-          className="filter-item"
-          placeholder="Search by Movie Title"
-          value={movieTitle}
-          onChange={(e) => setMovieTitle(e.target.value)}
-        />
-      </div>
+        <div className="showtimes-filter">
+          <input
+            type="date"
+            className="filter-item"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+          />
+          <select
+            className="filter-item"
+            value={theatreArea}
+            onChange={(e) => setTheatreArea(Number(e.target.value))}
+          >
+            {theaterAreas.map((area) => (
+              <option key={area.id} value={area.id}>
+                {area.name}
+              </option>
+            ))}
+          </select>
+          <input
+            type="text"
+            className="filter-item"
+            placeholder="Search by Movie Title"
+            value={movieTitle}
+            onChange={(e) => setMovieTitle(e.target.value)}
+          />
+        </div>
 
-      <div className="movie-list">
-        {paginatedMovies.length > 0 ? (
-          paginatedMovies.map((movie, index) => (
-            <ShowtimeCard key={`${movie.theater}-${movie.title}-${index}`} movie={movie} />
-          ))
-        ) : (
-          <p>No movies available for the selected filters.</p>
+        <div className="movie-list">
+          {paginatedMovies.length > 0 ? (
+            paginatedMovies.map((movie, index) => (
+              <ShowtimeCard key={`${movie.theater}-${movie.title}-${index}`} movie={movie} />
+            ))
+          ) : (
+            <p>No movies available for the selected filters.</p>
+          )}
+        </div>
+
+        {flatMovieList.length > moviesPerPage && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(flatMovieList.length / moviesPerPage)}
+            onPageChange={handlePageChange}
+          />
         )}
       </div>
-
-      {flatMovieList.length > moviesPerPage && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={Math.ceil(flatMovieList.length / moviesPerPage)}
-          onPageChange={handlePageChange}
-        />
-      )}
+      <Footer/>
     </div>
-    <Footer/>
-  </div>
   );
 };
 
