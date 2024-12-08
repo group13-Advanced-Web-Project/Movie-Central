@@ -74,4 +74,27 @@ router.get('/:user_id', async (req, res) => {
     }
 });
 
+// Get favorite status for a movie
+router.get('/:user_id/:movie_id', async (req, res) => {
+    try {
+        const { user_id, movie_id } = req.params;
+
+        if (!user_id || !movie_id) {
+            return res.status(400).json({ error: "User ID and Movie ID are required" });
+        }
+
+        const query = "SELECT * FROM favorites WHERE user_id = $1 AND movie_id = $2";
+        const result = await pool.query(query, [user_id, movie_id]);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: "Movie not found in favorite list" });
+        }
+
+        res.status(200).json({ isFavorite: true });
+    } catch (error) {
+        console.error("Error fetching favorite status:", error.message);
+        return res.status(500).json({ error: "Server error", details: error.message });
+    }
+});
+
 export default router;
