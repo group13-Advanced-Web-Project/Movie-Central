@@ -5,7 +5,7 @@ const router = Router();
 
 router.get("/check-db-connection", async (req, res) => {
     try {
-      await pool.query("SELECT * FROM users");
+      await pool.query("SELECT * FROM review");
       res.json({ message: "Database connection successful" });
     } catch (error) {
       res.status(500).json({ error: "Failed to connect to the database", details: error.message });
@@ -18,7 +18,7 @@ router.post("/authenticate", async (req, res) => {
         console.log("Request received at /authenticate with body:", req.body);
         console.log("Authenticating user with ID:", auth0_user_id);
         pool.query(
-            "SELECT * FROM users WHERE user_id = $1;",
+            "SELECT * FROM reviews WHERE user_id = $1;",
             [auth0_user_id],
 
             (error, results) => {
