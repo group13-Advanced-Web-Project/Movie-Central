@@ -1,18 +1,23 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
+
 
 const serverUrl = process.env.REACT_APP_API_URL;
 
 function GroupMembersTable() {
+    const { user } = useAuth0();
+    const userId = user.sub;
     const [groupMembersData, setGroupMembersData] = useState([]);
 
     const getGroupsTable = async () => {
         const response = await fetch(serverUrl + "/admin/Group_members", {
-            method: "GET",
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${localStorage.getItem("auth0:id_token")}`,
             },
+      body: JSON.stringify({ auth0_user_id: userId }),
         });
         setGroupMembersData(await response.json());
     };

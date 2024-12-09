@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import "../../components/admin/styles/QueryBox.css"; 
+import { useAuth0 } from "@auth0/auth0-react";
+
 
 const serverUrl = process.env.REACT_APP_API_URL
 
 
 
 function QueryBox() {
+    const { user } = useAuth0();
+    const userId = user.sub;
     const [query, setQuery] = useState("");
     const [results, setResults] = useState(null);
     const [error, setError] = useState(null);
@@ -17,7 +21,7 @@ function QueryBox() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ query }),
+                body: JSON.stringify({ query, auth0_user_id: userId }),
             });
 
             const data = await response.json();

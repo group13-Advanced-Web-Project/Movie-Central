@@ -1,18 +1,23 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const serverUrl = process.env.REACT_APP_API_URL;
 
 function UsersTable() {
+  const { user } = useAuth0();
+  const userId = user.sub;
   const [userData, setUserData] = useState([]);
 
   const getUsersTable = async () => {
     const response = await fetch(serverUrl + "/admin/users", {
-      method: "GET",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("auth0:id_token")}`,
       },
+      body: JSON.stringify({ auth0_user_id: userId }),
+
     });
     setUserData(await response.json());
 

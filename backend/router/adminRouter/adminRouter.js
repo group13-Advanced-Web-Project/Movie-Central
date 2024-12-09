@@ -3,6 +3,36 @@ import { pool } from "../../helpers/db.js";
 
 const router = Router();
 
+const authenticateUser = async (req, res, next) => {
+    try {
+        const { auth0_user_id } = req.body;
+
+        pool.query(
+            "SELECT * FROM users WHERE user_id = $1;",
+            [auth0_user_id],
+
+            (error, results) => {
+                if (error) {
+                    return res.status(500).json({ error: "Database query failed", details: error.message });
+                }
+                if (results.rows.length === 0) {
+                    return res.status(401).json({ error: "Access Denied" });
+                }
+                const user = results.rows[0];
+                req.user = user;
+                if (user.role === 'admin') {
+                    next();
+                } else {
+                    return res.status(401).json({ error: "Access Denied" });
+                }
+            }
+        );
+    } catch (error) {
+        console.error("Error authenticating user:", error.message);
+        res.status(500).json({ error: "Authentication failed", details: error.message });
+    }
+};
+
 router.get("/check-db-connection", async (req, res) => {
     try {
       await pool.query("SELECT * FROM review");
@@ -18,7 +48,7 @@ router.post("/authenticate", async (req, res) => {
         console.log("Request received at /authenticate with body:", req.body);
         console.log("Authenticating user with ID:", auth0_user_id);
         pool.query(
-            "SELECT * FROM reviews WHERE user_id = $1;",
+            "SELECT * FROM users WHERE user_id = $1;",
             [auth0_user_id],
 
             (error, results) => {
@@ -32,7 +62,7 @@ router.post("/authenticate", async (req, res) => {
                 if (user.role === 'admin') {
                     return res.status(200).json({ message: "User is an admin" });
                 } else {
-                    return res.status(404).json({ error: "User is not an admin" });
+                    return res.status(401).json({ error: "User is not an admin" });
                 }
             }
         );
@@ -42,14 +72,9 @@ router.post("/authenticate", async (req, res) => {
 });
 
 
-router.post("/query", async (req, res) => {
+router.post("/query",authenticateUser, async (req, res) => {
     try {
         const { query, params } = req.body;
-
-        console.log("Admin Query Execution:");
-        console.log("Query:", query);
-        console.log("Params:", params);
-
         pool.query(query, params || [], (error, results) => {
             if (error) {
                 console.error("Database query failed:", error.message);
@@ -76,7 +101,7 @@ router.post("/query", async (req, res) => {
 });
 
 
-router.get("/users", async (req, res) => {
+router.post("/users", authenticateUser, async (req, res) => {
     try {
         pool.query("SELECT * FROM users", (error, results) => {
             if (error) {
@@ -88,7 +113,7 @@ router.get("/users", async (req, res) => {
         return res.status(500).json({ error: "Server error", details: error.message });
     }
 });
-router.get("/favorites", async (req, res) => {
+router.post("/favorites", authenticateUser, async (req, res) => {
     try {
         pool.query("SELECT * FROM favorites", (error, results) => {
             if (error) {
@@ -100,7 +125,7 @@ router.get("/favorites", async (req, res) => {
         return res.status(500).json({ error: "Server error", details: error.message });
     }
 });
-router.get("/movie", async (req, res) => {
+router.post("/movie", authenticateUser, async (req, res) => {
     try {
         pool.query("SELECT * FROM movie", (error, results) => {
             if (error) {
@@ -112,7 +137,7 @@ router.get("/movie", async (req, res) => {
         return res.status(500).json({ error: "Server error", details: error.message });
     }
 });
-router.get("/review", async (req, res) => {
+router.post("/review", authenticateUser, async (req, res) => {
     try {
         pool.query("SELECT * FROM review", (error, results) => {
             if (error) {
@@ -124,7 +149,7 @@ router.get("/review", async (req, res) => {
         return res.status(500).json({ error: "Server error", details: error.message });
     }
 });
-router.get("/groups", async (req, res) => {
+router.post("/groups", authenticateUser, async (req, res) => {
     try {
         pool.query("SELECT * FROM groups", (error, results) => {
             if (error) {
@@ -137,7 +162,7 @@ router.get("/groups", async (req, res) => {
     }
 });
 
-router.get("/group_members", async (req, res) => {
+router.post("/group_members", authenticateUser, async (req, res) => {
     try {
         pool.query("SELECT * FROM group_members", (error, results) => {
             if (error) {
@@ -149,6 +174,5 @@ router.get("/group_members", async (req, res) => {
         return res.status(500).json({ error: "Server error", details: error.message });
     }
 });
-
 export default router;
 

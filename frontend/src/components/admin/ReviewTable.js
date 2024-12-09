@@ -1,11 +1,14 @@
 
 import React, {useState} from 'react';
 import { useEffect } from 'react';
+import { useAuth0 } from "@auth0/auth0-react";
 
 const serverUrl = process.env.REACT_APP_API_URL
 
 
 function ReviewTable (){
+    const { user } = useAuth0();
+    const userId = user.sub;
 
 const [reviewData, setReviewData] = useState([]);
 
@@ -14,11 +17,13 @@ const getReviewTable = async () => {
    
 
     const response = await fetch(serverUrl+"/admin/review", {
-      method: "GET",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("auth0:id_token")}`,
       },
+      body: JSON.stringify({ auth0_user_id: userId }),
+
      
     });
     setReviewData(await response.json());
