@@ -81,21 +81,61 @@ To run the project locally, follow these steps:
    - Backend:  
      `cd backend && npm install`
 
-3. **Set up environment variables**:  
-   Create a `.env` file in both the frontend and backend folders and add the required environment variables (hardcoded for now with the local and remote details included).
+3. **Set up environment variables**  
+   Create a `.env` file in both the `frontend` and `backend` directories and add the required environment variables.
+
+   ### FRONTEND .env
+
+   - **Server URL**  
+     - `REACT_APP_API_URL=`
+
+   - **TMDB API Key**  
+     - `REACT_APP_TMDB_API_KEY=`
+
+
+
+   ### BACKEND .env
+
+   - **Database Connection Details**
+     - `DB_USER=`
+     - `DB_HOST=`
+     - `DB_PORT=`
+     - `DB_PASSWORD=`
+     - `DB_NAME=`
+
+   - **TMDB API Key**  
+     - `TMDB_API_KEY=`
+
+
+
+
 
 4. **Set up PostgreSQL**:
 
    - Create a local or cloud PostgreSQL database.
    - Refer to \movie-app\backend\index.js for database initialization.
 
-5. **Start the application**:
+5. Replace auth0 details
+
+- To create your own user list and have control over user login and access.
+- Create an account at https://auth0.com/
+- Create a single page application on auth0 dashboard
+- Under your application settings tab, add to Allowed Callback URLs and Allowed Logout URLs:
+
+http://localhost:3000/
+
+note: Change the port number if required, and add relevant domain URL if you dploy to live site.
+
+- Replace frontend/index.js Auth0Provider domain and clientId details
+
+
+6. **Start the application**:
    - Run the backend server:  
      `cd backend && npm start`
    - Run the frontend server:  
      `cd frontend && npm start`
 
-The app should now be running locally at `http://localhost:3000`.
+The app should now be running locally at [`http://localhost:3000`](http://localhost:3000/).
 
 ## Green Table
 
