@@ -514,11 +514,41 @@ This format worked well and kept our team moving forwards at a good pace with su
 - [Deleting account](#deleting-account)
 - [Browsing reviews](#browsing-reviews)
 
+Throughout the project we have implimented:
+- Manual testing
+- Jest js unit tests
+- Github actions workflow tests
+
+To run the Jest unit tests on local:
+
+1. `cd backend`
+2. `npm run test`
 ## Sign in
+
+
+
+![Tests Sign In](docs/assets/tests/tests-user-check-account.png)
+
+
 ## Sign out
+
+![Tests Sign Out](docs/assets/tests/tests-logout.png)
+
+
 ## Sign up
+
+![Tests Sign Up](docs/assets/tests/tests-user-add.png)
+
+
 ## Deleting account
+
+![Tests Delete Account](docs/assets/tests/tests-user-remove-account.png)
+
+
 ## Browsing reviews
+
+![Tests Browsing Reviews](docs/assets/tests/tests-reviews.png)
+
 
 
 
