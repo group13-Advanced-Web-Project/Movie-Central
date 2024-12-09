@@ -42,13 +42,11 @@
 
 ### Frontend
 
-| **HTML** | **CSS** | **JavaScript** | **React** |
+HTML | CSS | JavaScript | React 
 
 ### Backend
 
-| **Node.js** |
-| **Express** | A lightweight framework for building web applications in Node.js. |
-| **PostgreSQL** | A relational database for managing movie data, reviews, and user information. |
+Node.js | Express | PostgreSQL
 
 ### Deployment
 
@@ -57,14 +55,12 @@
 | **Frontend** | Hosted on **Netlify** for fast, reliable, and continuous deployment. |
 | **Backend**  | Deployed on **Render** for API and database services.                |
 
-The **Movie-Central** operates using a client-server architecture:
+**Movie-Central** operates using a client-server architecture:
 
 1. **Frontend**: Built with **React**, it handles all user interactions like browsing movies, viewing reviews, and managing user accounts. It communicates with the backend via API calls.
 2. **Backend**: Powered by **Node.js** and **Express**, the backend processes requests from the frontend, handling movie data, user authentication, and more.
 3. **Database**: **PostgreSQL** stores all movie data, user profiles, and reviews, ensuring data is stored persistently and can be queried efficiently.
-4. **Authentication**: Users sign up and log in to access personalized features such as favorites, reviews, and movie groups. Authentication is managed securely through **JWT (JSON Web Tokens)**.
-
-This architecture ensures a seamless and interactive experience for users, from discovering movies to interacting with friends and sharing opinions.
+4. **Authentication**: Users sign up and log in to access personalized features such as favorites, reviews, and movie groups. Authentication is managed securely through the auth0 api and @auth0/auth0-react package.
 
 ## Installation and Setup
 
