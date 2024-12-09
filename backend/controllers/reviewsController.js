@@ -1,10 +1,24 @@
 import * as reviewsModel from "../models/reviewsModel.js";
 
+// Mask email
+const maskEmail = (email) => {
+    if (!email.includes("@")) return email;
+    const [username, domain] = email.split("@");
+    const maskedUsername = `${username.slice(0, 3)}***${username.slice(-2)}`;
+    return `${maskedUsername}@${domain}`;
+};
+
 // Get all reviews
 export const getAllReviews = async (req, res) => {
     try {
         const reviews = await reviewsModel.getAllReviews();
-        res.json(reviews);
+
+        const sanitizedReviews = reviews.map((review) => ({
+            ...review,
+            user_email: maskEmail(review.user_email),
+        }));
+
+        res.json(sanitizedReviews);
     } catch (error) {
         res.status(500).json({ error: "Failed to fetch reviews", details: error.message });
     }
