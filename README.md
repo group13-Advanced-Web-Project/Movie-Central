@@ -151,6 +151,21 @@ If the user provides a username and password, the password must meet the strong 
 
 ## Sign in
 
+**IMPORTANT** 
+
+If you have not added your own auth0 details 
+
+ Allowed Callback URLs
+ - http://localhost:3000/
+ - https://movie-app-group13.netlify.app/
+
+
+ Allowed Logout URLs
+  - http://localhost:3000/
+  - https://movie-app-group13.netlify.app/
+
+**IMPORTANT** 
+
 After the user has created an account, they can log in using the same screen on the Log in tab.
 
 ![Sign In ](docs/assets/sign-in/sign-in.png)
