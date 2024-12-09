@@ -328,11 +328,18 @@ After generating the link, your sharable url will be shown.
 
 Any person with this link can see your public favorites (logged in or out).
 
+![Sharing Favorites Share - Generated](docs/assets/sharing-favorites/sharing-favorites-share.png)
+
+
+To add the profile to the shared URL's page, the share button must be clicked
+
 ![Sharing Favorites - Public](docs/assets/sharing-favorites/sharing-favorites-public.png)
 
 Public Profiles page:
 
-To view all public profiles list, visit the public profiles page.
+To view all public profiles list, visit the Shared URLs page, this can be accessed both logged in and out.
+
+![Sharing Favorites - Public](docs/assets/sharing-favorites/sharing-favorites-page.png)
 
 ## Optional feature - Admin page
 
@@ -424,6 +431,22 @@ This allowed us to deploy from one branch, and use team members forks and pull r
 
 ## Overall project management and progress
 
+The team stayed on progress by first having a kick off meeting where the following was decided (notes from meetings can be found in docs/note):
+
+1. Target grade
+2. Previous project experience and lessons learned
+3. Tech stack we will use
+4. Role assignments
+5. Project management risks and mitigations
+6. Weekly meeting schedule
+
+We decided a minimum of 3 weekly meetings were required along with a good use of web messaging and github communication.
+
+- Monday meeting: Talk through the weeks tasks and priorities and prepare for mentor meeting
+- Mentor meeting: Talk through progress, blockers and ensure all requirements are understood and worked towards effectively
+- Check up meeting: Progress report on the Monday meeting, and any additional resources are need
+
+This format worked well and kept our team moving forwards at a good pace with sufficient communication.
 
 
 
