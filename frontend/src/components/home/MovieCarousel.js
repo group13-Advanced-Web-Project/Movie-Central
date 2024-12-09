@@ -33,7 +33,7 @@ const MovieCarousel = () => {
     fetchMovies();
   }, []);
 
-  const loopedMovies = [...shuffledMovies, ...shuffledMovies];
+  const loopedMovies = [...shuffledMovies, ...shuffledMovies, ...shuffledMovies]; 
 
   return (
     <div className="feed2-container">
@@ -42,8 +42,8 @@ const MovieCarousel = () => {
       </div>
       <div
         className={`carousel-wrapper ${isPaused ? 'paused' : ''}`}
-        onMouseEnter={() => setIsPaused(true)} 
-        onMouseLeave={() => setIsPaused(false)} 
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
       >
         <div className="carousel">
           {loopedMovies.map((movie, index) => (
@@ -56,7 +56,7 @@ const MovieCarousel = () => {
                 />
               </Link>
               <Link to={`/movie/${movie.title}`} className="movie-name-link">
-                <p className="movie-name">{movie.title}</p>
+                <p className="movie-name-carousel">{movie.title}</p>
               </Link>
             </div>
           ))}
