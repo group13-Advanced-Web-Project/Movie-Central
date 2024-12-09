@@ -142,7 +142,6 @@ const Profile = () => {
     };
 
     const generateShareableLink = () => {
-        console.log("GENERATE CLICKED")
         if (!userDatabaseInfo[0]?.id) {
             alert("Unable to generate shareable link.");
             return;
@@ -163,8 +162,6 @@ const Profile = () => {
     };
         
     const saveShareableLinkToBackend = async () => {
-        console.log("SAVE CLICKED")
-
         const { user_id } = userDatabaseInfo[0] || {};
         if (!shareableLink || !user_id) return alert("Unable to save shared URL.");
     
