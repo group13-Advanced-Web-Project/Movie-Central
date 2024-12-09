@@ -217,16 +217,17 @@ footer {
 }
 
 .review-link {
-    background-color: #3e4246;  
-    color: #fff;  
-    font-size: 16px;  
-    padding: 10px 20px;  
-    border: none;  
-    border-radius: 5px;  
-    cursor: pointer;  
-    transition: background-color 0.3s, transform 0.2s;  
-    width: 20%;  
-    align-self: center;  
+    font-size: 1.2rem; /* Default font size */
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: font-size 0.3s ease, padding 0.3s ease;
+    align-self: center;
+
 }
 
 .review-link:hover {
@@ -314,6 +315,8 @@ footer {
 
     .review-link {
         width: 20%; 
+        font-size: 1rem; 
+        padding: 8px 16px;
     }
 
     .moviepage-info {
@@ -349,6 +352,8 @@ footer {
         width: 20%; 
         font-size: small;
         align-items: center;
+        font-size: 0.8rem; 
+        padding: 2px 2px;
     }
 
     .moviepage-info {
