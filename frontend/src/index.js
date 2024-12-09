@@ -5,16 +5,19 @@ import { MoviesProvider } from "./context/MoviesContext";
 import "./index.css";
 import App from "./App";
 
+
+const domain = process.env.REACT_APP_AUTH0_DOMAIN;
+const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
+
 const root = createRoot(document.getElementById("root"));
 
 root.render(
   <Auth0Provider
-    domain={process.env.REACT_APP_AUTH0_DOMAIN}
-    clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
+    domain={domain}
+    clientId={clientId}
     authorizationParams={{
       redirect_uri: window.location.origin,
     }}
-    redirect_uri={window.location.origin}
     useRefreshTokens
     cacheLocation="localstorage"
   >
