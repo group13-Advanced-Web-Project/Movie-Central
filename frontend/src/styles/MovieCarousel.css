@@ -13,20 +13,20 @@
     max-width: 600px;
     overflow: hidden;
     height: auto;
-}
-
-.feed2-header {
+  }
+  
+  .feed2-header {
     text-align: center;
     margin-bottom: 10px;
-}
-
-.feed-heading {
+  }
+  
+  .feed-heading {
     font-size: 1.5em;
     color: #333;
     margin: 0;
-}
-
-.carousel-wrapper {
+  }
+  
+  .carousel-wrapper {
     position: relative;
     display: flex;
     justify-content: center;
@@ -35,21 +35,21 @@
     width: 100%;
     height: 220px;
     overflow: hidden;
-}
-
-.carousel-wrapper.paused .carousel {
-    animation-play-state: paused; 
-}
-
-.carousel {
+  }
+  
+  .carousel-wrapper.paused .carousel {
+    animation-play-state: paused;
+  }
+  
+  .carousel {
     display: flex;
     gap: 15px;
     justify-content: center;
-    animation: scroll-left 800s linear infinite;
+    animation: scroll-left 200s linear infinite; 
     height: 100%;
-}
-
-.carousel-item {
+  }
+  
+  .carousel-item {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -60,60 +60,60 @@
     width: 140px;
     height: 200px;
     overflow: hidden;
-}
-
-.movie-image {
+  }
+  
+  .movie-image {
     width: 100px;
     height: 100px;
     object-fit: cover;
     border-radius: 5px;
     margin-bottom: 10px;
-}
-
-.movie-name {
-    font-size: 14px;
+  }
+  
+  .movie-name-carousel {
+    font-size: 16px;
     text-align: center;
     color: #333;
-}
-
-.movie-name-link {
+  }
+  
+  .movie-name-link {
     text-decoration: none;
     color: #ffffff;
-}
-
-.carousel-btn:hover {
+  }
+  
+  .carousel-btn:hover {
     background-color: #555;
-}
-
-
-/* Animation for smooth scrolling */
-@keyframes scroll-left {
+  }
+  
+  /* Animation for smooth scrolling */
+  @keyframes scroll-left {
     0% {
-        transform: translateX(0); 
+      transform: translateX(0);
     }
     100% {
-        transform: translateX(-100%); 
+      transform: translateX(-33.333%); 
     }
-}
-
-@media (max-width: 480px) {
+  }
+  
+  @media (max-width: 480px) {
     .carousel-item {
-        width: 120px; 
-        height: 220px;
+      width: 120px;
+      height: 220px;
     }
-
+  
     .movie-image {
-        width: 80px;
-        height: 80px;
+      width: 80px;
+      height: 80px;
     }
-
+  
     .movie-name {
-        font-size: 12px;
+      font-size: 12px;
     }
-
+  
     .carousel-btn {
-        width: 25px;
-        height: 25px;
-        font-size: 16px;
+      width: 25px;
+      height: 25px;
+      font-size: 16px;
     }
-}
+  }
+  
