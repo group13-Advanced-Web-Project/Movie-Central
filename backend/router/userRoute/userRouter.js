@@ -13,18 +13,6 @@ router.get("/check-db-connection", async (req, res) => {
   }
 });
 
-router.get("/all", (req, res) => {
-  try {
-    pool.query("SELECT * FROM users", (error, result) => {
-      if (error) return (error); // Pass any query errors to the error handler
-
-      return res.status(200).json(result.rows); // Return all rows as JSON
-    });
-  } catch (error) {
-    return (error); // Pass any other errors to the error handler
-  }
-});
-
 router.post("/check-account", (req, res) => {
   try {
     const { auth0_user_id } = req.body;

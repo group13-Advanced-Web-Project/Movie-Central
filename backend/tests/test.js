@@ -181,15 +181,6 @@ describe("User Endpoints (Live Production Database)", () => {
     });
   });
 
-  describe("GET /users/all", () => {
-    // Test case for successfully fetching all users
-    it("should return 200 and all users", async () => {
-      const response = await request(app).get("/users/all");
-
-      expect(response.status).toBe(200);
-      expect(response.body).toBeInstanceOf(Array);
-    });
-  });
 
   describe("POST /users/remove-account", () => {
     const testUser = {
