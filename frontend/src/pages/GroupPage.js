@@ -25,6 +25,8 @@ function GroupPage() {
     const [searchResults, setSearchResults] = useState([]);
     const [groupMovies, setGroupMovies] = useState([]);
     const dropdownRef = useRef(null);
+    const [showCustomAlert, setShowCustomAlert] = useState(false);
+    const [customAlertMessage, setCustomAlertMessage] = useState('');
 
 
     const loadGroupMovies = async () => {
@@ -77,7 +79,7 @@ function GroupPage() {
             } catch (error) {
                 console.error('Failed to fetch pending requests:', error);
             }
-        };        
+        };
 
         if (group_id) {
             loadGroupDetails();
@@ -109,6 +111,14 @@ function GroupPage() {
 
     const handleRemoveMember = async () => {
         if (!selectedMember) return;
+
+        const remainingMembers = groupMembers.filter((member) => member.user_id !== selectedMember.user_id);
+        if (remainingMembers.length === 0) {
+            setCustomAlertMessage('The last admin cannot leave or be removed. If you want to leave the group, please delete the group instead.');
+            setShowCustomAlert(true);
+            setShowRemoveModal(false);
+            return;
+        }
 
         try {
             const result = await removeMember(group_id, selectedMember.user_id);
@@ -160,7 +170,7 @@ function GroupPage() {
             const response = await axios.post(`${serverUrl}/groups/${group_id}/movies`, {
                 movie_id: movie.id,
             });
-            await loadGroupMovies();            
+            await loadGroupMovies();
         } catch (error) {
             alert(error.response?.data?.error || 'Failed to add movie to group.');
         } finally {
@@ -175,7 +185,7 @@ function GroupPage() {
             setSearchResults([]);
         }
     };
-    
+
 
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
@@ -308,6 +318,17 @@ function GroupPage() {
                         <h3>Are you sure you want to remove {selectedMember?.nickname}?</h3>
                         <button onClick={handleRemoveMember}>Yes, Remove</button>
                         <button onClick={closeRemoveModal}>Cancel</button>
+                    </div>
+                </div>
+            )}
+
+            {showCustomAlert && (
+                <div className="group-custom-alert">
+                    <div className="group-alert-content">
+                        <p>{customAlertMessage}</p>
+                        <button onClick={() => setShowCustomAlert(false)} className="group-alert-close-button">
+                            Close
+                        </button>
                     </div>
                 </div>
             )}
