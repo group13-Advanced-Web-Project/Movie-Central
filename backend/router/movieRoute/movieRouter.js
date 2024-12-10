@@ -1,10 +1,9 @@
 import { Router } from "express";
-import {fetchMovies, helloMessage, searchMovies, getMoviesByGenre, getMoviesByYear, getFeaturedMovie, getTrendingMovies} from "../../controllers/movieController.js";
+import {fetchMovies, searchMovies, getMoviesByGenre, getMoviesByYear, getFeaturedMovie, getTrendingMovies} from "../../controllers/movieController.js";
 
 const router = Router();
 
 
-router.get("/", helloMessage);
 router.get("/fetch-movies", fetchMovies);
 router.get("/search-movies", searchMovies);
 router.get("/movies-by-genre", getMoviesByGenre);

@@ -55,45 +55,6 @@ export const addReview = async (req, res) => {
     }
 };
 
-// Delete a review
-export const deleteReview = async (req, res) => {
-    const { review_id } = req.params;
-
-    try {
-        const deletedReview = await reviewsModel.deleteReview(review_id);
-        
-        if (!deletedReview) {
-            return res.status(404).json({ error: "Review not found" });
-        }
-
-        res.json(deletedReview);
-    } catch (error) {
-        res.status(500).json({ error: "Failed to delete review", details: error.message });
-    }
-};
-
-// Update a review
-export const updateReview = async (req, res) => {
-    const { review_id } = req.params;
-    const { description, rating } = req.body;
-
-    if (!description && !rating) {
-        return res.status(400).json({ error: "Missing required fields" });
-    }
-
-    try {
-        const updatedReview = await reviewsModel.updateReview(review_id, description, rating);
-
-        if (!updatedReview) {
-            return res.status(404).json({ error: "Review not found" });
-        }
-
-        res.json(updatedReview);
-    } catch (error) {
-        res.status(500).json({ error: "Failed to update review", details: error.message });
-    }
-};
-
 // Get reviews by movie_id
 export const getReviewsByMovieId = async (req, res) => {
     const { movie_id } = req.params;
@@ -105,18 +66,6 @@ export const getReviewsByMovieId = async (req, res) => {
             user_email: maskEmail(review.user_email),
         }));
         res.json(sanitizedReviews);
-    } catch (error) {
-        res.status(500).json({ error: "Failed to fetch reviews", details: error.message });
-    }
-};
-
-// Get reviews by user_id
-export const getReviewsByUserId = async (req, res) => {
-    const { user_id } = req.params;
-
-    try {
-        const reviews = await reviewsModel.getReviewsByUserId(user_id);
-        res.json(reviews);
     } catch (error) {
         res.status(500).json({ error: "Failed to fetch reviews", details: error.message });
     }

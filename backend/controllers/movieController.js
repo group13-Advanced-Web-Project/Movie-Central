@@ -6,10 +6,6 @@ dotenv.config();
 
 const tmdb_api_key = process.env.TMDB_API_KEY;
 
-export const helloMessage = (req, res) => {
-    res.json({ message: "Hello from Movie Router!" });
-};
-
 export const fetchMovies = async (req, res) => {
     try {
         const nowPlayingMovies = await fetchMoviesFromEndpoint(`https://api.themoviedb.org/3/movie/now_playing`, 2);
@@ -56,35 +52,55 @@ export const searchMovies = async (req, res) => {
     if (!query) {
         return res.status(400).json({ error: "Query is required" });
     }
-  
+
     try {
-        const movies = await fetchMoviesByQuery(query);
+        const searchResults = await fetchMoviesByQuery(query);
+
+        // Apply refined filtering logic here
+        const movies = searchResults.filter((item) => {
+            const isMovie = item.media_type === "movie" || !item.media_type;
+            const hasReleaseDate = !!item.release_date;
+            return isMovie && hasReleaseDate;
+        });
+
         if (movies.length === 0) {
-            return res.status(404).json({ error: "Movie not found" });
+            return res.status(404).json({ error: "No movies found" });
         }
-  
+
         const limitedMovies = movies.slice(0, 10);
-  
+
         const formattedMovies = await Promise.all(
             limitedMovies.map(async (movie) => {
-                const { details, cast } = await fetchMovieDetails(movie.id);
-                const castNames = cast.slice(0, 10).map((actor) => actor.name).join(", ");
-                const genres = details.genres.map((genre) => genre.name).join(", ");
-                return {
-                    id: movie.id,
-                    title: movie.title,
-                    overview: movie.overview,
-                    poster_path: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : null,
-                    release_date: movie.release_date,
-                    genres: genres.length ? genres : "Unknown",
-                    rating: details.vote_average,
-                    duration: details.runtime,
-                    cast: castNames || "Unknown"
-                };
+                try {
+                    const { details, cast } = await fetchMovieDetails(movie.id);
+                    const castNames = cast.slice(0, 10).map((actor) => actor.name).join(", ");
+                    const genres = details.genres.map((genre) => genre.name).join(", ");
+                    return {
+                        id: movie.id,
+                        title: movie.title,
+                        overview: movie.overview,
+                        poster_path: movie.poster_path
+                            ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                            : null,
+                        release_date: movie.release_date,
+                        genres: genres.length ? genres : "Unknown",
+                        rating: details.vote_average,
+                        duration: details.runtime,
+                        cast: castNames || "Unknown",
+                    };
+                } catch (error) {
+                    console.warn(
+                        `Failed to fetch details for movie ID: ${movie.id}. Error: ${error.message}`
+                    );
+                    return null;
+                }
             })
         );
-        res.json(formattedMovies);
+
+        const validMovies = formattedMovies.filter((movie) => movie !== null);
+        res.json(validMovies);
     } catch (error) {
+        console.error("Error during movie search:", error.message);
         res.status(500).json({ error: "Failed to fetch movie data" });
     }
 };
