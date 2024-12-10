@@ -100,7 +100,11 @@ export const getReviewsByMovieId = async (req, res) => {
 
     try {
         const reviews = await reviewsModel.getReviewsByMovieId(movie_id);
-        res.json(reviews);
+        const sanitizedReviews = reviews.map((review) => ({
+            ...review,
+            user_email: maskEmail(review.user_email),
+        }));
+        res.json(sanitizedReviews);
     } catch (error) {
         res.status(500).json({ error: "Failed to fetch reviews", details: error.message });
     }
