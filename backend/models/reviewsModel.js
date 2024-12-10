@@ -18,15 +18,6 @@ export const getReviewsByMovieId = async (movie_id) => {
     return result.rows;
 };
 
-// Get reviews by user_id
-export const getReviewsByUserId = async (user_id) => {
-    const result = await pool.query(
-        `SELECT * FROM review WHERE user_id = $1;`,
-        [user_id]
-    );
-    return result.rows;
-};
-
 // Add a new review
 export const addReview = async (movie_id, movie_name, user_id, user_email, description, rating) => {
     const result = await pool.query(
@@ -34,28 +25,6 @@ export const addReview = async (movie_id, movie_name, user_id, user_email, descr
         VALUES ($1, $2, $3, $4, $5, $6)
         RETURNING *;`,
         [movie_id, movie_name, user_id, user_email, description, rating]
-    );
-    return result.rows[0];
-};
-
-// Delete a review
-export const deleteReview = async (review_id) => {
-    const result = await pool.query(
-        `DELETE FROM review WHERE review_id = $1 RETURNING *;`,
-        [review_id]
-    );
-    return result.rows[0];
-};
-
-// Update a review
-export const updateReview = async (review_id, description, rating) => {
-    const result = await pool.query(
-        `UPDATE review
-        SET description = COALESCE($1, description),
-            rating = COALESCE($2, rating)
-        WHERE review_id = $3
-        RETURNING *;`,
-        [description, rating, review_id]
     );
     return result.rows[0];
 };
