@@ -50,6 +50,9 @@ Node.js | Express | PostgreSQL
 
 ### Deployment
 
+Server url: https://movie-app-2sz1.onrender.com/
+Frontend url: https://movie-app-group13.netlify.app/
+
 | Technology   | Description                                                          |
 | ------------ | -------------------------------------------------------------------- |
 | **Frontend** | Hosted on **Netlify** for fast, reliable, and continuous deployment. |
