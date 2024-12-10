@@ -455,6 +455,42 @@ h2 {
     background-color: #7e3c5e;
 }
 
+.group-custom-alert {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .group-alert-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  .group-alert-close-button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .group-alert-close-button:hover {
+    background-color: #0056b3;
+  }
+
 /* Media Queries for Responsiveness */
 @media screen and (max-width: 768px) {
     .group-page-content {
