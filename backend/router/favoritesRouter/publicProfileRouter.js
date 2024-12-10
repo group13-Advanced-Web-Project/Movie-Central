@@ -20,6 +20,15 @@ publicProfileRouter.get("/:id", async (req, res) => {
 
         const userData = userResult.rows[0];
 
+        const maskEmail = (email) => {
+            if (!email.includes("@")) return email;
+            const [username, domain] = email.split("@");
+            const maskedUsername = `${username.slice(0, 3)}***${username.slice(-2)}`;
+            return `${maskedUsername}@${domain}`;
+        };
+
+        userData.email = maskEmail(userData.email);
+
         const favoritesQuery = "SELECT movie_id FROM favorites WHERE user_id = $1";
         const favoritesResult = await pool.query(favoritesQuery, [userData.user_id]);
 
