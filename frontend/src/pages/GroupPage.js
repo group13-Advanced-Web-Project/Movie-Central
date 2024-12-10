@@ -179,8 +179,7 @@ function GroupPage() {
         }
     };
 
-    const handleClickOutside = (event) => {
-        console.log("Click detected outside:", event.target);
+    const handleClickOutside = (event) => {        
         if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
             setSearchResults([]);
         }
