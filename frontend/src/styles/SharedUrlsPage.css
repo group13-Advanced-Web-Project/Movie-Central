@@ -1,3 +1,18 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%; 
+    font-family: Arial, sans-serif;
+    box-sizing: border-box; 
+}
+
+
+#main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+}
+
 
 .shared-urls-container {
     padding: 20px;
@@ -18,7 +33,7 @@
     display: flex;
     align-items: center;
     margin: 10px 0;
-    padding: 10px;
+    padding: 10px 300px 10px 10px;    
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -72,4 +87,24 @@
 
 .profile-info a:hover {
     text-decoration: underline;
+}
+
+footer {
+    padding: 10px;
+    background-color: #2d3e50;
+    color: #fff;
+    text-align: center;
+    margin-top: auto;
+    width: 100%;
+}
+
+@media (max-width: 600px) {
+    .shared-profile-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .profile-circle {
+        margin-bottom: 10px;
+    }
 }
