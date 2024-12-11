@@ -17,8 +17,6 @@ const Profile = () => {
 
     const [userDatabaseInfo, setUserDatabaseInfo] = React.useState([]);
     const [favoriteMovies, setFavoriteMovies] = useState([]);
-    const [watchlist, setWatchlist] = useState([]);
-    const [watchedMovies, setWatchedMovies] = useState([]);
     const [ratings, setRatings] = useState({});
     const [shareableLink, setShareableLink] = useState("");
 
@@ -351,38 +349,6 @@ const Profile = () => {
                             </div>
                         </div>
 
-                        {/* Right Panel */}
-                        <div className="right-panel">
-                            <div className="section">
-                                <h2>Watched</h2>
-                                <div className="movie-grid">
-                                    {watchedMovies.map((movie, index) => (
-                                        <div key={index} className="movie-card">
-                                            <img
-                                                src={movie.poster_path || "/assets/sample_image.jpg"}
-                                                alt={movie.title}
-                                            />
-                                            <p>{movie.title}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div className="section">
-                                <h2>Watchlist</h2>
-                                <div className="movie-grid">
-                                    {watchlist.map((movie, index) => (
-                                        <div key={index} className="movie-card">
-                                            <img
-                                                src={movie.poster_path || "/assets/sample_image.jpg"}
-                                                alt={movie.title}
-                                            />
-                                            <p>{movie.title}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <Footer />
                 </>

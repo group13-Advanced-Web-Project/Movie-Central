@@ -56,7 +56,7 @@ body {
 
 /* Center Panel (My Favorites) */
 .center-panel {
-  width: 55%;
+  width: 70%;
   background-color: white;
   padding: 20px;
   border-radius: 10px;
@@ -95,14 +95,6 @@ body {
 .movie-card:hover {
   transform: scale(1.05);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-/* Right Panel (Watched and Watchlist) */
-.right-panel {
-  width: 20%;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
 }
 
 .section {
