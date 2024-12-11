@@ -204,7 +204,6 @@ If you have not added your own auth0 details
   - http://localhost:3000/
   - https://movie-app-group13.netlify.app/
 
-**IMPORTANT** 
 
 After the user has created an account, they can log in using the same screen on the Log in tab.
 
