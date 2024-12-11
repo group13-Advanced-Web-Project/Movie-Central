@@ -461,6 +461,11 @@ For deployment we used free tiers from Netlify (frontend) and render (server and
 
 ## Documenting REST API
 
+Rest API documentation can be found through the following link:
+
+[API Documentation](https://documenter.getpostman.com/view/39714216/2sAYHwHjEx)
+
+
 ## Managing product backlog
 
 The product was tracked using a Github project board:
