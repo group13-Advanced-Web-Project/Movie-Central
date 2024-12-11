@@ -50,8 +50,9 @@ Node.js | Express | PostgreSQL
 
 ### Deployment
 
-Server url: https://movie-app-2sz1.onrender.com/
-Frontend url: https://movie-app-group13.netlify.app/
+- Server url: https://movie-app-2sz1.onrender.com/
+
+- Frontend url: https://movie-app-group13.netlify.app/
 
 | Technology   | Description                                                          |
 | ------------ | -------------------------------------------------------------------- |
@@ -203,7 +204,6 @@ If you have not added your own auth0 details
   - http://localhost:3000/
   - https://movie-app-group13.netlify.app/
 
-**IMPORTANT** 
 
 After the user has created an account, they can log in using the same screen on the Log in tab.
 
@@ -460,6 +460,11 @@ For deployment we used free tiers from Netlify (frontend) and render (server and
 ![Frontend Diagram](docs/diagrams/frontend/frontend-flow.png)
 
 ## Documenting REST API
+
+Rest API documentation can be found through the following link:
+
+[API Documentation](https://documenter.getpostman.com/view/39714216/2sAYHwHjEx)
+
 
 ## Managing product backlog
 
