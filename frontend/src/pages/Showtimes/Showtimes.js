@@ -46,7 +46,9 @@ const Showtimes = ({ movies, fetchShowSchedule, showHeaderFooter = true }) => {
   useEffect(() => {
     const selectedDate = new Date(date).toLocaleDateString('fi-FI');
 
+    
     // Avoid fetching if the date and area have not changed
+
     if (lastFetched.date === selectedDate && lastFetched.area === theatreArea) {
       return;
     }
@@ -86,6 +88,7 @@ const Showtimes = ({ movies, fetchShowSchedule, showHeaderFooter = true }) => {
 
     setFlatMovieList(movieList);
   }, [movies, movieTitle]);
+
 
 
   useEffect(() => {
@@ -150,7 +153,9 @@ const Showtimes = ({ movies, fetchShowSchedule, showHeaderFooter = true }) => {
           <Pagination
             currentPage={currentPage}
             totalPages={Math.ceil(flatMovieList.length / moviesPerPage)}
-            onPageChange={handlePageChange}
+            goToPreviousPage={() => handlePageChange(currentPage - 1)}
+            goToPage={(pageNumber) => handlePageChange(pageNumber)}
+            goToNextPage={() => handlePageChange(currentPage + 1)}
           />
         )}
       </div>
