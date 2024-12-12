@@ -48,7 +48,7 @@ HTML | CSS | JavaScript | React
 
 Node.js | Express | PostgreSQL
 
-### Deployment
+### Deploy Details
 
 - Server url: https://movie-app-2sz1.onrender.com/
 
@@ -441,8 +441,6 @@ For deployment we used free tiers from Netlify (frontend) and render (server and
 
 ## Blue Table
 
-[!! FIGMA FLOWCHART DIAGRAM - LINK !!](https://www.figma.com/board/GEDwmSbW4mDdORlsn0Op3P/Untitled?node-id=25-457&t=9W4VubSLSSegfJfW-1)
-
 
 - [Class diagram describing database structure](#class-diagram-describing-database-structure)
 - [UI design (wireframe)](#ui-design-wireframe)
@@ -459,6 +457,7 @@ For deployment we used free tiers from Netlify (frontend) and render (server and
 ![Architecture Diagram](docs/diagrams/architecture.jpg)
 ![Frontend Diagram](docs/diagrams/frontend/frontend-flow.png)
 
+- ***note: Frontend diagram endpoint are not exhaustive to allow for visual clarity.***
 ## Documenting REST API
 
 Rest API documentation can be found through the following link:
