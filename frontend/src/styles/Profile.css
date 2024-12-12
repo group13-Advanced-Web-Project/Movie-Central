@@ -7,7 +7,7 @@ body {
 }
 
 /* Main Container */
-.main-container {
+.profile-main-container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -33,10 +33,29 @@ body {
   border: 3px solid #db811b;
 }
 
-.left-panel p {
+
+.left-panel h2, .left-panel p {
+  word-wrap: break-word; 
+  overflow-wrap: break-word;
+  text-align: center; 
   margin: 10px 0;
-  font-size: 16px;
+  font-size: 16px; 
 }
+
+
+@media screen and (max-width: 768px) {
+  .left-panel h2, .left-panel p {
+    font-size: 14px; 
+  }
+}
+
+
+@media screen and (max-width: 480px) {
+  .left-panel h2, .left-panel p {
+    font-size: 12px; 
+  }
+}
+
 
 .left-panel button {
   width: 100%;
@@ -60,7 +79,7 @@ body {
   background-color: white;
   padding: 20px;
   border-radius: 10px;
-  border: 2px solid green;
+  border: 2px solid rgb(215, 114, 41);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 

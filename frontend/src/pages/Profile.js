@@ -209,7 +209,7 @@ const Profile = () => {
             {isAuthenticated ? (
                 <>
                     <Navbar />
-                    <div className="main-container">
+                    <div className="profile-main-container">
                         {/* Left Panel */}
                         <div className="left-panel">
                             <h1>Profile - Logged In</h1>

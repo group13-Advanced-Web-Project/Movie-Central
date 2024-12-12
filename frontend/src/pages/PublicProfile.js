@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
+import { useParams, useNavigate } from "react-router-dom"; // 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import "../styles/PublicProfile.css";
 
-const serverUrl = process.env.REACT_APP_API_URL; // Backend base URL
-const TMDB_API_KEY = process.env.REACT_APP_TMDB_API_KEY; // TMDB API Key
+const serverUrl = process.env.REACT_APP_API_URL; 
+const TMDB_API_KEY = process.env.REACT_APP_TMDB_API_KEY; 
 
 const PublicProfile = () => {
-    const { id } = useParams(); // Extract user ID (database ID) from the URL
+    const { id } = useParams(); 
     const [profileData, setProfileData] = useState({
         user: null,
         favoriteMovies: [],
     });
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
-    const navigate = useNavigate(); // Initialize navigation hook
+    const navigate = useNavigate(); 
 
-    // Function to fetch the user's public profile
+   
     const fetchPublicProfile = async () => {
         try {
             const response = await fetch(`${serverUrl}/public/${id}`);
@@ -31,7 +31,7 @@ const PublicProfile = () => {
             const data = await response.json();
             const { user, favorites } = data;
 
-            // Fetch movie details for the favorites
+      
             const movieDetailsPromises = favorites.map((movieId) =>
                 fetchMovieDetails(movieId)
             );
@@ -75,7 +75,7 @@ const PublicProfile = () => {
 
     if (loading) {
         return (
-            <div>
+            <div id="root">
                 <Navbar />
                 <div className="public-profile-container">
                     <h1>Loading...</h1>
@@ -87,7 +87,7 @@ const PublicProfile = () => {
 
     if (error) {
         return (
-            <div>
+            <div id="root">
                 <Navbar />
                 <div className="public-profile-container">
                     <h1>Error</h1>
@@ -99,7 +99,7 @@ const PublicProfile = () => {
     }
 
     return (
-        <div>
+        <div id="root">
             <Navbar />
             <div className="public-profile-container">
                 {/* Left Panel */}

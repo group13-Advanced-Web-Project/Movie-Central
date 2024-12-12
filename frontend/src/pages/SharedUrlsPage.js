@@ -49,7 +49,7 @@ function SharedURLPage() {
   }, []); 
 
   return (
-    <div>
+    <div id="main-container">
       <Navbar /> 
       <main className="shared-urls-container">
         {loading && <p>Loading...</p>}

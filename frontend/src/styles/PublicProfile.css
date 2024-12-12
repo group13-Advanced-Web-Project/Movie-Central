@@ -1,10 +1,28 @@
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%; 
+    font-family: Arial, sans-serif;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+}
+
+
+
 .public-profile-container {
     display: flex;
+    flex-wrap: wrap; 
     gap: 20px;
     justify-content: initial;
     max-width: auto;
-    margin: 20px 20px;
+    margin: 20px;
     padding: 20px;
+    flex: 1; 
 }
 
 .left-panel {
@@ -17,12 +35,35 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.left-panel p {
+    word-break: break-word; 
+    overflow-wrap: anywhere; 
+    max-width: 100%; 
+    text-align: center; 
+    font-size: 14px;
+    line-height: 1.5; 
+    margin: 5px 0; 
+}
+
+
+@media (max-width: 768px) {
+    .left-panel {
+        width: 100%; 
+        text-align: center; 
+    }
+
+    .left-panel p {
+        font-size: 12px;
+    }
+}
+
+
 .right-panel {
     flex: 2;
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    background-color: #f9f9f9;
+    border: 2px solid rgb(215, 114, 41);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -60,7 +101,7 @@
 .movie-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 50px; /* Adjust the gap between the cards */
+    gap: 50px; 
     margin-top: 20px;
 
 
@@ -73,7 +114,7 @@
 .movie-card {
     text-align: center;
     min-width: 120px;
-    padding: 15px; /* Increase padding for better spacing inside the card */
+    padding: 15px; 
     border: 1px solid #ddd;
     border-radius: 8px;
     background-color: #fff;
@@ -86,7 +127,7 @@
     max-width: 100%;
     height: auto;
     border-radius: 4px;
-    margin-bottom: 15px; /* Ensure consistent spacing below the image */
+    margin-bottom: 15px; 
 }
 
 .movie-card p {
@@ -94,13 +135,13 @@
     font-weight: bold;
     color: #333;
     margin: 5px 0;
-    overflow: hidden; /* Hide overflowing text */
-    text-overflow: ellipsis; /* Show ellipsis (...) for overflowing text */
+    overflow: hidden; 
+    text-overflow: ellipsis; 
     display: -webkit-box;
-    -webkit-line-clamp: 3; /* Limit to 3 lines */
+    -webkit-line-clamp: 3; 
     -webkit-box-orient: vertical;
     white-space: normal;
-    cursor: pointer; /* Show pointer cursor to indicate interactivity */
+    cursor: pointer; 
 }
 
 
@@ -113,7 +154,7 @@
 }
 
 .movie-rating span {
-    margin: 0 2px; /* Add spacing between stars */
+    margin: 0 2px; 
     font-size: 14px;
     color: #555;
 }
