@@ -7,7 +7,7 @@ const Pagination = ({ currentPage, totalPages, goToPreviousPage, goToPage, goToN
       <div className="pagination-row upper-row">
         <button
           className="pagination-button"
-        disabled={currentPage === 1}
+          disabled={currentPage === 1} 
           onClick={goToPreviousPage}
         >
           Previous
